@@ -1,20 +1,31 @@
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { AiFillStar } from 'react-icons/ai'
 import { format } from "currency-formatter"
 
-const Card = ({
-    place
-}: any) => {
+const Card = (
+    {
+        place
+    }
+        : {
+            place: {
+                name: string,
+                image: StaticImageData,
+                price: number,
+                category: string,
+                reviews: number,
+                location: string
+            }
+        }) => {
 
     return (
-        <Link href={`/details/${place.id}`} className="h-[500px] w-[350px] flex flex-wrap rounded-xl cursor-pointer transition-all shadow-md hover:shadow-lg">
+        <Link href={`/details/1`} className="h-[500px] w-[350px] flex flex-wrap rounded-xl cursor-pointer transition-all shadow-md hover:shadow-lg">
             <div className="relative h-2/3 w-full">
                 <Image
                     width="250"
                     height="250"
-                    src={place.imageUrls[0]}
+                    src={place.image}
                     className="h-full w-full overflow-hidden rounded-tl-xl rounded-tr-xl object-cover"
                     alt="Locations's image"
                 />
@@ -33,14 +44,14 @@ const Card = ({
                             color="white"
                         />
                         <span className="text-white">
-                            {place.avgRating}
+                            {place.reviews}
                         </span>
                     </span>
                 </div>
                 {/* price & reviews */}
                 <div className="mt-6 flex justify-between items-center">
                     <span className="text-slate-600">
-                        {format(place.pricePerNight, { locale: "en-US" })}
+                        {format(place.price, { locale: "en-US" })}
                         <span className="ml-2">
                             per night
                         </span>

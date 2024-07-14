@@ -13,28 +13,87 @@ import { getBestHotels } from './service'
 import { ClipLoader } from 'react-spinners'
 
 const BestHotels = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["listings"],
-    queryFn: getBestHotels
-  })
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["listings"],
+  //   queryFn: getBestHotels
+  // })
 
-  if (isLoading) {
+  const data = [
+    {
+      name: "Arabian Paradise",
+      image: image_1,
+      price: 324.50,
+      category: "Luxury",
+      reviews: 4.7,
+      location: "Dubai, UAE"
+    },
+    {
+      name: "Arabian Paradise",
+      image: image_2,
+      price: 324.50,
+      category: "Luxury",
+      reviews: 4.7,
+      location: "Dubai, UAE"
+    },
+    {
+      name: "Arabian Paradise",
+      image: image_3,
+      price: 324.50,
+      category: "Luxury",
+      reviews: 4.7,
+      location: "Dubai, UAE"
+    },
+    {
+      name: "Arabian Paradise",
+      image: image_4,
+      price: 324.50,
+      category: "Luxury",
+      reviews: 4.7,
+      location: "Dubai, UAE"
+    },
+    {
+      name: "Arabian Paradise",
+      image: image_5,
+      price: 324.50,
+      category: "Luxury",
+      reviews: 4.7,
+      location: "Dubai, UAE"
+    },
+    {
+      name: "Arabian Paradise",
+      image: image_6,
+      price: 324.50,
+      category: "Luxury",
+      reviews: 4.7,
+      location: "Dubai, UAE"
+    },
+    {
+      name: "Arabian Paradise",
+      image: image_7,
+      price: 324.50,
+      category: "Luxury",
+      reviews: 4.7,
+      location: "Dubai, UAE"
+    },
+  ]
 
-    return (
-      <div style={{
-        marginTop: "5rem",
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        height: "100vh"
-      }}>
-        <ClipLoader
-          color={"#123abc"}
-        />
-      </div>
-    )
-  }
+  // if (isLoading) {
+
+  //   return (
+  //     <div style={{
+  //       marginTop: "5rem",
+  //       position: "absolute",
+  //       top: "50%",
+  //       left: "50%",
+  //       transform: "translate(-50%, -50%)",
+  //       height: "100vh"
+  //     }}>
+  //       <ClipLoader
+  //         color={"#123abc"}
+  //       />
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="h-full w-full my-36">
@@ -48,7 +107,7 @@ const BestHotels = () => {
         <div className="flex flex-wrap items-center gap-14">
           {data?.map((place) => (
             <Card
-              key={place.id}
+              key={place.name}
               place={place}
             />
           ))}
