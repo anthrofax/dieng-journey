@@ -9,7 +9,6 @@ import { format } from 'currency-formatter'
 // import BookModal from '@/components/book-modal/BookModal'
 import { useQuery } from '@tanstack/react-query'
 // import { getListingById } from './service'
-import { ClipLoader } from 'react-spinners'
 // import Reviews from './Reviews'
 
 import hotel_image_1 from '../../../../public/img/hr_1.jpg'

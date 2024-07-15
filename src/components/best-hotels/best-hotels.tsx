@@ -10,7 +10,7 @@ import image_7 from '../../../public/img/hr_7.jpg'
 import Card from './card'
 import { useQuery } from '@tanstack/react-query'
 import { getBestHotels } from './service'
-import { ClipLoader } from 'react-spinners'
+
 
 const BestHotels = () => {
   // const { data, isLoading } = useQuery({
