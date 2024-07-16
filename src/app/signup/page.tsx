@@ -17,7 +17,7 @@ function Signup() {
           />
           <div
             className="h-[450px] w-[400px] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg"
-          >
+          > 
             <h2 className="text-center p-4 font-semibold text-slate-800 text-2xl border-b border-slate-500">
               Create an account
             </h2>
