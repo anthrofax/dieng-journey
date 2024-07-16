@@ -13,6 +13,7 @@
     "@types/react-icons": "^3.0.0",
     "axios": "^1.7.2",
     "currency-formatter": "^1.5.9",
+    "date-fns": "^3.6.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "react": "^18",
