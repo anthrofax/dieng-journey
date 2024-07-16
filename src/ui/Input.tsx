@@ -3,7 +3,7 @@ import React from 'react'
 const Input = ({
     type,
     placeholder,
-    // register,
+    register,
     className,
     id = undefined,
     step = undefined
@@ -18,7 +18,7 @@ const Input = ({
                 placeholder={placeholder}
                 step={step}
                 id={id}
-                // {...register}
+                {...register}
             />
         </div>
     )
