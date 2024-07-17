@@ -1,7 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import LayoutProvider from "@/components/layout-provider/layout-provider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Toast from "@/utils/toast";
 import Provider from "@/utils/session-provider";
 
