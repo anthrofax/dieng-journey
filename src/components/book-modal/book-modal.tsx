@@ -10,8 +10,15 @@ import { AiOutlineClose } from "react-icons/ai";
 import Button from "@/ui/Button";
 import { redirectToCheckout } from "./service";
 import { Listing } from "@prisma/client";
+import { listingWithBlurredImage } from "@/models/listing";
 
-function BookModal({ handleHideModal, listing }: { handleHideModal: () => void, listing: Listing }) {
+function BookModal({
+  handleHideModal,
+  listing,
+}: {
+  handleHideModal: () => void;
+  listing: listingWithBlurredImage;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [dateRange, setDateRange] = useState<Date[]>([
     new Date(),

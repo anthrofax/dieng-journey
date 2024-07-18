@@ -1,11 +1,11 @@
-import Abu_dhabi from "../../../../../public/assets/AbuDhabi.jpg";
-import Dubai from "../../../../../public/assets/dubai.jpg";
-import Berlin from "../../../../../public/assets/berlin.jpg";
-import Hamburg from "../../../../../public/assets/Hamburg.jpg";
-import Paris from "../../../../../public/assets/paris.jpg";
-import St_tropez from "../../../../../public/assets/StTropez.jpg";
-import Mumbai from "../../../../../public/assets/Mumbai.jpg";
-import Delhi from "../../../../../public/assets/Delhi.jpg";
+import Abu_dhabi from "../../../../../public/img/AbuDhabi.jpg";
+import Dubai from "../../../../../public/img/dubai.jpg";
+import Berlin from "../../../../../public/img/berlin.jpg";
+import Hamburg from "../../../../../public/img/Hamburg.jpg";
+import Paris from "../../../../../public/img/paris.jpg";
+import St_tropez from "../../../../../public/img/StTropez.jpg";
+import Mumbai from "../../../../../public/img/Mumbai.jpg";
+import Delhi from "../../../../../public/img/Delhi.jpg";
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 

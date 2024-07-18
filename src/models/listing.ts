@@ -1,16 +1,6 @@
-import { Reservation } from "./reservation";
-import { Review } from "./review";
+import { Listing, Reservation, Review } from "@prisma/client";
 
-export type Listing = {
-  id: string;
-  name: string;
-  location: string;
-  type: string;
-  desc: string;
-  pricePerNight: number;
-  beds: number;
-  hasFreeWifi: boolean;
-  imageUrls: string[];
-  reviews: Review[];
-  reservations: Reservation[];
-};
+export interface listingWithBlurredImage extends Listing {
+  blurredImage: string;
+  avgRating: number;
+}

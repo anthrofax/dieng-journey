@@ -37,3 +37,4 @@ export async function GET(req: NextRequest, ctx: any) {
     return NextResponse.json({ error });
   }
 }
+

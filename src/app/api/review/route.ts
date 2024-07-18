@@ -6,14 +6,15 @@ export async function POST(req: NextRequest) {
   try {
     const { text, stars } = await req.json();
     const currentUser = await getCurrentUser();
-    let userId = "";
 
-    if (currentUser) {
-      userId = currentUser.id;
-    }
+    if (!currentUser) throw new Error("Kamu belum login");
+
+    const userId = currentUser.id;
 
     const { searchParams } = new URL(req.url);
     const listingId = searchParams.get("id") ?? "";
+
+    console.log(listingId);
 
     const createdReview = await db.review.create({
       data: {
