@@ -1,6 +1,7 @@
 import AXIOS_API from "@/utils/axios-api";
 import { Listing } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
+import toast from "react-hot-toast";
 
 export const redirectToCheckout = async (
   listing: Listing,
@@ -24,12 +25,13 @@ export const redirectToCheckout = async (
       daysDifference,
     });
 
-    const stripeError = await stripe.redirectToCheckout({
+    const result = await stripe.redirectToCheckout({
       sessionId: sessionId,
     });
 
-    if (stripeError) {
-      return;
+    if (result.error) {
+      console.log(result.error);
+      toast.error("Pembayaran Gagal");
     }
   } catch (error) {
     console.log(error);

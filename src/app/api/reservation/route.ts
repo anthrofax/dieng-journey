@@ -89,6 +89,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(newReservation);
   } catch (error) {
-    return NextResponse.json(error);
+    return NextResponse.json({error});
   }
 }

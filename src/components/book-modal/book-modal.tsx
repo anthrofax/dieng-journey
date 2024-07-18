@@ -80,7 +80,9 @@ function BookModal({
           <DateRangePicker
             ranges={[selectionRange]}
             minDate={new Date()}
-            // disabledDates={listing?.reservations?.flatMap(({ reservedDates }) => reservedDates)}
+            disabledDates={listing?.reservations?.flatMap(({ reservedDates }) =>
+              reservedDates.map((date) => new Date(date))
+            )}
             onChange={({ selection }) => {
               setDateRange([selection.startDate!, selection.endDate!]);
             }}

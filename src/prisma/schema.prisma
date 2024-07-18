@@ -41,7 +41,7 @@ model Reservation {
     endDate        DateTime
     chargeId       String
     daysDifference Int
-    reservedDates  Int[]    @default([])
+    reservedDates  DateTime[]    @default([])
 
     listingId String @db.ObjectId
     userId    String @db.ObjectId
