@@ -11,6 +11,7 @@ import BookModal from "@/components/book-modal/book-modal";
 import { getListingById } from "./service";
 import { ClipLoader } from "react-spinners";
 import Reviews from "./reviews";
+import Spinner from "@/components/spinner/spinner";
 
 register();
 
@@ -29,20 +30,7 @@ const HotelDetails = (props: any) => {
   const handleHideModal = () => setShowModal((prev) => false);
 
   if (isPending) {
-    const style: any = {
-      marginTop: "5rem",
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      height: "100vh",
-    };
-
-    return (
-      <div style={style}>
-        <ClipLoader color={"#123abc"} />
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (!listing) return <h1>Listing tidak ditemukan</h1>;

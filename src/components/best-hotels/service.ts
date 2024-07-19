@@ -1,20 +1,28 @@
 import AXIOS_API from "@/utils/axios-api";
 
 export async function getBestHotels() {
-    const { data } = await AXIOS_API.get('/listing/best-hotels')
+  const { data } = await AXIOS_API.get("/listing/best-hotels");
 
-    if (data) {
-        const blurredImages = await Promise.all(
-            data.map((listing: any) => AXIOS_API.get(`/base64?url=${listing.imageUrls[0]}`))
-        )
+  if (!data) return null;
 
-        const bestHotels = blurredImages.map((img, idx) => {
-            const blurredImage = img.data
-            const currentHotel = data[idx]
+  console.log(data)
 
-            return { ...currentHotel, blurredImage }
-        })
+  const blurredImages = await Promise.all(
+    data.map((listing: any) =>
+      AXIOS_API.get(`/base64?url=${listing.imageUrls[0]}`)
+    )
+  );
 
-        return bestHotels
-    }
+  console.log(blurredImages)
+
+  const bestHotels = blurredImages.map((img, idx) => {
+    const blurredImage = img.data;
+    const currentHotel = data[idx];
+
+    return { ...currentHotel, blurredImage };
+  });
+
+  console.log(bestHotels)
+
+  return bestHotels;
 }
