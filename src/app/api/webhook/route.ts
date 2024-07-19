@@ -1,7 +1,5 @@
 import { getDatesInRange } from "@/lib/date-to-milliseconds";
 import db from "@/lib/db";
-import cluster from "cluster";
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -16,12 +14,9 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event;
 
-  console.log("test sebelum");
 
   try {
     if (!sig || !stripeSecret) {
-      console.log(sig);
-      console.log(stripeSecret);
       throw new Error("sig & stripeSecret undefined");
     }
     event = stripe.webhooks.constructEvent(reqBody, sig, stripeSecret);
@@ -34,7 +29,6 @@ export async function POST(req: NextRequest) {
   switch (event.type) {
     case "checkout.session.completed":
       try {
-        console.log("test");
         const session = event.data.object;
         const paymentIntentId = session.payment_intent as string;
         const paymentIntent = await stripe.paymentIntents.retrieve(
@@ -71,8 +65,6 @@ export async function POST(req: NextRequest) {
           data: reservationData,
         });
 
-        console.log(newReservation);
-
         return NextResponse.json(newReservation);
       } catch (error) {
         NextResponse.json({ error });
@@ -81,47 +73,4 @@ export async function POST(req: NextRequest) {
     default:
       NextResponse.json({ error: "Event Type is not exist" });
   }
-
-  // if (event.type === "checkout.session.completed") {
-  //   console.log("test sesudah");
-  //   const session = event.data.object;
-  //   const paymentIntentId = session.payment_intent as string;
-  //   const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-  //   const chargeId = paymentIntent.latest_charge;
-
-  //   if (!session.metadata) throw new Error("Invalid Metadata");
-
-  //   const {
-  //     startDate,
-  //     endDate,
-  //     listingId,
-  //     pricePerNight,
-  //     daysDifference,
-  //     userId,
-  //   } = session.metadata;
-
-  //   const reservedDates = getDatesInRange(startDate, endDate);
-
-  //   const reservationData = {
-  //     userId,
-  //     listingId,
-  //     startDate,
-  //     endDate,
-  //     chargeId: chargeId as string,
-  //     reservedDates,
-  //     daysDifference: Number(daysDifference),
-  //   };
-
-  //   const newReservation = await db.reservation.create({
-  //     data: reservationData,
-  //   });
-
-  //   // Send email functionality
-  //   return NextResponse.json(newReservation);
-  // }
-
-  // return NextResponse.json("Event Received", {
-  //   status: 200,
-  //   statusText: "Event Received",
-  // });
 }
