@@ -1,5 +1,5 @@
 import React from "react";
-import person_image from "../../../../public/img/bianco_2.png";
+import person_image from "../../../../../public/img/bianco_2.png";
 import { AiFillStar } from "react-icons/ai";
 import Image from "next/image";
 import { format } from "date-fns";
