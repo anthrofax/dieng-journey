@@ -2,12 +2,12 @@ import React from "react";
 import { ClipLoader } from "react-spinners";
 
 const Button = ({
-  disabled,
+  disabled = false,
   label = "",
   className = "",
   onClick = () => {},
 }: {
-  disabled: boolean;
+  disabled?: boolean;
   label?: string;
   className?: string;
   onClick?: () => void;

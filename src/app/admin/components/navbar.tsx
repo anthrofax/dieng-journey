@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { IoCreateOutline } from "react-icons/io5";
 import { AiOutlineHome } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
+import CreateModal from "../modals/create-modal/create-modal";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -12,11 +13,8 @@ const Navbar = () => {
   const handleShowModal = () => setShowModal(true);
 
   return (
-    <div className="sticky top-0 left-0 w-full flex justify-between items-center">
-      <Link
-        href="/"
-        className="flex items-center gap-2 transition-all"
-      >
+    <div className="sticky top-0 left-0 w-full flex justify-between items-center z-50">
+      <Link href="/" className="flex items-center gap-2 transition-all">
         <h1 className="text-blue-600 text-2xl font-bold">TravelGod</h1>
         <AiOutlineHome size={25} color="rgb(37 99 235)" />
       </Link>
@@ -30,7 +28,7 @@ const Navbar = () => {
         <button className="cursor-pointer">
           <FaUser size={22} color="rgb(37 99 235)" />
         </button>
-        {/* {showModal && <CreateModal handleHideModal={handleHideModal} />} */}
+        {showModal && <CreateModal handleHideModal={handleHideModal} />}
       </div>
     </div>
   );

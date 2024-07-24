@@ -15,12 +15,12 @@ const Hero = ({
             <div className="relative h-screen w-full">
                 <Image src={image} className="brightness-50 h-full w-full object-cover" alt='hero-image' />
                 <div
-                    className="absolute bottom-0 left-0 right-0 top-0 flex flex-col justify-center items-center gap-8"
+                    className="absolute bottom-0 left-0 right-0 top-0 flex flex-col justify-center items-center gap-3 lg:gap-8 text-center"
                 >
-                    <h2 className="text-white text-6xl font-bold">
+                    <h2 className="text-white text-3xl lg:text-6xl font-bold">
                         {mainHeader}
                     </h2>
-                    <h5 className="text-white text-4xl font-semibold">
+                    <h5 className="text-white text-xl lg:text-4xl font-semibold">
                         {secondaryHeader}
                     </h5>
                 </div>

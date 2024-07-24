@@ -18,7 +18,7 @@ const Card = ({ place }: { place: any }) => {
           className="h-full w-full overflow-hidden rounded-tl-xl rounded-tr-xl object-cover"
           alt="Locations's image"
         />
-        <div className="absolute right-0 bottom-0 p-4 bg-blue-700 text-white rounded-tl-xl font-semibold">
+        <div className="absolute right-0 bottom-0 p-4 bg-blue-700 text-white rounded-tl-xl font-semibold capitalize">
           {place.location}
         </div>
       </div>

@@ -6,7 +6,7 @@ import { MdHotel } from "react-icons/md";
 import { useWidgetHook } from "../../hooks/widget-hook";
 import Widget from "../../components/widget";
 import BigWidget from "../../components/big-widget";
-// import Chart from "../../components/chart";
+import Chart from "../../components/chart";
 
 function Dashboard() {
   const [
@@ -52,7 +52,7 @@ function Dashboard() {
         </div>
         <div className="mt-28 grid grid-cols-7 gap-16">
           <BigWidget listing={mostReservedQuery.data} />
-          {/* <Chart /> */}
+          <Chart />
         </div>
       </div>
     </AdminLayout>

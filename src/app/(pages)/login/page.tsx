@@ -6,7 +6,7 @@ import Button from '@/ui/Button'
 import Input from '@/ui/Input'
 import Image from 'next/image'
 import { useState } from 'react'
-import Paris from '../../../public/img/paris.jpg'
+import Paris from '../../../../public/img/paris.jpg'
 import { schema } from './schema';
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
