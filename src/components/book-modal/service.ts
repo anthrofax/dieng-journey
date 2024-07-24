@@ -10,30 +10,46 @@ export const redirectToCheckout = async (
   daysDifference: number
 ) => {
   try {
-    const stripe = await loadStripe(
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
-    );
+    // const stripe = await loadStripe(
+    //   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+    // );
 
-    if (!stripe) throw new Error("Stripe failed to initialize");
+    // if (!stripe) throw new Error("Stripe failed to initialize");
 
-    const {
-      data: { sessionId },
-    } = await AXIOS_API.post("/stripe", {
+    // const {
+    //   data: { sessionId },
+    // } = await AXIOS_API.post("/stripe", {
+    //   listing,
+    //   startDate,
+    //   endDate,
+    //   daysDifference,
+    // });
+
+    // const result = await stripe.redirectToCheckout({
+    //   sessionId: sessionId,
+    // });
+
+    // if (result.error) {
+    //   console.log(result.error);
+    //   toast.error("Pembayaran Gagal");
+    // }
+
+    const response = await AXIOS_API.post("/tokenizer", {
       listing,
       startDate,
       endDate,
       daysDifference,
     });
 
-    const result = await stripe.redirectToCheckout({
-      sessionId: sessionId,
-    });
+    const requestData = response.data;
 
-    if (result.error) {
-      console.log(result.error);
-      toast.error("Pembayaran Gagal");
-    }
+    console.log({ requestData });
+
+    // @ts-ignore
+    const result = await window!.snap.pay(requestData.token);
+
+    console.log(result)
   } catch (error) {
-    console.log(error);
+    toast.error("Invalid Payment")
   }
 };

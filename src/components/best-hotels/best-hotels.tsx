@@ -11,16 +11,6 @@ const BestHotels = () => {
     queryFn: getBestHotels,
   });
 
-  console.log(data);
-
-  if (isLoading || !data) {
-    return (
-      <div className="h-full w-full my-36">
-        <Spinner />
-      </div>
-    );
-  }
-
   return (
     <div className="h-full w-full my-36">
       <div className="h-full w-5/6 mx-auto flex flex-col justify-start">
@@ -30,10 +20,12 @@ const BestHotels = () => {
         <h2 className="text-4xl text-slate-800 font-bold mt-6 mb-12">
           Best Hotels
         </h2>
-        <div className="flex flex-wrap items-center gap-14">
-          {data?.map((place) => (
-            <Card key={place.name} place={place} />
-          ))}
+        <div className="flex flex-wrap items-center gap-14 relative min-h-20">
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            data?.map((place) => <Card key={place.name} place={place} />)
+          )}
         </div>
       </div>
     </div>

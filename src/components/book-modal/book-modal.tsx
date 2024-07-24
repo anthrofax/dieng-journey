@@ -9,15 +9,14 @@ import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Button from "@/ui/Button";
 import { redirectToCheckout } from "./service";
-import { Listing } from "@prisma/client";
-import { listingWithBlurredImage } from "@/models/listing";
+import { ListingType } from "@/models/listing";
 
 function BookModal({
   handleHideModal,
   listing,
 }: {
   handleHideModal: () => void;
-  listing: listingWithBlurredImage;
+  listing: ListingType;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [dateRange, setDateRange] = useState<Date[]>([
@@ -71,9 +70,9 @@ function BookModal({
           />
         </div>
         <div className="p-4 flex items-center justify-between">
-          <h2 className="font-semibold text-[20px]">Arabian Paradise</h2>
+          <h2 className="font-semibold text-[20px]">{listing.name}</h2>
           <span className="text-slate-800">
-            {format(325.5, { locale: "en-US" })}
+            {format(listing.pricePerNight, { locale: "en-US" })}
           </span>
         </div>
         <form className="p-4 flex flex-col">
@@ -90,12 +89,12 @@ function BookModal({
         </form>
         <div className="p-4 mt-4 border-t border-slate-500 flex items-end justify-between">
           <div className="text-slate-700 flex items-center gap-2">
-            <span>{format(300, { locale: "en-US" })}</span>
+            <span>{format(listing.pricePerNight, { locale: "en-US" })}</span>
             <span>X</span>
             <span>{calcDaysDiff()}</span>
           </div>
           <div className="text-slate-700 mt-4">
-            Total Price: {format(300 * calcDaysDiff(), { locale: "en-US" })}
+            Total Price: {format(listing.pricePerNight * calcDaysDiff(), { locale: "en-US" })}
           </div>
         </div>
         <div className="w-full flex items-center mt-6">
@@ -103,7 +102,7 @@ function BookModal({
             onClick={handlePayment}
             disabled={isLoading}
             className="w-3/4 mx-auto cursor-pointer rounded-lg py-3 px-6 text-xl text-white bg-blue-500 transition-all hover:bg-blue-600"
-            label="Submit"
+            label="Booking"
           />
         </div>
       </div>

@@ -32,12 +32,10 @@ function Reservations() {
     });
   }
 
-  if (isLoading) return <Spinner />;
-
   return (
     <div className="mt-24 px-16 min-h-screen w-full">
       <div className="h-full w-full flex flex-wrap gap-12">
-        {data?.length > 0 ? (
+        {isLoading? <Spinner/> : data?.length > 0 ? (
           data?.map((reservation: any) => (
             <Card
               key={reservation.id}

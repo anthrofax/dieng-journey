@@ -50,7 +50,7 @@ const Navbar = () => {
             <>
               <div
                 onClick={toggleModal}
-                className="absolute top-16 right-[270px] shadow-md flex flex-col items-center gap-4 p-4 bg-white rounded-xl"
+                className="absolute top-16 right-[2rem] shadow-md flex flex-col items-center gap-4 p-4 bg-white rounded-xl "
               >
                 {session?.user?.isAdmin && (
                   <Link

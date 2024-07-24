@@ -1,10 +1,10 @@
-import { listingWithBlurredImage } from "@/models/listing";
+import { ListingType } from "@/models/listing";
 import AXIOS_API from "@/utils/axios-api";
 import { Listing } from "@prisma/client";
 
 export async function getListingById(
   id: string
-): Promise<listingWithBlurredImage> {
+): Promise<ListingType> {
   const { data } = await AXIOS_API.get(`/listing/details/${id}`);
 
   if (data) {

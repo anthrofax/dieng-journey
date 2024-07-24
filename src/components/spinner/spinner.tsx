@@ -1,21 +1,7 @@
-import { ClipLoader } from "react-spinners";
+import { Spinner as FlowbiteSpinner } from "flowbite-react";
 
 function Spinner() {
-  const style: any = {
-    marginTop: "5rem",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    height: "100%",
-    zIndex: 50,
-  };
-
-  return (
-    <div style={style}>
-      <ClipLoader color={"#123abc"} />
-    </div>
-  );
+  return <FlowbiteSpinner className="absolute top-1/2 left-1/2" size="xl" />;
 }
 
 export default Spinner;

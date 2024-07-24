@@ -3,13 +3,12 @@ import Image from "next/image";
 import { register } from "swiper/element/bundle";
 import { CiLocationOn } from "react-icons/ci";
 import { FaBed, FaWifi } from "react-icons/fa";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { format } from "currency-formatter";
 import { useQuery } from "@tanstack/react-query";
 import BookModal from "@/components/book-modal/book-modal";
 import { getListingById } from "./service";
-import { ClipLoader } from "react-spinners";
 import Reviews from "./reviews";
 import Spinner from "@/components/spinner/spinner";
 
@@ -21,7 +20,7 @@ const HotelDetails = (props: any) => {
   const [showModal, setShowModal] = useState(false);
   const swiperElRef = useRef(null);
 
-  const { data: listing, isPending } = useQuery({
+  const { data: listing, isLoading } = useQuery({
     queryKey: ["listings", { id }],
     queryFn: () => getListingById(id),
   });
@@ -29,92 +28,110 @@ const HotelDetails = (props: any) => {
   const handleShowModal = () => setShowModal((prev) => true);
   const handleHideModal = () => setShowModal((prev) => false);
 
-  if (isPending) {
-    return <Spinner />;
-  }
+  useEffect(() => {
+    const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT as string;
 
-  if (!listing) return <h1>Listing tidak ditemukan</h1>;
+    const script = document.createElement("script");
+    script.src = snapScript;
+    script.setAttribute("data-client-key", clientKey);
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  if (!listing && !isLoading) return <h1>Listing tidak ditemukan</h1>;
 
   return (
     <div
       className={`min-h-screen w-full mt-24 ${showModal && "overflow-hidden"}`}
     >
-      {showModal && (
-        <BookModal listing={listing} handleHideModal={handleHideModal} />
-      )}
-      <div className="h-full w-3/4 mx-auto">
-        <div>
-          <div className="w-full h-[750px] overflow-hidden mx-auto">
-            <div className="w-full h-full">
-              <swiper-container
-                ref={swiperElRef}
-                slides-per-view="1"
-                navigation="true"
-              >
-                {listing?.imageUrls?.map((imageUrl: string) => (
-                  <swiper-slide key={imageUrl}>
-                    <Image
-                      alt="Listing Image"
-                      className="h-[750px] w-full object-cover rounded-lg"
-                      height="750"
-                      width="750"
-                      src={imageUrl}
-                      blurDataURL={listing.blurredImage}
-                      placeholder="blur"
-                    />
-                  </swiper-slide>
-                ))}
-              </swiper-container>
-            </div>
-          </div>
-
-          <div className="mt-12 px-6 w-full flex items-center justify-between">
-            <h2 className="font-bold text-4xl">{listing.name}</h2>
-
-            <div>
-              <span className="p-2 px-4 text-[22px] rounded-full bg-blue-600 text-white flex items-center gap-2">
-                <AiFillStar color="white" />
-                <span className="text-white">{listing.avgRating}</span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-16 px-6 flex items-center gap-8">
-          <span className="flex items-center gap-2">
-            <CiLocationOn />
-            {listing.location}
-          </span>
-          <span className="flex items-center gap-2">
-            {format(listing.pricePerNight, { locale: "en-US" })}/night
-          </span>
-          <span className="flex items-center gap-2">
-            {listing.beds} <FaBed />
-          </span>
-
-          {listing.hasFreeWifi && (
-            <span className="flex items-center gap-2">
-              Free <FaWifi />
-            </span>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          {showModal && listing && (
+            <BookModal listing={listing} handleHideModal={handleHideModal} />
           )}
-        </div>
+          <div className="h-full w-3/4 mx-auto">
+            <div>
+              <div className="w-full h-[750px] overflow-hidden mx-auto">
+                <div className="w-full h-full">
+                  <swiper-container
+                    ref={swiperElRef}
+                    slides-per-view="1"
+                    navigation="true"
+                  >
+                    {listing?.imageUrls?.map((imageUrl: string) => (
+                      <swiper-slide key={imageUrl}>
+                        <Image
+                          alt="Listing Image"
+                          className="h-[750px] w-full object-cover rounded-lg"
+                          height="750"
+                          width="750"
+                          src={imageUrl}
+                          blurDataURL={listing.blurredImage}
+                          placeholder="blur"
+                        />
+                      </swiper-slide>
+                    ))}
+                  </swiper-container>
+                </div>
+              </div>
 
-        <div className="mt-16 px-6 w-full flex items-end justify-between">
-          <p className="text-xl max-w-xl text-slate-700">{listing.desc}</p>
-          <button
-            onClick={handleShowModal}
-            className="cursor-pointer rounded-lg py-2 px-6 text-xl text-white bg-blue-500"
-          >
-            Book
-          </button>
-        </div>
+              <div className="mt-12 px-6 w-full flex items-center justify-between">
+                <h2 className="font-bold text-4xl">{listing?.name}</h2>
 
-        <div className="border-t-2 border-white-800 px-6 mt-16 mx-auto">
-          <h1 className="mt-16 text-3xl font-bold">Reviews</h1>
+                <div>
+                  <span className="p-2 px-4 text-[22px] rounded-full bg-blue-600 text-white flex items-center gap-2">
+                    <AiFillStar color="white" />
+                    <span className="text-white">{listing?.avgRating}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
 
-          <Reviews id={id} />
-        </div>
-      </div>
+            <div className="mt-16 px-6 flex items-center gap-8">
+              <span className="flex items-center gap-2">
+                <CiLocationOn />
+                {listing?.location}
+              </span>
+              <span className="flex items-center gap-2">
+                {format(listing?.pricePerNight || 0, { locale: "en-US" })}/night
+              </span>
+              <span className="flex items-center gap-2">
+                {listing?.beds} <FaBed />
+              </span>
+
+              {listing?.hasFreeWifi && (
+                <span className="flex items-center gap-2">
+                  Free <FaWifi />
+                </span>
+              )}
+            </div>
+
+            <div className="mt-16 px-6 w-full flex items-end justify-between">
+              <p className="text-xl max-w-xl text-slate-700">{listing?.desc}</p>
+              <button
+                onClick={handleShowModal}
+                className="cursor-pointer rounded-lg py-2 px-6 text-xl text-white bg-blue-500"
+              >
+                Book
+              </button>
+            </div>
+
+            <div className="border-t-2 border-white-800 px-6 mt-16 mx-auto">
+              <h1 className="mt-16 text-3xl font-bold">Reviews</h1>
+
+              <Reviews id={id} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
