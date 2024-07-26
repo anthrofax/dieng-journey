@@ -10,14 +10,90 @@ datasource db {
 model User {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     username  String   @unique
+    displayName String
     email     String   @unique
     password  String
+    phone String
+    profileImage String @default("https://res.cloudinary.com/dmc0cvmf5/image/upload/v1721879584/empty-profile_d7fhjp.webp")
     isAdmin   Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     reservations Reservation[]
+    orders Order[]
     reviews      Review[]
+}
+
+model Destination {
+    destinationId String @id @default(auto()) @map("_id") @db.ObjectId
+    destinationName String
+    description String
+    city String
+    imageUrls String[]
+    
+    reviews Review[]
+    experiences Experience[]
+    hotels Hotel[]
+}
+
+model Hotel {
+    id            String   @id @default(auto()) @map("_id") @db.ObjectId
+    hotelName          String
+    location      String
+    type          String
+    description          String
+    destinationId String @db.ObjectId
+
+    rooms Room[]
+
+    destionation Destination @relation(fields: [destinationId], references: [destinationId], onDelete:Cascade)
+}
+
+model Room {
+     id            String   @id @default(auto()) @map("_id") @db.ObjectId
+     beds Int
+     pricePerNight Float
+     fasilitas Json[]
+     spaciousRoom Float
+     description String
+     image String[]
+
+     hotelId String @db.ObjectId
+     orderId String @db.ObjectId
+
+     rooms Reservation[]
+
+     hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+     order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Experience {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+
+    experienceName String
+    price Int
+    imageUrls String[]
+    description String
+
+    destinationId String @db.ObjectId
+    orderId String @db.ObjectId
+
+    destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
+    order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    totalPrice String
+    destinationId String @db.ObjectId
+    createdAt DateTime @default(now())
+
+    selectedRoom Room[]
+    selectedExperience Experience[]
+
+    userId String @db.ObjectId
+
+    user User @relation(fields: [userId], references: [id], onDelete:Cascade)
 }
 
 model Listing {
@@ -45,9 +121,11 @@ model Reservation {
 
     listingId String @db.ObjectId
     userId    String @db.ObjectId
+    roomId String @db.ObjectId
 
     listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
     user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
 }
 
 model Review {
@@ -57,11 +135,13 @@ model Review {
     stars Int
 
     listingId String @db.ObjectId
+    destinationId String @db.ObjectId
     userId String @db.ObjectId
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+    destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

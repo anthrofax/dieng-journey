@@ -33,7 +33,7 @@ function Reservations() {
   }
 
   return (
-    <div className="mt-24 px-16 min-h-screen w-full">
+    <div className=" px-16 min-h-screen w-full col-span-7">
       <div className="h-full w-full flex flex-wrap gap-12">
         {isLoading? <Spinner/> : data?.length > 0 ? (
           data?.map((reservation: any) => (
@@ -44,7 +44,7 @@ function Reservations() {
             />
           ))
         ) : (
-          <h1 className="text-center text-3xl font-bold text-slate-700">
+          <h1 className="text-start text-3xl font-bold text-slate-700">
             You have no reservations.
           </h1>
         )}

@@ -3,11 +3,14 @@ import Link from "next/link";
 import { AiOutlineUser } from "react-icons/ai";
 import { MdOutlineTravelExplore } from "react-icons/md";
 import { signOut, useSession } from "next-auth/react";
+import { IoMdLogOut } from "react-icons/io";
 import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname().split('/');
   const { data: session } = useSession();
 
   const toggleModal = () => setShowModal((prev) => !prev);
@@ -39,38 +42,48 @@ const Navbar = () => {
             color={`${isScrolled ? "rgb(37 99 235)" : "#cec7c7"}`}
           />
         </Link>
-        <div>
-          <div className="cursor-pointer" onClick={toggleModal}>
-            <AiOutlineUser
-              size={30}
-              color={`${isScrolled ? "rgb(37 99 235)" : "#cec7c7"}`}
-            />
-          </div>
-          {showModal && (
-            <>
-              <div
-                onClick={toggleModal}
-                className="absolute top-16 right-[2rem] shadow-md flex flex-col items-center gap-4 p-4 bg-white rounded-xl "
-              >
-                {session?.user?.isAdmin && (
-                  <Link
-                    className="bg-red-500 text-white px-1 py-2 rounded-xl"
-                    href="/admin/dashboard"
-                  >
-                    Admin Dashboard
-                  </Link>
-                )}
-                <Link href="/reservations">Reservations</Link>
-                <button
-                  onClick={() => signOut()}
-                  className="text-slate-500 text-center"
+        {!pathname.includes("user") && (
+          <div>
+            <div className="cursor-pointer" onClick={toggleModal}>
+              <AiOutlineUser
+                size={30}
+                color={`${isScrolled ? "rgb(37 99 235)" : "#cec7c7"}`}
+              />
+            </div>
+            {showModal && (
+              <>
+                <div
+                  onClick={toggleModal}
+                  className="absolute top-16 right-[2rem] shadow-md flex flex-col items-center gap-4 p-4 bg-white rounded-xl "
                 >
-                  Logout
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+                  {session?.user?.isAdmin && (
+                    <Link
+                      className="bg-red-500 text-white px-1 py-2 rounded-xl"
+                      href="/admin/dashboard"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <Link href="/reservations">Reservations</Link>
+                  <Link
+                    href={`/user/${session?.user.id}`}
+                    className={`${
+                      !session?.user.id ? "pointer-events-none" : ""
+                    }`}
+                  >
+                    User Settings
+                  </Link>
+                  <button
+                    onClick={() => signOut()}
+                    className="text-slate-500 text-center flex gap-2 items-center"
+                  >
+                    Logout <IoMdLogOut />
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

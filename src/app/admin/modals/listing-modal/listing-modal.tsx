@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
 import { toast } from "react-hot-toast";
 import { Message, useForm } from "react-hook-form";
-import { postImages } from "./service";
+import { postImages } from "@/lib/cloudinary-helpers";
 
 const ListingModal = ({
   handleHideModal,

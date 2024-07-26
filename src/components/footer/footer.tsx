@@ -1,23 +1,26 @@
 import {
   Footer as FlowbiteFooter,
-  FooterBrand,
   FooterCopyright,
   FooterDivider,
   FooterLink,
   FooterLinkGroup,
 } from "flowbite-react";
+import Link from "next/link";
+import { FaMountain } from "react-icons/fa";
+import { MdOutlineTravelExplore } from "react-icons/md";
 
 function Footer() {
   return (
     <FlowbiteFooter container>
-      <div className="w-full text-center">
+      <div className="w-full text-center ">
         <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
-          <FooterBrand
+          <Link
             href="/"
-            src="/img/logo.png"
-            alt="Dieng Journey Logo"
-            name="Dieng Journey"
-          />
+            className="flex items-center gap-2 transition-all hover:text-primary"
+          >
+            <h1 className={` text-lg lg:text-2xl font-bold`}>Dieng Journey</h1>
+            <MdOutlineTravelExplore size={25} />
+          </Link>
           <FooterLinkGroup>
             <FooterLink href="#">About</FooterLink>
             <FooterLink href="#">Privacy Policy</FooterLink>

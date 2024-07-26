@@ -10,7 +10,11 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    console.log(listings);
+
     const sortedListings = calcAndSortListings(listings).slice(0, 4);
+
+    console.log(sortedListings);
     console.log("GET Request: " + sortedListings);
 
     return NextResponse.json(sortedListings);

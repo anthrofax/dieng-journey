@@ -25,6 +25,7 @@ export const config = {
   matcher: [
     "/create",
     "/details/((?!general).*)",
+    "/user/((?!general).*)",
     "/reservations",
     "/catalog",
     "/",

@@ -11,6 +11,8 @@ const BestHotels = () => {
     queryFn: getBestHotels,
   });
 
+  console.log(data)
+
   return (
     <div className="h-full w-full my-36">
       <div className="h-full w-5/6 mx-auto flex flex-col justify-start">

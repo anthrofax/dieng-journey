@@ -8,10 +8,11 @@ import Select from "@/ui/Select";
 import { optionLocations, optionTypes } from "@/data/data";
 import Button from "@/ui/Button";
 import { toast } from "react-hot-toast";
-import { createNewListing, postImages } from "./service";
+import { createNewListing } from "./service";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import ModalLayout from "../../layout/modal-layout";
+import { postImages } from "@/lib/cloudinary-helpers";
 
 const CreateModal = ({ handleHideModal }: { handleHideModal: () => void }) => {
   const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUD_NAME;

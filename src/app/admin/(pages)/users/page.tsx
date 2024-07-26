@@ -5,7 +5,7 @@ import AdminLayout from "../../layout/admin-layout";
 import { columns } from "./table/column";
 import { getAllUsers } from "../../services/service";
 import { ClipLoader } from "react-spinners";
-import { DataTable } from "./table/data-table";
+import { DataTable } from "../../components/data-table";
 
 function Users() {
   const { data: allUsers, isPending } = useQuery({
