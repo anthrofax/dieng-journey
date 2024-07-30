@@ -11,8 +11,8 @@ import { MdOutlineTravelExplore } from "react-icons/md";
 
 function Footer() {
   return (
-    <FlowbiteFooter container>
-      <div className="w-full text-center ">
+    <FlowbiteFooter container >
+      <div className="w-full text-center max-h-fit">
         <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
           <Link
             href="/"

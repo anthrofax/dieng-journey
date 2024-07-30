@@ -12,8 +12,8 @@ const schema = z.object({
   ),
   pricePerNight: z
     .number()
-    .min(15, { message: "Price must be above $15!" })
-    .max(50000, { message: "Price can't be above $50k!" }),
+    .min(15, { message: "Price must be above $15" })
+    .max(50000, { message: "Price can't exceed $50k!" }),
 });
 
 export { schema };

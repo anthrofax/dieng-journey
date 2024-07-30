@@ -6,6 +6,24 @@ export async function getAllListings() {
   return data;
 }
 
+export async function getAllRooms() {
+  const { data } = await AXIOS_API.get("/admin/room/get-all-rooms");
+
+  return data;
+}
+
+export async function getAllDestinations() {
+  const { data } = await AXIOS_API.get("/admin/destination/get-all-destinations");
+
+  return data;
+}
+
+export async function getAllExperiences() {
+  const { data } = await AXIOS_API.get("/admin/experience/get-all-experiences");
+
+  return data;
+}
+
 export async function getAllReservations() {
   const { data } = await AXIOS_API.get(
     "/admin/reservation/get-all-reservations"

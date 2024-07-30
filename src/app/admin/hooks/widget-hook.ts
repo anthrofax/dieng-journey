@@ -8,12 +8,12 @@ export const useWidgetHook = () => {
         listingsQuery,
         reservationsQuery,
         revenueQuery,
-        mostReservedQuery
+        mostReservedQuery,
     ] = useQueries({
         queries: [
             {
                 queryFn: getAllUsers,
-                queryKey: ["admin", "users"]
+                queryKey: ["admin", "users"],
             },
             {
                 queryFn: getAllListings,

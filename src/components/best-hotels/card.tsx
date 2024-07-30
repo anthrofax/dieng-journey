@@ -36,7 +36,7 @@ const Card = ({ place }: { place: any }) => {
         {/* price & reviews */}
         <div className="mt-6 flex justify-between items-center">
           <span className="text-slate-600">
-            {format(place.pricePerNight, { locale: "en-US" })}
+            {format(place.pricePerNight, { locale: "id_ID" })}
             <span className="ml-2">per night</span>
           </span>
           <button className="cursor-pointer py-2 px-6 text-white bg-blue-500">

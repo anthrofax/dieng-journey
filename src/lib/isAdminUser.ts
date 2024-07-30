@@ -7,7 +7,7 @@ const isAdminUser = async () => {
 
     if (!currentUser?.isAdmin)
       return NextResponse.json(
-        { message: "You are not an admin!" },
+        { error: "You are not an admin!" },
         { status: 403 }
       );
   } catch (error) {

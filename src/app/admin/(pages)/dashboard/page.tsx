@@ -1,7 +1,6 @@
 "use client";
 
 import { AiFillBank, AiOutlineHome, AiOutlineUser } from "react-icons/ai";
-import AdminLayout from "../../layout/admin-layout";
 import { MdHotel } from "react-icons/md";
 import { useWidgetHook } from "../../hooks/widget-hook";
 import Widget from "../../components/widget";
@@ -40,22 +39,21 @@ function Dashboard() {
     },
   ];
 
-  console.log(widgetData);
+  console.log(revenueQuery.data);
+  console.log(reservationsQuery.data);
 
   return (
-    <AdminLayout>
-      <div className="ml-2 w-full h-full flex flex-col col-span-7 overflow-hidden">
-        <div className="grid grid-cols-4 gap-8">
-          {widgetData?.map(({ page, data, icon }) => (
-            <Widget key={page} page={page} data={data} icon={icon} />
-          ))}
-        </div>
-        <div className="mt-28 grid grid-cols-7 gap-16">
-          <BigWidget listing={mostReservedQuery.data} />
-          <Chart />
-        </div>
+    <div className="lg-:w-full h-full flex flex-col col-span-10">
+      <div className="grid grid-row-4 lg:grid-rows-1 grid-col-1 lg:grid-cols-4 gap-8 justify-items-center w-screen lg:w-full">
+        {widgetData?.map(({ page, data, icon }) => (
+          <Widget key={page} page={page} data={data} icon={icon} />
+        ))}
       </div>
-    </AdminLayout>
+      <div className="flex flex-col gap-6 lg:grid lg:grid-cols-7 lg:gap-16 w-screen lg:w-full items-center py-10">
+        <BigWidget listing={mostReservedQuery.data} />
+        <Chart revenueDataProps={revenueQuery.data} />
+      </div>
+    </div>
   );
 }
 

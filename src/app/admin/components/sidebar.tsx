@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { AiFillStar, AiOutlineHome, AiOutlineUser } from "react-icons/ai";
-import { MdDashboard, MdHotel } from "react-icons/md";
+import { MdDashboard, MdHotel, MdCardTravel } from "react-icons/md";
+import { FaMapMarkedAlt } from "react-icons/fa";
+import { IoTicket } from "react-icons/io5";
+import { LuHotel } from "react-icons/lu";
 
 const Sidebar = () => {
   const currentPage = usePathname().split("/")[2];
@@ -17,16 +20,28 @@ const Sidebar = () => {
       isCurrentPage: currentPage === "dashboard",
     },
     {
+      text: "Destinasi",
+      icon: MdCardTravel,
+      href: "/admin/destinations",
+      isCurrentPage: currentPage === "destination",
+    },
+    {
+      text: "Experience",
+      icon: FaMapMarkedAlt,
+      href: "/admin/experiences",
+      isCurrentPage: currentPage === "experiences",
+    },
+    {
       text: "Users",
       icon: AiOutlineUser,
       href: "/admin/users",
       isCurrentPage: currentPage === "users",
     },
     {
-      text: "Listings",
-      icon: MdHotel,
-      href: "/admin/listings",
-      isCurrentPage: currentPage === "listings",
+      text: "Penjualan Tiket",
+      icon: IoTicket,
+      href: "/admin/orders",
+      isCurrentPage: currentPage === "orders",
     },
     {
       text: "Reservations",
@@ -43,8 +58,8 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col justify-between">
-      <div className="h-full w-full flex flex-col gap-10 col-span-1">
+    <div className="w-full hidden lg:flex flex-col justify-between col-span-2 px-3">
+      <div className="h-full w-full flex flex-col gap-10">
         {sidebarData.map((data) => (
           <Link
             href={data.href}

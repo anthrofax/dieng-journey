@@ -3,9 +3,14 @@
 import Image from "next/image";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
+import { IoIosCreate } from "react-icons/io";
 import { useState } from "react";
 import { useListingHook } from "@/app/admin/hooks/listing-hook";
-import ListingModal from "@/app/admin/modals/listing-modal/listing-modal";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import EditListingModal from "@/app/admin/modals/listing-modal/edit-listing/edit-listing-modal";
+import { Rupiah } from "@/utils/format-currency";
+import CreateListingModal from "@/app/admin/modals/listing-modal/create-listing/create-listing-modal";
 export const columns = [
   {
     accessorKey: "image",
@@ -54,7 +59,7 @@ export const columns = [
     cell: ({ row }: { row: any }) => {
       const pricePerNight = row.getValue("pricePerNight");
 
-      return <span>${pricePerNight}</span>;
+      return <span>{Rupiah.format(pricePerNight.toFixed(0))}</span>;
     },
   },
   {
@@ -70,30 +75,46 @@ export const columns = [
 
 function ActionsColumn({ row }: { row: any }) {
   const listingId = row.original.id;
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const { handleDeleteListing, isPending } = useListingHook();
-  const handleHideModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const handleHideEditModal = () => setShowEditModal(false);
+  const handleHideCreateModal = () => setShowCreateModal(false);
 
   return (
     <>
-      <button
-        onClick={() => handleDeleteListing(listingId)}
+      <Button
+        className="cursor-pointer disabled:bg-slate-200 px-2 py-1 rounded-xl"
         disabled={isPending}
-        className="cursor-pointer px-2 py-1 rounded-xl"
+        onClick={() => handleDeleteListing(listingId)}
+        variant="ghost"
       >
         <FaTrash color={`${isPending ? "#bdb2b2" : "#f00"}`} />
-      </button>
-      <button
-        onClick={handleShowModal}
-        className="cursor-pointer disabled:bg-slate-200 px-2 py-1 rounded-xl"
-      >
-        <FaPen color="#31b608" />
-      </button>
-      {showModal && (
-        <ListingModal handleHideModal={handleHideModal} listingId={listingId} />
-      )}
+      </Button>
+
+      <Dialog>
+        <DialogTrigger asChild className="px-2 py-1">
+          <Button variant="ghost">
+            {" "}
+            <FaPen color="#ffc400" />
+          </Button>
+        </DialogTrigger>
+        <EditListingModal
+          handleHideModal={handleHideEditModal}
+          listingId={listingId}
+        />
+      </Dialog>
+
+      <Dialog>
+        <DialogTrigger asChild className="px-2 py-1">
+          <Button variant="ghost">
+            {" "}
+            <IoIosCreate color="#00ab30" />
+          </Button>
+        </DialogTrigger>
+        <CreateListingModal handleHideModal={handleHideEditModal} />
+      </Dialog>
     </>
   );
 }

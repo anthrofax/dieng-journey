@@ -1,24 +1,27 @@
 "use client";
 import Image from "next/image";
-import person_image from "../../../../../../public/img/bianco_2.png";
 import { format } from "timeago.js";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { useUserHook } from "../../../hooks/user-hook";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import React, { useState } from "react";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import UserModal from "@/app/admin/modals/user-modal/user-modal";
 
 export const columns = [
   {
-    accessorKey: "profilePhoto",
+    accessorKey: "profileImage",
     header: "Profile Photo",
     cell: ({ row }: { row: any }) => {
+      const value = row.getValue("profileImage");
+
       return (
         <Image
           className="h-10 w-10 rounded-full object-cover"
           height="40"
           width="50"
-          src={person_image}
+          src={value}
           alt="Person's image"
         />
       );
@@ -50,7 +53,7 @@ export const columns = [
     header: ({ column }: { column: any }) => {
       return (
         <button
-          className="Flex items-center gap-1"
+          className="flex items-center gap-1"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Reservations
@@ -69,7 +72,20 @@ export const columns = [
   },
   {
     accessorKey: "createdAt",
-    header: "Created At",
+    header: ({ column }: { column: any }) => {
+      return (
+        <button
+          className="Flex items-center gap-1"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Created At
+          <span className="flex items-center">
+            <AiOutlineArrowUp />
+            <AiOutlineArrowDown />
+          </span>
+        </button>
+      );
+    },
     cell: ({ row }: { row: any }) => {
       const value = row.getValue("createdAt");
       return <div>{format(value)}</div>;
@@ -100,15 +116,19 @@ function CreatedAtColumn({ row }: { row: any }) {
       >
         <FaTrash color={`${isPending ? "#bdb2b2" : "#f00"}`} />
       </button>
-      <button
-        onClick={handleShowModal}
-        className="cursor-pointer disabled:bg-slate-200 px-2 py-1 rounded-xl"
-      >
-        <FaPen color="#31b608" />
-      </button>
-      {showModal && (
-        <UserModal userId={userId} handleHideModal={handleHideModal} />
-      )}
+      <Dialog onOpenChange={setShowModal} open={showModal}>
+        <DialogTrigger asChild className="px-2 py-1">
+          <Button variant="ghost">
+            {" "}
+            <FaPen color="#ffc400" />
+          </Button>
+        </DialogTrigger>
+        <UserModal
+          handleHideModal={handleHideModal}
+          userId={userId}
+          setShowModal={setShowModal}
+        />
+      </Dialog>
     </>
   );
 }

@@ -1,33 +1,42 @@
+import { Input as ShadInput } from "@/components/ui/input";
 import React from "react";
 
 const Input = ({
-  type = 'text',
+  type = "text",
   placeholder = "",
   register,
   className = "",
+  name = "",
   id = undefined,
   step = undefined,
+  ref,
+  style,
+  onChange,
 }: {
-  type?: string;
+  type?: React.HTMLInputTypeAttribute | undefined;
   placeholder?: string;
-  register: any;
+  name?: string;
+  register?: any;
   className?: string;
+  ref?: any;
   id?: string;
+  style?: React.CSSProperties | undefined;
   step?: number;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
 }) => {
-  const defaultClassName = "text-slate-400 rounded-md w-2/3 outline-none p-2";
-
   return (
-    <div>
-      <input
-        type={type}
-        className={className ? className : defaultClassName}
-        placeholder={placeholder}
-        step={step}
-        id={id}
-        {...register}
-      />
-    </div>
+    <ShadInput
+      type={type}
+      className={className ? className : ""}
+      placeholder={placeholder}
+      step={step}
+      id={id}
+      style={style}
+      name={name}
+      onChange={onChange}
+      ref={ref}
+      {...register}
+    />
   );
 };
 

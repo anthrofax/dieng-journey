@@ -13,6 +13,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFilteredListings } from "./service";
 import Image, { StaticImageData } from "next/image";
 import { toast } from "react-hot-toast";
+import Spinner from "@/components/spinner/spinner";
 
 const Catalog = () => {
   const searchParams = useSearchParams();
@@ -45,7 +46,7 @@ const Catalog = () => {
   });
 
   const queryClient = useQueryClient();
-  const { data: listings, isPending } = useQuery({
+  const { data: listings, isLoading } = useQuery({
     queryFn: () => getFilteredListings(getValues()),
     queryKey: ["listings"],
   });
@@ -119,18 +120,24 @@ const Catalog = () => {
             />
           </div>
           <Button
-            disabled={isPending}
+            disabled={isLoading}
             label="Search"
             className="mt-6 px-6 py-2 text-[20px] bg-white text-blue-600 rounded-xl transition-all hover:bg-[#efefef]"
           />
         </form>
-        <div className="w-full mt-36 flex flex-wrap justify-center items-center gap-14">
-          {listings && listings?.length > 0 ? (
-            listings.map((place, idx) => <Card key={idx} place={place} />)
+        <div className="w-full py-20 flex flex-wrap justify-center items-center gap-14">
+          {!isLoading ? (
+            listings && listings.length > 0 ? (
+              listings.map((place: any, idx: number) => (
+                <Card key={idx} place={place} />
+              ))
+            ) : (
+              <h2 className="text-center font-bold text-4xl text-slate-700">
+                No listing with those filters
+              </h2>
+            )
           ) : (
-            <h2 className="text-center font-bold text-4xl text-slate-700">
-              No listing with those filters
-            </h2>
+            <Spinner />
           )}
         </div>
       </div>

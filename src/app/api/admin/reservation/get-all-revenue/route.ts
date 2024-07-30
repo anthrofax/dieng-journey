@@ -1,5 +1,6 @@
 import db from "@/lib/db";
 import isAdminUser from "@/lib/isAdminUser";
+import { getDay } from "date-fns";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -14,14 +15,20 @@ export async function GET(req: NextRequest) {
 
     if (allReservations.length === 0) return NextResponse.json(0);
 
-    const allReservationsPrices = allReservations.map((reservation) => {
-      return reservation.daysDifference * reservation.listing.pricePerNight;
+    const revenueData = allReservations.map((reservation) => {
+      return {
+        revenue: reservation.daysDifference * reservation.listing.pricePerNight,
+        day: getDay(reservation.endDate),
+      };
     });
 
-    const totalRevenue = allReservationsPrices.reduce((a, b) => a + b);
+    const totalRevenue = revenueData.reduce((a, b) => a + b.revenue, 0);
 
-    return NextResponse.json(totalRevenue);
+    return NextResponse.json({
+      revenueData,
+      totalRevenue,
+    });
   } catch (error) {
-    return NextResponse.json({error});
+    return NextResponse.json({ error });
   }
 }

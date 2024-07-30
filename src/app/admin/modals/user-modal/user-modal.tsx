@@ -6,20 +6,24 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { schema } from "./schema";
 import ModalLayout from "../../layout/modal-layout";
-import Input from "@/ui/Input";
-import Button from "@/ui/Button";
 import { getUserById, updateUser } from "./service";
+import { Label } from "flowbite-react";
+import { DialogFooter } from "@/components/ui/dialog";
+import Button from "@/ui/Button";
+import Input from "@/ui/Input";
 
 const UserModal = ({
   userId,
   handleHideModal,
+  setShowModal,
 }: {
   userId: string;
   handleHideModal: () => void;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { data: user, isPending } = useQuery({
     queryFn: () => getUserById(userId),
-    queryKey: ["admin", "users", { userId }],
+    queryKey: ["admin", "users", userId],
   });
 
   const queryClient = useQueryClient();
@@ -32,6 +36,7 @@ const UserModal = ({
         queryClient.invalidateQueries({
           queryKey: ["admin", "users"],
         });
+        setShowModal(false);
       },
     });
 
@@ -44,7 +49,7 @@ const UserModal = ({
       username: user?.username,
       email: user?.email,
     });
-  }, [user?.username, user?.email]);
+  }, [user?.username, user?.email, reset]);
 
   const onSubmit = (data: any) => {
     handleUpdateUser({ userId, data });
@@ -52,30 +57,42 @@ const UserModal = ({
   };
 
   return (
-    <ModalLayout document="User" handleHideModal={handleHideModal}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full px-4 py-6 flex flex-col items-center gap-8"
+    <>
+      <ModalLayout
+        document="User"
+        description="Lakukan perubahan pada akun pengguna disini, klik save jika kamu telah selesai."
       >
-        <Input
-          className="w-full px-2 py-3 rounded-xl"
-          type="text"
-          placeholder="john"
-          register={register("username")}
-        />
-        <Input
-          className="w-full px-2 py-3 rounded-xl"
-          type="email"
-          placeholder="john@gmail.com"
-          register={register("email")}
-        />
-        <Button
-          className="w-1/2 bg-blue-500 text-white px-4 py-2 rounded-xl disabled:bg-blue-700"
-          disabled={isPendingMutation}
-          label="Submit"
-        />
-      </form>
-    </ModalLayout>
+        <form className="grid gap-4 py-4" onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Username
+            </Label>
+            <Input
+              type="text"
+              id="username"
+              placeholder="John"
+              className="col-span-3"
+              register={register("username")}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="email" className="text-right">
+              Email
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="john@gmail.com"
+              className="col-span-3"
+              register={register("email")}
+            />
+          </div>
+          <DialogFooter>
+            <Button disabled={isPendingMutation} label="Simpan" />
+          </DialogFooter>
+        </form>
+      </ModalLayout>
+    </>
   );
 };
 

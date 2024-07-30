@@ -23,15 +23,11 @@ export default async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/create",
     "/details/((?!general).*)",
     "/user/((?!general).*)",
     "/reservations",
-    "/catalog",
-    "/",
     "/login",
     "/signup",
-    "/success-page",
     "/admin/dashboard",
     "/admin/users",
     "/admin/reservations",

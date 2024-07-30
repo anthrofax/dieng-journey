@@ -27,7 +27,7 @@ function ConfirmationBox({
       onClick={onClose}
     >
       <div className="md:flex items-center">
-        <div className="rounded-full border border-gray-300 flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
+        <div className="rounded-full border border-gray-300 flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto text-xl">
           {icon}
         </div>
         <div className="mt-4 md:mt-0 md:ml-6 text-center md:text-left">

@@ -11,7 +11,7 @@ import { GoInfo } from "react-icons/go";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
 import toast from "react-hot-toast";
-import { uploadImage } from "@/utils/upload-image";
+import { uploadImage } from "@/utils/helper-functions";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { confirmAlert } from "react-confirm-alert";

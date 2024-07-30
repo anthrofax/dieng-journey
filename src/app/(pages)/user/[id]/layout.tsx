@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar/navbar";
 import Sidebar from "@/components/user-settings-sidebar/user-settings-sidebar";
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function UserSettingsLayout({ children }: { children: React.ReactNode }) {
   return (

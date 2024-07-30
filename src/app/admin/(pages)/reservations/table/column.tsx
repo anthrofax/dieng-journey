@@ -5,6 +5,7 @@ import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 
 import React from "react";
 import { useReservationHook } from "@/app/admin/hooks/reservation-hook";
+import { Rupiah } from "@/utils/format-currency";
 
 export const columns = [
   {
@@ -72,7 +73,7 @@ export const columns = [
     cell: ({ row }: { row: any }) => {
       const totalPrice = row.getValue("totalPrice");
 
-      return <span className="block text-left">${totalPrice}</span>;
+      return <span className="block text-left">{Rupiah.format(totalPrice)}</span>;
     },
   },
   {

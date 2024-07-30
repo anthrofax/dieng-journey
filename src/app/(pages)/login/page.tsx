@@ -63,13 +63,13 @@ const Login = () => {
           </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="mt-8 flex flex-col items-center w-full gap-8">
             <Input
-              className="w-full mx-auto outline-none border border-slate-400 py-1 px-3 rounded-md focus:border-slate-600"
+              className="w-2/3 mx-auto outline-none border border-slate-400 py-1 px-3 rounded-md focus:border-slate-600"
               type="email"
               placeholder="John@gmail.com"
               register={register("email")}
             />
             <Input
-              className="w-full mx-auto outline-none border border-slate-400 py-1 px-3 rounded-md focus:border-slate-600"
+              className="w-2/3 mx-auto outline-none border border-slate-400 py-1 px-3 rounded-md focus:border-slate-600"
               type="password"
               placeholder="*******"
               register={register("password")}
@@ -77,7 +77,7 @@ const Login = () => {
             <Button
               disabled={isLoading}
               label="Submit"
-              className="w-3/4 mx-auto mt-12 cursor-pointer rounded-lg py-2 px-6 text-xl text-white bg-blue-500 transition-all hover:bg-blue-600"
+              className="w-3/4 mx-auto mt-3 cursor-pointer rounded-lg py-2 px-6 text-xl text-white bg-blue-500 transition-all hover:bg-blue-600"
             />
           </form>
         </div>
