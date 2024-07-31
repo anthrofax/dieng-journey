@@ -2,7 +2,6 @@
 import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import ModalLayout from "../../../layout/modal-layout";
 import Input from "@/ui/Input";
-import Select from "@/ui/Select";
 import { optionLocations, optionTypes } from "@/data/data";
 import Button from "@/ui/Button";
 import { Button as ShadButton } from "@/components/ui/button";

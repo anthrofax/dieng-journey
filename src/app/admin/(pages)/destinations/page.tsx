@@ -23,7 +23,7 @@ function Destinations() {
   const createFormState = useForm({
     resolver: zodResolver(createSchema),
   });
-  const imageInput = useRef<HTMLInputElement>(document.createElement("input"));
+  const imageInput = useRef<HTMLInputElement>(null);
 
   return (
     <div className="py-10 col-span-12 lg:col-span-10 grid grid-rows-12">
@@ -44,8 +44,8 @@ function Destinations() {
             open={showCreateModal}
           >
             <DialogTrigger asChild className="px-2 py-1">
-              <Button  className="text-sm flex gap-3 px-3 items-center bg-primary hover:text-primary hover:bg-slate-300" >
-                <IoIosCreate  size={20} /> Tambah Data Destinasi
+              <Button className="text-sm flex gap-3 px-3 items-center bg-primary hover:text-primary hover:bg-slate-300">
+                <IoIosCreate size={20} /> Tambah Data Destinasi
               </Button>
             </DialogTrigger>
             <CreateDestinationModal

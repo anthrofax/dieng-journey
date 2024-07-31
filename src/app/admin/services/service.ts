@@ -24,6 +24,14 @@ export async function getAllExperiences() {
   return data;
 }
 
+export async function getAllOrders() {
+  const { data } = await AXIOS_API.get(
+    "/admin/order/get-all-orders"
+  );
+
+  return data;
+}
+
 export async function getAllReservations() {
   const { data } = await AXIOS_API.get(
     "/admin/reservation/get-all-reservations"

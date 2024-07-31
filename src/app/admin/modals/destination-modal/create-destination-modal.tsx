@@ -1,6 +1,6 @@
 "use client";
 
-import React, { MutableRefObject, useEffect } from "react";
+import React, { MutableRefObject, RefObject, useEffect } from "react";
 import { GrClearOption } from "react-icons/gr";
 import ModalLayout from "../../layout/modal-layout";
 import Input from "@/ui/Input";
@@ -28,7 +28,7 @@ const CreateDestinationModal = ({
 }: {
   handleHideModal: () => void;
   formState: UseFormReturn<FieldValues, any, undefined> 
-  imageInput: MutableRefObject<HTMLInputElement > 
+  imageInput: RefObject<HTMLInputElement> 
   images: File[];
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
 }) => {
@@ -180,9 +180,7 @@ const CreateDestinationModal = ({
             className="hidden"
             accept="image/png, image/jpg, image/jpeg"
             multiple={true}
-            ref={(el) => {
-              if (el) imageInput.current = el;
-            }}
+            ref={imageInput}
             disabled={images.length >= MAXIMUM_IMAGE_UPLOAD}
           />
         </div>

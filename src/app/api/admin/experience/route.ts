@@ -15,15 +15,19 @@ export async function POST(req: NextRequest) {
     const { experienceName, price, imageUrls, description, destinationId } =
       body;
 
-    await db.experience.create({
+    console.log(body);
+
+    const test = await db.experience.create({
       data: {
         experienceName,
-        price,
+        price: +price,
         imageUrls,
         description,
         destinationId,
       },
     });
+
+    console.log(test);
 
     return NextResponse.json({
       message: "Data Experience telah berhasil ditambahkan",

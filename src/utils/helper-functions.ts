@@ -1,5 +1,5 @@
 import { postImages } from "@/lib/cloudinary-helpers";
-import React, { MutableRefObject } from "react";
+import React, { MutableRefObject, RefObject } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -34,10 +34,11 @@ export const uploadImage = async (image: any, idx?: number) => {
 };
 
 export function clearImageInput(
-  imageInputRef: MutableRefObject<HTMLInputElement>,
+  imageInputRef: RefObject<HTMLInputElement>,
   imageListSetState: React.Dispatch<React.SetStateAction<File[]>>
 ) {
-  imageInputRef.current.value = "";
+  if (imageInputRef.current) imageInputRef.current.value = "";
+
   imageListSetState([]);
 }
 
@@ -49,7 +50,7 @@ export const handleHideModal = ({
 }: {
   formState: UseFormReturn<FieldValues, any, undefined> | undefined;
   showModalStateSetter: React.Dispatch<React.SetStateAction<boolean>>;
-  imageInputRef?: MutableRefObject<HTMLInputElement>;
+  imageInputRef?: RefObject<HTMLInputElement>;
   imageListSetState?: React.Dispatch<React.SetStateAction<File[]>> | undefined;
 }) => {
   formState!.reset();

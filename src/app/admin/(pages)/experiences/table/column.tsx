@@ -8,14 +8,15 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDestinationHook } from "@/app/admin/hooks/destination-hook";
 import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { confirmAlert } from "react-confirm-alert";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { format } from "timeago.js";
-import EditDestinationModal from "@/app/admin/modals/destination-modal/edit-destination-modal";
-import { editSchema } from "@/app/admin/modals/destination-modal/edit-schema";
 import { handleHideModal } from "@/utils/helper-functions";
+import { useExperienceHook } from "@/app/admin/hooks/experience-hook";
+import { Rupiah } from "@/utils/format-currency";
+import EditExperienceModal from "@/app/admin/modals/experience-modal/edit-experience-modal";
+import { editSchema } from "@/app/admin/modals/experience-modal/edit-schema";
 
 export const columns = [
   {
@@ -31,7 +32,7 @@ export const columns = [
             width="35"
             height="35"
             src={image}
-            alt="Listing's image"
+            alt="Experience's image"
           />
         </div>
       );
@@ -61,7 +62,24 @@ export const columns = [
   },
   {
     accessorKey: "price",
-    header: "Harga",
+    header: ({ column }: { column: any }) => {
+      return (
+        <button
+          className="flex items-center gap-1"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Harga
+          <span className="flex items-center">
+            <AiOutlineArrowUp />
+            <AiOutlineArrowDown />
+          </span>
+        </button>
+      );
+    },
+    cell: ({ row }: { row: any }) => {
+      const price = row.getValue("price");
+      return <div>{Rupiah.format(price)}</div>;
+    },
   },
   {
     accessorKey: "createdAt",
@@ -81,7 +99,6 @@ export const columns = [
     },
     cell: ({ row }: { row: any }) => {
       const value = row.getValue("createdAt");
-      console.log(value);
       return <div>{format(new Date(value))}</div>;
     },
   },
@@ -103,7 +120,6 @@ export const columns = [
     },
     cell: ({ row }: { row: any }) => {
       const value = row.getValue("updatedAt");
-      console.log(value);
       return <div>{format(new Date(value))}</div>;
     },
   },
@@ -115,8 +131,8 @@ export const columns = [
 ];
 
 function ActionsColumn({ row }: { row: any }) {
-  const { destinationId, destinationName } = row.original;
-  const { handleDeleteDestination, isPendingDelete } = useDestinationHook();
+  const { id, experienceName } = row.original;
+  const { handleDeleteExperience, isPendingDelete } = useExperienceHook();
   const [images, setImages] = useState<File[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const editFormState = useForm({
@@ -136,9 +152,9 @@ function ActionsColumn({ row }: { row: any }) {
                 <ConfirmationBox
                   icon={<MdAutoDelete />}
                   judul="Konfirmasi Penghapusan Data"
-                  pesan={`Apakah anda yakin ingin melakukan menghapus "${destinationName}"?`}
+                  pesan={`Apakah anda yakin ingin melakukan menghapus "${experienceName}"?`}
                   onClose={onClose}
-                  onClickIya={() => handleDeleteDestination(destinationId)}
+                  onClickIya={() => handleDeleteExperience(id)}
                   labelIya="Yakin"
                   labelTidak="Ohh, sebentar"
                 />
@@ -169,7 +185,7 @@ function ActionsColumn({ row }: { row: any }) {
           </Button>
         </DialogTrigger>
 
-        {/* <EditDestinationModal
+        <EditExperienceModal
           images={images}
           setImages={setImages}
           imageInput={imageInput}
@@ -182,8 +198,8 @@ function ActionsColumn({ row }: { row: any }) {
             })
           }
           formState={editFormState}
-          destinationId={destinationId}
-        /> */}
+          experienceId={id}
+        />
       </Dialog>
     </>
   );

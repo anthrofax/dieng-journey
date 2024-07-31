@@ -9,11 +9,10 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createSchema } from "../../modals/destination-modal/create-schema";
 import { handleHideModal } from "@/utils/helper-functions";
-import { useDestinationHook } from "../../hooks/destination-hook";
-import CreateDestinationModal from "../../modals/destination-modal/create-destination-modal";
 import { useExperienceHook } from "../../hooks/experience-hook";
+import CreateExperienceModal from "../../modals/experience-modal/create-experience-modal";
+import { createSchema } from "../../modals/experience-modal/create-schema";
 
 function Experiences() {
   const { isLoadingQuery, allExperiences } = useExperienceHook();
@@ -22,10 +21,10 @@ function Experiences() {
   const createFormState = useForm({
     resolver: zodResolver(createSchema),
   });
-  const imageInput = useRef<HTMLInputElement>(document.createElement("input"));
+  const imageInput = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="py-10 col-span-12 lg:col-span-10">
+    <div className="py-10 col-span-12 lg:col-span-10 grid grid-rows-12">
       <div className="row-span-12 px-5">
         <div className="flex justify-between py-3 items-center">
           <h2 className="text-3xl text-slate-800 font-semibold text-center lg:text-left">
@@ -47,7 +46,7 @@ function Experiences() {
                 <IoIosCreate  size={20} /> Tambah Data Experience Tambahan
               </Button>
             </DialogTrigger>
-            {/* <CreateDestinationModal
+            <CreateExperienceModal
               images={images}
               setImages={setImages}
               imageInput={imageInput}
@@ -60,7 +59,7 @@ function Experiences() {
                 })
               }
               formState={createFormState}
-            /> */}
+            />
           </Dialog>
         </div>
         <div className="mt-2 h-2/3 w-[80vw] max-lg:mx-auto">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { MutableRefObject, useEffect } from "react";
+import React, { RefObject, useEffect } from "react";
 import { GrClearOption } from "react-icons/gr";
 import ModalLayout from "../../layout/modal-layout";
 import Input from "@/ui/Input";
@@ -13,7 +13,6 @@ import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  createNewDestination,
   getSelectedDestination,
   updateDestination,
 } from "@/app/admin/(pages)/destinations/service";
@@ -31,7 +30,7 @@ const EditDestinationModal = ({
 }: {
   handleHideModal: () => void;
   formState: UseFormReturn<FieldValues, any, undefined>;
-  imageInput: MutableRefObject<HTMLInputElement>;
+  imageInput: RefObject<HTMLInputElement>;
   destinationId: string;
   images: File[];
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
@@ -66,7 +65,7 @@ const EditDestinationModal = ({
       queryClient.invalidateQueries({
         queryKey: ["admin", "destinations"],
       });
-      toast.success("Destinasi anda telah berhasil ditambahkan");
+      toast.success("Destinasi anda telah berhasil diperbarui");
       handleHideModal();
     },
   });
@@ -217,9 +216,7 @@ const EditDestinationModal = ({
               className="hidden"
               accept="image/png, image/jpg, image/jpeg"
               multiple={true}
-              ref={(el) => {
-                if (el) imageInput.current = el;
-              }}
+              ref={imageInput}
               disabled={images.length >= MAXIMUM_IMAGE_UPLOAD}
             />
           </div>

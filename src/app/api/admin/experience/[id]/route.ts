@@ -27,9 +27,11 @@ export async function PUT(req: NextRequest, ctx: any) {
     const { id } = ctx.params;
     const body = await req.json();
 
+    console.log(body);
+
     await db.experience.update({
       where: { id },
-      data: { ...body },
+      data: { ...body, price: +body.price },
     });
 
     return NextResponse.json({

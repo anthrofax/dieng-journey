@@ -23,7 +23,7 @@ const Sidebar = () => {
       text: "Destinasi",
       icon: MdCardTravel,
       href: "/admin/destinations",
-      isCurrentPage: currentPage === "destination",
+      isCurrentPage: currentPage === "destinations",
     },
     {
       text: "Experience",
