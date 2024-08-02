@@ -12,7 +12,7 @@ import UserModal from "@/app/admin/modals/user-modal/user-modal";
 export const columns = [
   {
     accessorKey: "profileImage",
-    header: "Profile Photo",
+    header: "Foto Profil",
     cell: ({ row }: { row: any }) => {
       const value = row.getValue("profileImage");
 
@@ -49,14 +49,14 @@ export const columns = [
     },
   },
   {
-    accessorKey: "reservations",
+    accessorKey: "orders",
     header: ({ column }: { column: any }) => {
       return (
         <button
           className="flex items-center gap-1"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Reservations
+          Jumlah Transaksi
           <span className="flex items-center">
             <AiOutlineArrowUp />
             <AiOutlineArrowDown />
@@ -65,9 +65,9 @@ export const columns = [
       );
     },
     cell: ({ row }: { row: any }) => {
-      const value = row.getValue("reservations")?.length || 0;
+      const value = row.getValue("orders")?.length || 0;
 
-      return <div>{value} reservations</div>;
+      return <div>{value} transaksi</div>;
     },
   },
   {
@@ -78,7 +78,7 @@ export const columns = [
           className="Flex items-center gap-1"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Created At
+          Dibuat pada
           <span className="flex items-center">
             <AiOutlineArrowUp />
             <AiOutlineArrowDown />
@@ -93,7 +93,7 @@ export const columns = [
   },
   {
     accessorKey: "actions",
-    header: "Actions",
+    header: "Aksi",
     cell: CreatedAtColumn,
   },
 ];
@@ -103,19 +103,11 @@ function CreatedAtColumn({ row }: { row: any }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleHideModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
 
-  const { handleDeleteUser, isPending } = useUserHook();
+  // const { handleDeleteUser, isPending } = useUserHook();
 
   return (
     <>
-      <button
-        className="cursor-pointer disabled:bg-slate-200 px-2 py-1 rounded-xl"
-        disabled={isPending}
-        onClick={() => handleDeleteUser(userId)}
-      >
-        <FaTrash color={`${isPending ? "#bdb2b2" : "#f00"}`} />
-      </button>
       <Dialog onOpenChange={setShowModal} open={showModal}>
         <DialogTrigger asChild className="px-2 py-1">
           <Button variant="ghost">

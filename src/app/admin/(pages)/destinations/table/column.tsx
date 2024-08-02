@@ -16,6 +16,7 @@ import { format } from "timeago.js";
 import EditDestinationModal from "@/app/admin/modals/destination-modal/edit-destination-modal";
 import { editSchema } from "@/app/admin/modals/destination-modal/edit-schema";
 import { handleHideModal } from "@/utils/helper-functions";
+import { Rupiah } from "@/utils/format-currency";
 
 export const columns = [
   {
@@ -44,6 +45,27 @@ export const columns = [
       const location = row.getValue("destinationName");
 
       return <span className="capitalize">{location}</span>;
+    },
+  },
+  {
+    accessorKey: "price",
+    header: ({ column }: { column: any }) => {
+      return (
+        <button
+          className="flex items-center gap-1"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Harga Tiket
+          <span className="flex items-center">
+            <AiOutlineArrowUp />
+            <AiOutlineArrowDown />
+          </span>
+        </button>
+      );
+    },
+    cell: ({ row }: { row: any }) => {
+      const price = row.getValue("price");
+      return <div>{Rupiah.format(price)}</div>;
     },
   },
   {
@@ -81,7 +103,6 @@ export const columns = [
     },
     cell: ({ row }: { row: any }) => {
       const value = row.getValue("createdAt");
-      console.log(value);
       return <div>{format(new Date(value))}</div>;
     },
   },
@@ -103,7 +124,6 @@ export const columns = [
     },
     cell: ({ row }: { row: any }) => {
       const value = row.getValue("updatedAt");
-      console.log(value);
       return <div>{format(new Date(value))}</div>;
     },
   },

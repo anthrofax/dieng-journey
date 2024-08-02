@@ -193,7 +193,7 @@ function User({ params }: { params: { id: string } }) {
                 type="number"
                 className="w-full rounded-lg border-none"
                 {...register("phone")}
-                placeholder={data.user.phone}
+                placeholder={data.user.phone || "Anda belum mengisi nomor telepon, silahkan isi data nomor telepon anda disini"}
               />
               {errors?.phone && (
                 <p className="text-red-500">{`${errors?.phone.message}`}</p>

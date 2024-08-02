@@ -8,6 +8,8 @@ export async function GET(req: NextRequest) {
 
     const allDestinations = await db.destination.findMany({});
 
+    console.log(allDestinations)
+
     return NextResponse.json(allDestinations);
   } catch (error) {
     return NextResponse.json({ error });

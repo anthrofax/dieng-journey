@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const { faker } = require("@faker-js/faker");
+// import {faker } from '@faker-js/faker
 const bcryptjs = require("bcryptjs");
 
 const optionLocations = [
@@ -47,6 +48,7 @@ async function main() {
       data: {
         destinationName: faker.location.city(),
         description: faker.lorem.paragraphs(),
+        price: faker.number.int({ min: 500000, max: 2000000 }),
         city: faker.location.city(),
         imageUrls: [faker.image.url(), faker.image.url(), faker.image.url()],
       },
@@ -96,12 +98,7 @@ async function main() {
   for (let j = 0; j < 10; j++) {
     await prismaServer.order.create({
       data: {
-        totalPrice: faker.commerce.price({
-          min: 100000,
-          max: 1000000000,
-          dec: 0,
-          symbol: "Rp.",
-        }),
+        qty: faker.number.int({ min: 1, max: 3 }),
         destinationId: destinations[j].destinationId, // Assuming you have destination IDs
         createdAt: faker.date.past(),
         userId: users[j].id,

@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import Select from "@/ui/Select";
 import { optionLocations, optionTypes } from "@/data/data";
 import Input from "@/ui/Input";
 import Button from "@/ui/Button";
@@ -14,6 +13,15 @@ import { getFilteredListings } from "./service";
 import Image, { StaticImageData } from "next/image";
 import { toast } from "react-hot-toast";
 import Spinner from "@/components/spinner/spinner";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Catalog = () => {
   const searchParams = useSearchParams();
@@ -88,11 +96,24 @@ const Catalog = () => {
         >
           <div className="flex flex-col items-center gap-1">
             <h3 className="ml-1 text-[#efefef] font-semibold">City</h3>
-            <Select
-              register={register("location")}
-              data={optionLocations}
-              className="text-blue-800 p-2 rounded-xl outline-none captalize"
-            />
+            <Select>
+              <SelectTrigger
+                className="text-blue-800 p-2 rounded-xl outline-none w-[180px]"
+                {...register("location")}
+              >
+                <SelectValue placeholder="Pilih Kota" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Lokasi</SelectLabel>
+                  {optionLocations.map((location) => (
+                    <SelectItem key={location.value} value={location.value}>
+                      {location.city}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div className="flex flex-col items-center gap-1">
             <h3 className="ml-1 text-[#efefef] font-semibold">Price</h3>
@@ -113,11 +134,24 @@ const Catalog = () => {
           </div>
           <div className="flex flex-col items-start gap-1">
             <h3 className="ml-1 text-[#efefef] font-semibold">Type of hotel</h3>
-            <Select
-              register={register("type")}
-              data={optionTypes}
-              className="text-blue-800 p-2 rounded-xl outline-none"
-            />
+            <Select>
+              <SelectTrigger
+                className="text-blue-800 p-2 rounded-xl outline-none w-[180px]"
+                {...register("type")}
+              >
+                <SelectValue placeholder="Pilih tipe hotel" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Type</SelectLabel>
+                  {optionTypes.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.text}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <Button
             disabled={isLoading}

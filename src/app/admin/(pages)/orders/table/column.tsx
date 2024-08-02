@@ -2,6 +2,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { FaTrash } from "react-icons/fa";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
+import { Column } from "@tanstack/react-table";
 
 import React from "react";
 import { useReservationHook } from "@/app/admin/hooks/reservation-hook";
@@ -9,15 +10,16 @@ import { Rupiah } from "@/utils/format-currency";
 
 export const columns = [
   {
-    accessorKey: "image",
-    header: "Image",
+    accessorKey: "destination.imageUrls[0]",
+    id: "image",
+    header: "Gambar Destinasi",
     cell: ({ row }: { row: any }) => {
-      const image = row.getValue("listing").imageUrls[0];
+      const image = row.original.destination.imageUrls[0];
 
       return (
         <div>
           <Image
-            alt="Listing Image"
+            alt="Gambar Destinasi yang Diorder"
             src={image}
             width="35"
             height="35"
@@ -28,30 +30,31 @@ export const columns = [
     },
   },
   {
-    accessorKey: "startDate",
-    header: "Start Date",
+    accessorFn: (row: any) => row.destination.destinationName,
+    id: "destinationName",
+    header: "Destinasi",
     cell: ({ row }: { row: any }) => {
-      const startDate = row.getValue("startDate");
+      const destinationName = row.original.destination.destinationName;
 
-      return <span>{format(startDate, "MMM do yyyy")}</span>;
-    },
-  },
-  {
-    accessorKey: "endDate",
-    header: "End Date",
-    cell: ({ row }: { row: any }) => {
-      const endDate = row.getValue("endDate");
-
-      return <span>{format(endDate, "MMM do yyyy")}</span>;
+      return <span>{destinationName}</span>;
     },
   },
   {
     accessorKey: "user",
-    header: "User",
+    header: "Pelanggan",
     cell: ({ row }: { row: any }) => {
-      const { email } = row.getValue("user");
+      const customerUsername = row.original.user.username;
 
-      return <span>{email}</span>;
+      return <span>{customerUsername}</span>;
+    },
+  },
+  {
+    accessorKey: "qty",
+    header: "Jumlah Pembelian Ticket",
+    cell: ({ row }: { row: any }) => {
+      const qty = row.original.qty;
+
+      return <span>{qty}</span>;
     },
   },
   {
@@ -62,7 +65,7 @@ export const columns = [
           className="flex justify-center items-center gap-1"
           onClick={() => column.toggleSorting(column.getIsSorted === "asc")}
         >
-          Total Price
+          Total Harga
           <span className="flex items-center">
             <AiOutlineArrowUp />
             <AiOutlineArrowDown />
@@ -71,18 +74,34 @@ export const columns = [
       );
     },
     cell: ({ row }: { row: any }) => {
-      const totalPrice = row.getValue("totalPrice");
+      const qty = row.original.qty;
+      const destinationPrice = row.original.destination.price;
+      const experienceTotalPrice = row.original.orderExperience.reduce(
+        (
+          acc: number,
+          {
+            experience,
+          }: { experience: { experienceName: string; price: number } }
+        ) => {
+          return acc + experience.price;
+        },
+        0
+      );
 
-      return <span className="block text-left">{Rupiah.format(totalPrice)}</span>;
+      return (
+        <span className="block text-left">
+          {Rupiah.format(qty * (destinationPrice + experienceTotalPrice))}
+        </span>
+      );
     },
   },
   {
-    accessorKey: "listing",
-    header: "Listing",
+    accessorKey: "orderExperience",
+    header: "Experience Tambahan",
     cell: ({ row }: { row: any }) => {
-      const { name } = row.getValue("listing");
+      const experienceOrderItems = row.original.orderExperience;
 
-      return <span>{name}</span>;
+      return <span>{experienceOrderItems.length} Tempat</span>;
     },
   },
   {

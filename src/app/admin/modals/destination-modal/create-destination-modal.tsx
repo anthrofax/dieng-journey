@@ -14,7 +14,6 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import {
   createNewDestination,
-  getSelectedDestination,
 } from "@/app/admin/(pages)/destinations/service";
 import { clearImageInput, uploadImage } from "@/utils/helper-functions";
 import { MAXIMUM_IMAGE_UPLOAD } from "@/data/app-config";
@@ -27,8 +26,8 @@ const CreateDestinationModal = ({
   setImages,
 }: {
   handleHideModal: () => void;
-  formState: UseFormReturn<FieldValues, any, undefined> 
-  imageInput: RefObject<HTMLInputElement> 
+  formState: UseFormReturn<FieldValues, any, undefined>;
+  imageInput: RefObject<HTMLInputElement>;
   images: File[];
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
 }) => {
@@ -111,6 +110,7 @@ const CreateDestinationModal = ({
             register={register("destinationName")}
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor="description" className="text-right">
             Deskripsi
@@ -122,6 +122,20 @@ const CreateDestinationModal = ({
             {...register("description")}
           />
         </div>
+
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="price" className="text-right">
+            Harga
+          </Label>
+
+          <Input
+            className="w-[300px] px-2 py-3 rounded-xl"
+            type="number"
+            placeholder="500000"
+            register={register("price", { valueAsNumber: true })}
+          />
+        </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor="city" className="text-right">
             Lokasi

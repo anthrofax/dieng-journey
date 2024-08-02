@@ -68,7 +68,7 @@ function Destinations() {
           {isLoadingQuery ? (
             <Skeleton className="w-full h-full" />
           ) : (
-            <DataTable columns={columns} data={allDestinations} />
+            <DataTable columns={columns} data={allDestinations} filterByLabel="nama destinasi" filterBy="destinationName" />
           )}
         </div>
       </div>

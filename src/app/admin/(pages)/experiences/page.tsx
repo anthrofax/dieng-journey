@@ -66,7 +66,7 @@ function Experiences() {
           {isLoadingQuery ? (
             <Skeleton className="w-full h-full" />
           ) : (
-            <DataTable columns={columns} data={allExperiences} />
+            <DataTable columns={columns} data={allExperiences} filterBy="experienceName" filterByLabel="nama experience" />
           )}
         </div>
       </div>

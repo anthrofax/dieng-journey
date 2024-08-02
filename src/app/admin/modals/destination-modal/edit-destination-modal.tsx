@@ -97,11 +97,13 @@ const EditDestinationModal = ({
       destinationName: selectedDestination?.destinationName,
       description: selectedDestination?.description,
       city: selectedDestination?.city,
+      price: selectedDestination?.price
     });
   }, [
     selectedDestination?.destinationName,
     selectedDestination?.description,
     selectedDestination?.city,
+    selectedDestination?.price
   ]);
 
   const onSubmit = async (data: any) => {
@@ -158,6 +160,20 @@ const EditDestinationModal = ({
               {...register("description")}
             />
           </div>
+
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="price" className="text-right">
+              Harga
+            </Label>
+
+            <Input
+              className="w-[300px] px-2 py-3 rounded-xl"
+              type="number"
+              placeholder="500000"
+              register={register("price", { valueAsNumber: true })}
+            />
+          </div>
+
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="city" className="text-right">
               Lokasi

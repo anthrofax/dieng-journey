@@ -13,6 +13,8 @@ const Orders = () => {
     queryKey: ["admin", "orders"],
   });
 
+  console.log(allOrders)
+
   return (
     <div className="py-10 col-span-12 lg:col-span-10 lg:w-full grid grid-rows-12">
       <h2 className="text-3xl text-slate-800 font-semibold mb-3 text-center lg:text-left">
@@ -22,7 +24,7 @@ const Orders = () => {
         {isLoading ? (
           <Skeleton className="w-full h-full" />
         ) : (
-          <DataTable columns={columns} data={allOrders} />
+          <DataTable columns={columns} data={allOrders} filterBy="destinationName" filterByLabel="destinasi" />
         )}
       </div>
     </div>

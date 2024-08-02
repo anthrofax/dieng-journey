@@ -10,10 +10,10 @@ datasource db {
 model User {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   username     String   @unique
-  displayName  String
+  displayName  String @default("Unknown")
   email        String   @unique
   password     String
-  phone        String
+  phone        String? 
   profileImage String   @default("https://res.cloudinary.com/dmc0cvmf5/image/upload/v1721879584/empty-profile_d7fhjp.webp")
   isAdmin      Boolean  @default(false)
   createdAt    DateTime @default(now())
@@ -29,6 +29,7 @@ model Destination {
   destinationName String
   description     String
   city            String
+  price           Int
   imageUrls       String[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -36,6 +37,7 @@ model Destination {
   reviews     Review[]
   experiences Experience[]
   hotels      Hotel[]
+  Order       Order[]
 }
 
 model Hotel {
@@ -88,16 +90,18 @@ model Experience {
 }
 
 model Order {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  totalPrice      String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  qty       Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   destinationId   String            @db.ObjectId
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  selectedRoom    Room[]
   userId          String            @db.ObjectId
+  selectedRoom    Room[]
   orderExperience OrderExperience[]
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
 }
 
 // Join table for Order and Experience
@@ -147,13 +151,13 @@ model Review {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   text          String
   stars         Int
-  listingId     String   @db.ObjectId
+  listingId     String?  @db.ObjectId
   destinationId String   @db.ObjectId
   userId        String   @db.ObjectId
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  listing     Listing     @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  listing     Listing?    @relation(fields: [listingId], references: [id], onDelete: Cascade)
   destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
