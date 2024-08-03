@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
         profileImage:
           "https://res.cloudinary.com/dmc0cvmf5/image/upload/v1721879584/empty-profile_d7fhjp.webp",
         displayName: "Unknown",
+        phone: "",
       },
     });
 

@@ -3,7 +3,6 @@
 import React, { RefObject, useEffect } from "react";
 import { GrClearOption } from "react-icons/gr";
 import ModalLayout from "../../layout/modal-layout";
-import Input from "@/ui/Input";
 import Button from "@/ui/Button";
 import { FiUpload } from "react-icons/fi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -19,6 +18,7 @@ import {
 import { clearImageInput, uploadImage } from "@/utils/helper-functions";
 import { MAXIMUM_IMAGE_UPLOAD } from "@/data/app-config";
 import Spinner from "@/components/spinner/spinner";
+import { Input } from "@/components/ui/input";
 
 const EditDestinationModal = ({
   handleHideModal,
@@ -97,30 +97,40 @@ const EditDestinationModal = ({
       destinationName: selectedDestination?.destinationName,
       description: selectedDestination?.description,
       city: selectedDestination?.city,
-      price: selectedDestination?.price
+      price: selectedDestination?.price,
     });
   }, [
     selectedDestination?.destinationName,
     selectedDestination?.description,
     selectedDestination?.city,
-    selectedDestination?.price
+    selectedDestination?.price,
   ]);
 
   const onSubmit = async (data: any) => {
-    if (images.length < 1) return toast.error("Anda perlu mengunggah gambar");
-
-    const imageUrls = await Promise.all(
-      images.map(async function (image, i) {
+    const imageUrls: string[] = await Promise.all(
+      images.map(async function (image, i): Promise<string> {
         const imageUrl = await uploadImage(image, i);
         return imageUrl;
       })
     );
 
+    console.log(imageUrls);
+    console.log(data);
+
+    let body: {
+      destinationName: string;
+      description: string;
+      city: string;
+      price: number;
+      imageUrls?: any[] | undefined;
+    } = data;
+
+    if (imageUrls && imageUrls.length > 0) body.imageUrls = imageUrls;
+
     await mutateAsync({
       destinationId,
       body: {
-        ...data,
-        imageUrls,
+        ...body,
       },
     });
   };
@@ -146,7 +156,7 @@ const EditDestinationModal = ({
               className="w-[300px] px-2 py-3 rounded-xl"
               type="text"
               placeholder="Pemandangan Air Hangat Segar Asri"
-              register={register("destinationName")}
+              {...register("destinationName")}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -170,7 +180,7 @@ const EditDestinationModal = ({
               className="w-[300px] px-2 py-3 rounded-xl"
               type="number"
               placeholder="500000"
-              register={register("price", { valueAsNumber: true })}
+              {...register("price", { valueAsNumber: true })}
             />
           </div>
 
@@ -182,7 +192,7 @@ const EditDestinationModal = ({
               className="w-[300px] px-2 py-3 rounded-xl"
               type="text"
               placeholder="Candi Arjuna"
-              register={register("city")}
+              {...register("city")}
             />
           </div>
 

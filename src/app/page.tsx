@@ -1,5 +1,6 @@
 import PopularDestinations from "@/components/popular-destinations/popular-destinations";
 import HeroSlider from "@/components/hero/hero";
+import About from "@/components/about/about";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
       <HeroSlider />
       <PopularDestinations />
       {/* <BestHotels /> */}
+      <About />
     </>
   );
 }
