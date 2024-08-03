@@ -35,7 +35,7 @@ export const optionTypes = [
   { text: "5 Stars", value: "fiveStars" },
 ];
 
-export const optionLocations = [
+export const lokasiPenjemputan = [
   {
     label: "Yogyakarta",
     value: "yogyakarta",
@@ -78,5 +78,28 @@ export const fasilitas = [
   {
     icon: GiPirateCoat,
     label: "Jas Hujan 1x Pakai",
+  },
+];
+
+export const penginapan = [
+  { nama: "Hotel Tirta Arum Price | Rp.300rb ", harga: 300000, value: "tirta" },
+  {
+    nama: "Sikembang Glamping Tenda Safari Double (Include Breakfast, Waterheater, Tea & Coffe) | Maks 2 Orang | Rp.350rb",
+    value: "sikembang",
+    harga: 35000,
+  },
+  {
+    nama: "CRA Hotel | Deluxe Room | Rp.320rb ",
+    value: "cra",
+    harga: 320000,
+  },
+];
+
+export const experience = [
+  {
+    label: "Pabrik Carica",
+    value: "carica",
+    description: `Mengunjungi dan melihat langsung pembuatan Carica di Pabrik Carica + membawa oleh" carica. (Price 100k/orang)`,
+    harga: 100000,
   },
 ];

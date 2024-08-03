@@ -10,10 +10,10 @@ datasource db {
 model User {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   username     String   @unique
-  displayName  String @default("Unknown")
+  displayName  String   @default("Unknown")
   email        String   @unique
   password     String
-  phone        String? 
+  phone        String?
   profileImage String   @default("https://res.cloudinary.com/dmc0cvmf5/image/upload/v1721879584/empty-profile_d7fhjp.webp")
   isAdmin      Boolean  @default(false)
   createdAt    DateTime @default(now())
@@ -88,14 +88,21 @@ model Experience {
 }
 
 model Order {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  qty       Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama              String
+  nomorHp           String
+  lokasiPenjemputan String
+  masaPerjalanan    Int
+  tanggalPerjalanan DateTime
+  qty               Int
+  penginapan        String?
+  totalBiaya        Int
+  experience String[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   destinationId   String            @db.ObjectId
   userId          String            @db.ObjectId
-  orderExperience OrderExperience[]
 
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
@@ -107,7 +114,6 @@ model OrderExperience {
   orderId      String @db.ObjectId
   experienceId String @db.ObjectId
 
-  order      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
   experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
 }
 

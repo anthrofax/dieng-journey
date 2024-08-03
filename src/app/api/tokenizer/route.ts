@@ -17,35 +17,47 @@ export async function POST(req: NextRequest) {
     if (!currentUser) throw new Error("Kamu belum login.");
 
     const {
-      listing: { name, pricePerNight, id: listingId },
-      startDate,
-      endDate,
-      daysDifference,
+      namaDestinasi,
+      hargaDestinasi,
+      experience,
+      lokasiPenjemputan,
+      masaPerjalanan,
+      nama,
+      nomorHp,
+      penginapan,
+      qty,
+      tanggalPerjalanan,
+      totalBiaya,
+      destinationId
     } = await req.json();
 
-    const reservedDates = getDatesInRange(startDate, endDate);
+    // const reservedDates = getDatesInRange(startDate, endDate);
 
     let parameter = {
       item_details: {
-        name: name,
-        price: pricePerNight,
-        quantity: daysDifference,
+        name: namaDestinasi,
+        price: hargaDestinasi,
+        quantity: qty,
         brand: "Dieng Journey",
         category: "Travel Place",
         userId: currentUser.id,
       },
       transaction_details: {
         order_id: uuidv4(),
-        gross_amount: pricePerNight * daysDifference,
+        gross_amount: totalBiaya,
       },
       metadata: {
-        startDate,
-        endDate,
-        listingId,
-        pricePerNight,
-        daysDifference,
+        experience,
+        lokasiPenjemputan,
+        masaPerjalanan,
+        nama,
+        nomorHp,
+        penginapan,
+        tanggalPerjalanan,
         userId: currentUser.id,
-        email: currentUser.email,
+        qty,
+        totalBiaya,
+        destinationId
       },
     };
 
