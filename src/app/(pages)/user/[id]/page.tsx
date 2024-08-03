@@ -50,8 +50,6 @@ function User({ params }: { params: { id: string } }) {
     resolver: zodResolver(schema),
   });
 
-  console.log(data);
-  console.log(imagePreviewUrl);
   if (!data) return null;
 
   const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +128,7 @@ function User({ params }: { params: { id: string } }) {
                 alt="User Profile Image"
                 src={
                   imagePreviewUrl === ""
-                    ? `${data.user.profileImage}`
+                    ? `${data.user?.profileImage}`
                     : imagePreviewUrl
                 }
                 fill
@@ -155,8 +153,8 @@ function User({ params }: { params: { id: string } }) {
               <Skeleton count={2} />
             ) : (
               <>
-                <h3 className="text-slate-600">@{`${data.user.username}`}</h3>
-                <h4>{`${data.user.email}`}</h4>
+                <h3 className="text-slate-600">@{`${data.user?.username}`}</h3>
+                <h4>{`${data.user?.email}`}</h4>
               </>
             )}
           </div>
@@ -172,8 +170,12 @@ function User({ params }: { params: { id: string } }) {
               <input
                 type="text"
                 className="w-full rounded-lg border-none"
-                {...register("username")}
-                placeholder={data.user.username}
+                {...register("displayName")}
+                placeholder={
+                  data.user?.displayName === "Unknown"
+                    ? "Anda belum mengatur name tampilan, silahkan atur disini"
+                    : data.user?.displayName
+                }
               />
               {errors?.name && (
                 <p className="text-red-500">{`${errors?.name.message}`}</p>
@@ -193,7 +195,10 @@ function User({ params }: { params: { id: string } }) {
                 type="number"
                 className="w-full rounded-lg border-none"
                 {...register("phone")}
-                placeholder={data.user.phone || "Anda belum mengisi nomor telepon, silahkan isi data nomor telepon anda disini"}
+                placeholder={
+                  data.user?.phone ||
+                  "Anda belum mengisi nomor telepon, silahkan isi data nomor telepon anda disini"
+                }
               />
               {errors?.phone && (
                 <p className="text-red-500">{`${errors?.phone.message}`}</p>

@@ -49,7 +49,11 @@ async function main() {
         destinationName: faker.location.city(),
         description: faker.lorem.paragraphs(),
         price: faker.number.int({ min: 500000, max: 2000000 }),
-        city: faker.location.city(),
+        city: faker.helpers.arrayElement([
+          "yogyakarta",
+          "magelang",
+          "wonosobo",
+        ]),
         imageUrls: [faker.image.url(), faker.image.url(), faker.image.url()],
       },
     });
@@ -162,7 +166,6 @@ async function main() {
           faker.image.url(),
         ]),
         hotelId: hotels[j].id,
-        orderId: orders[j].id,
       },
     });
   }

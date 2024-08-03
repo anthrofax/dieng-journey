@@ -1,5 +1,5 @@
 import db from "@/lib/db";
-import { calcAndSortListings } from "@/lib/sort-listings";
+import { calcAndSortListings } from "@/lib/sort-data-helpers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

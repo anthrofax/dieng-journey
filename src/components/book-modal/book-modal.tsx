@@ -9,7 +9,6 @@ import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Button from "@/ui/Button";
 import { redirectToCheckout } from "./service";
-import { ListingType } from "@/models/listing";
 
 function BookModal({
   handleHideModal,

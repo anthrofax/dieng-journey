@@ -27,6 +27,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (Object.keys(errors)?.length > 0) {
+      console.log(errors);
       Object.keys(errors)?.map((key) => {
         toast.error(`${errors[key]?.message as Message}`);
       });

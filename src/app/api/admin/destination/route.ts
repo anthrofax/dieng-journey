@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       if (v === "") return NextResponse.json({ error: "Fill all fields!" });
     });
 
-    const { city, description, destinationName, imageUrls } = body;
+    const { city, description, destinationName, imageUrls, price } = body;
     console.log(body);
 
     await db.destination.create({
@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
         description,
         destinationName,
         imageUrls,
+        price,
       },
     });
 

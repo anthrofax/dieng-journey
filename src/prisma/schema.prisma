@@ -66,12 +66,10 @@ model Room {
   updatedAt     DateTime @updatedAt
 
   hotelId String @db.ObjectId
-  orderId String @db.ObjectId
 
   reservations Reservation[]
 
   hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model Experience {
@@ -97,7 +95,6 @@ model Order {
 
   destinationId   String            @db.ObjectId
   userId          String            @db.ObjectId
-  selectedRoom    Room[]
   orderExperience OrderExperience[]
 
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)

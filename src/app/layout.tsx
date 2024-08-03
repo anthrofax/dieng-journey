@@ -4,8 +4,9 @@ import LayoutProvider from "@/components/layout-provider/layout-provider";
 import Toast from "@/utils/toast";
 import Provider from "@/utils/session-provider";
 import "react-loading-skeleton/dist/skeleton.css";
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const inter = Inter({ subsets: ["latin"] });
 

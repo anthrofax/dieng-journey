@@ -1,10 +1,13 @@
 import { metadata } from "@/app/layout";
+import { getCurrentUser } from "@/lib/currentUser";
 import { getDatesInRange } from "@/lib/date-to-milliseconds";
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
+    const currentUser = await getCurrentUser();
+
     const {
       transaction_status,
       order_id,
@@ -17,10 +20,6 @@ export async function POST(req: NextRequest) {
         userId,
       },
     } = await req.json();
-
-    console.log(transaction_status);
-    console.log(order_id);
-    console.log(metadata);
 
     if (
       (transaction_status === "deny" ||
@@ -39,8 +38,8 @@ export async function POST(req: NextRequest) {
     ) {
       const reservedDates = getDatesInRange(startDate, endDate);
 
-      const reservationData = {
-        userId,
+      const orderData = {
+        userId: currentUser?.id,
         listingId,
         startDate,
         endDate,
@@ -51,8 +50,13 @@ export async function POST(req: NextRequest) {
 
       console.log(reservationData);
 
-      const newReservation = await db.reservation.create({
-        data: reservationData,
+      const newReservation = await db.order.create({
+        data: {
+          destinationId,
+          qty,
+          orderExperience,
+          userId,
+        },
       });
 
       console.log(newReservation);

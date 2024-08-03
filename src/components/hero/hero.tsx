@@ -1,32 +1,79 @@
-import Image, { StaticImageData } from 'next/image'
-import React from 'react'
+"use client";
+import React, { useState } from "react";
+import Image, { StaticImageData } from "next/image";
+import Slider from "react-slick";
+import { SampleNextArrow, SamplePrevArrow } from "./arrow-components";
 
-const Hero = ({
-    image,
-    mainHeader,
-    secondaryHeader
-}: {
-    image: StaticImageData,
-    mainHeader: string,
-    secondaryHeader: string
-}) => {
-    return (
-        <div>
-            <div className="relative h-screen w-full">
-                <Image src={image} className="brightness-50 h-full w-full object-cover" alt='hero-image' />
-                <div
-                    className="absolute bottom-0 left-0 right-0 top-0 flex flex-col justify-center items-center gap-3 lg:gap-8 text-center"
-                >
-                    <h2 className="text-white text-3xl lg:text-6xl font-bold">
-                        {mainHeader}
-                    </h2>
-                    <h5 className="text-white text-xl lg:text-4xl font-semibold">
-                        {secondaryHeader}
-                    </h5>
-                </div>
+const HeroSlider = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
+    adaptiveHeight: true,
+    arrows: true,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+  };
+
+  const sliderImages = [
+    {
+      imageUrl: "/img/sea.jpg",
+      title: "Apakah kamu siap dengan petualangan baru?",
+      caption: "Eksplor Berbagai Destinasi Menarik!",
+    },
+    {
+      imageUrl: "/img/AbuDhabi.jpg",
+      title: "Nikmati Keindahan Pegunungan",
+      caption: "Temukan ketenangan di puncak gunung yang megah.",
+    },
+    {
+      imageUrl: "/img/Mumbai.jpg",
+      title: "Petualangan di Tengah Hutan",
+      caption: "Jelajahi hutan yang misterius dan penuh keajaiban.",
+    },
+    {
+      imageUrl: "/img/paris.jpg",
+      title: "Eksplorasi Gurun Pasir",
+      caption: "Rasakan panasnya petualangan di padang pasir yang luas.",
+    },
+    {
+      imageUrl: "/img/StTropez.jpg",
+      title: "Keindahan Danau yang Tenang",
+      caption: "Nikmati keindahan danau yang damai dan menenangkan.",
+    }
+  ];
+
+  return (
+    <div className="relative w-full">
+      <Slider {...settings}>
+        {sliderImages.map((slide, index) => (
+          <div key={index} className="w-full h-screen relative">
+            <Image
+              src={slide.imageUrl}
+              alt="Hero Image"
+              layout="fill"
+              objectFit="cover"
+              className="brightness-50"
+            />
+
+            <div className="absolute top-1/2 left-1/2 text-center -translate-x-1/2 -translate-y-1/2 w-2/3 flex flex-col gap-5">
+              <h2 className="text-white text-3xl lg:text-6xl font-bold">
+                {slide.title}
+              </h2>
+              <h5 className="text-white text-xl lg:text-4xl font-semibold">
+                {slide.caption}
+              </h5>
             </div>
-        </div>
-    )
-}
+          </div>
+        ))}
+      </Slider>
+    </div>
+  );
+};
 
-export default Hero
+export default HeroSlider;
