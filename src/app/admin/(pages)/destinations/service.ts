@@ -31,7 +31,7 @@ export async function updateDestination({
   destinationId: string;
   body: any;
 }) {
-  const { data: updatedDestination } = await AXIOS_API.put(
+  const { data: updatedDestination } = await AXIOS_API.patch(
     `/admin/destination/${destinationId}`,
     body
   );

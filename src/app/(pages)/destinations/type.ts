@@ -1,6 +1,6 @@
 export type DestinationFilterType = {
   destinasi: string;
-  lokasi: "yogyakarta" | "wonosobo" | "magelang" | "semua";
+  lokasi: string;
   minHarga: number;
   maxHarga: number;
 };

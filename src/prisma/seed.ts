@@ -106,6 +106,12 @@ async function main() {
         destinationId: destinations[j].destinationId, // Assuming you have destination IDs
         createdAt: faker.date.past(),
         userId: users[j].id,
+        lokasiPenjemputan: faker.helpers.arrayElement([
+          "yogyakarta",
+          "magelang",
+          "wonosobo",
+        ]),
+        penginapan: "Hotel Tirta Arum Price"
       },
     });
   }

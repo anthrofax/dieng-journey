@@ -6,18 +6,21 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const currentUser = await getCurrentUser();
-
     const {
       transaction_status,
       order_id,
       metadata: {
-        startDate,
-        endDate,
-        listingId,
-        pricePerNight,
-        daysDifference,
+        experience,
+        lokasiPenjemputan,
+        masaPerjalanan,
+        nama,
+        nomorHp,
+        penginapan,
+        tanggalPerjalanan,
         userId,
+        qty,
+        totalBiaya,
+        destinationId,
       },
     } = await req.json();
 
@@ -36,26 +39,20 @@ export async function POST(req: NextRequest) {
         transaction_status === "capture") &&
       transaction_status !== "pending"
     ) {
-      const reservedDates = getDatesInRange(startDate, endDate);
-
-      const orderData = {
-        userId: currentUser?.id,
-        listingId,
-        startDate,
-        endDate,
-        chargeId: order_id,
-        reservedDates,
-        daysDifference: daysDifference,
-      };
-
-      console.log(reservationData);
+      // const reservedDates = getDatesInRange(startDate, endDate);
 
       const newReservation = await db.order.create({
         data: {
-          destinationId,
-          qty,
-          orderExperience,
+          lokasiPenjemputan,
+          masaPerjalanan,
+          nama,
+          nomorHp,
+          penginapan,
+          tanggalPerjalanan,
           userId,
+          qty,
+          totalBiaya,
+          destinationId,
         },
       });
 

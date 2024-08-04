@@ -18,16 +18,18 @@ export async function GET(req: NextRequest, ctx: any) {
   }
 }
 
-export async function PUT(req: NextRequest, ctx: any) {
+export async function PATCH(req: NextRequest, ctx: any) {
   try {
     await isAdminUser();
 
     const { destinationId } = ctx.params;
     const body = await req.json();
 
+    console.log(body);
+
     const updateddestination = await db.destination.update({
       where: { destinationId },
-      data: { ...body },
+      data: body,
     });
 
     return NextResponse.json(updateddestination);

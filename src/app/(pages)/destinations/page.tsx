@@ -19,10 +19,8 @@ import { Destination } from "@prisma/client";
 import Card from "@/components/destination-card/card";
 import Skeleton from "react-loading-skeleton";
 import { useRouter, useSearchParams } from "next/navigation";
-import { optionLocations } from "@/data/data";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Label } from "@/components/ui/label";
 import toast from "react-hot-toast";
 import { DestinationFilterType } from "./type";
 import { Pagination } from "@/components/ui/pagination";
@@ -32,12 +30,7 @@ const Destinations = () => {
   const { allDestinations, isLoading } = useDestinationHook();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const lokasi = searchParams.get("lokasi") as
-    | "semua"
-    | "yogyakarta"
-    | "wonosobo"
-    | "magelang"
-    | null;
+  const lokasi = searchParams.get("lokasi");
   const destinasi = searchParams.get("destinasi");
   const minHarga = searchParams.get("minHarga");
   const maxHarga = searchParams.get("maxHarga");
@@ -45,7 +38,7 @@ const Destinations = () => {
   const form = useForm<DestinationFilterType>({
     defaultValues: {
       destinasi: destinasi || "",
-      lokasi: lokasi || "semua",
+      lokasi: lokasi || "",
       minHarga: Number(minHarga) || 0,
       maxHarga: Number(maxHarga) || 5000000,
     },
@@ -71,7 +64,13 @@ const Destinations = () => {
   ) {
     return destinations?.filter((destination) => {
       // 1. Filter berdasarkan lokasi
-      if (filters.lokasi !== "semua" && destination.city !== filters.lokasi)
+      if (
+        filters.lokasi &&
+        filters.lokasi !== "" &&
+        !destination.destinationName
+          .toLowerCase()
+          .startsWith(filters.lokasi.toLowerCase())
+      )
         return false;
 
       // 2. Filter berdasarkan nama
@@ -147,35 +146,15 @@ const Destinations = () => {
               control={form.control}
               name="lokasi"
               render={({ field }) => (
-                <FormItem className="flex flex-col items-center gap-1">
-                  <Label className="ml-1 text-[#efefef] font-semibold">
-                    Lokasi
-                  </Label>
-
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full md:w-[180px]">
-                        <SelectValue
-                          placeholder="Lokasi Destinasi"
-                          defaultValue="semua"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Lokasi Destinasi</SelectLabel>
-                        <SelectItem value="semua">Semua</SelectItem>
-                        {optionLocations.map((location, idx) => (
-                          <SelectItem value={location.value} key={idx}>
-                            {location.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Cari berdasarkan lokasi"
+                      className="text-blue-800 p-2 rounded-xl outline-none w-full"
+                      {...field}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
