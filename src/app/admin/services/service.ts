@@ -41,7 +41,7 @@ export async function getAllReservations() {
 }
 
 export async function getAllRevenue() {
-  const { data } = await AXIOS_API.get("/admin/reservation/get-all-revenue");
+  const { data } = await AXIOS_API.get("/admin/order/get-all-revenue");
 
   return data;
 }

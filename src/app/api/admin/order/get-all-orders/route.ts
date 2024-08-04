@@ -6,35 +6,14 @@ export async function GET(req: NextRequest) {
   try {
     await isAdminUser();
 
-    const allOrders = await db.order.findMany({
+    const getAllOrders = await db.order.findMany({
       include: {
-        destination: {
-          select: {
-            imageUrls: true,
-            destinationName: true,
-            price: true
-
-          },
-        },
-        orderExperience: {
-          select: {
-            experience: {
-              select: {
-                experienceName: true,
-                price: true
-              },
-            },
-          },
-        },
-        user: {
-          select: {
-            username: true,
-          },
-        },
+        destination: true,
+        user: true,
       },
     });
 
-    return NextResponse.json(allOrders);
+    return NextResponse.json(getAllOrders);
   } catch (error) {
     return NextResponse.json({ error });
   }

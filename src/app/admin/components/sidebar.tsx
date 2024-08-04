@@ -44,12 +44,6 @@ const Sidebar = () => {
       isCurrentPage: currentPage === "orders",
     },
     {
-      text: "Reservations",
-      icon: AiOutlineHome,
-      href: "/admin/reservations",
-      isCurrentPage: currentPage === "reservations",
-    },
-    {
       text: "Reviews",
       icon: AiFillStar,
       href: "/admin/reviews",

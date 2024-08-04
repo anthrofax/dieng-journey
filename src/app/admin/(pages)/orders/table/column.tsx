@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { format } from "date-fns";
-import { FaTrash } from "react-icons/fa";
+import { IoEye } from "react-icons/io5";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { Column } from "@tanstack/react-table";
 
 import React from "react";
-import { useReservationHook } from "@/app/admin/hooks/reservation-hook";
 import { Rupiah } from "@/utils/format-currency";
 
 export const columns = [
@@ -114,15 +113,13 @@ export const columns = [
 function ActionsColumn({ row }: { row: any }) {
   const { chargeId, id: reservationId } = row.original;
 
-  const { handleDeleteReservation, isPending } = useReservationHook();
-
   return (
     <>
       <button
-        onClick={() => handleDeleteReservation({ chargeId, reservationId })}
+        onClick={() => {}}
         className="cursor-pointer disabled:bg-slate-200 px-2 py-1 rounded-xl"
       >
-        <FaTrash color={`${isPending ? "#bdb2b2" : "#f00"}`} />
+        <IoEye color="yellow" />
       </button>
     </>
   );

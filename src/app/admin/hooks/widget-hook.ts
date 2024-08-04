@@ -1,44 +1,49 @@
 import { useQueries } from "@tanstack/react-query";
-import { getMostReservedListings } from "../(pages)/dashboard/service";
-import { getAllListings, getAllReservations, getAllRevenue, getAllUsers } from "../services/service";
+import { getMostOrderedDestinations } from "../(pages)/dashboard/service";
+import {
+  getAllDestinations,
+  getAllOrders,
+  getAllRevenue,
+  getAllUsers,
+} from "../services/service";
 
 export const useWidgetHook = () => {
-    const [
-        usersQuery,
-        listingsQuery,
-        reservationsQuery,
-        revenueQuery,
-        mostReservedQuery,
-    ] = useQueries({
-        queries: [
-            {
-                queryFn: getAllUsers,
-                queryKey: ["admin", "users"],
-            },
-            {
-                queryFn: getAllListings,
-                queryKey: ["admin", "listings"]
-            },
-            {
-                queryFn: getAllReservations,
-                queryKey: ["admin", "reservations"]
-            },
-            {
-                queryFn: getAllRevenue,
-                queryKey: ["admin", "revenue"]
-            },
-            {
-                queryFn: getMostReservedListings,
-                queryKey: ["admin", "most-reserved-listing"]
-            },
-        ]
-    })
+  const [
+    usersQuery,
+    destinationsQuery,
+    ordersQuery,
+    revenueQuery,
+    mostOrderedQuery,
+  ] = useQueries({
+    queries: [
+      {
+        queryFn: getAllUsers,
+        queryKey: ["admin", "users"],
+      },
+      {
+        queryFn: getAllDestinations,
+        queryKey: ["admin", "destinations"],
+      },
+      {
+        queryFn: getAllOrders,
+        queryKey: ["admin", "orders"],
+      },
+      {
+        queryFn: getAllRevenue,
+        queryKey: ["admin", "revenue"],
+      },
+      {
+        queryFn: getMostOrderedDestinations,
+        queryKey: ["admin", "most-ordered-destinations"],
+      },
+    ],
+  });
 
-    return [
-        usersQuery,
-        listingsQuery,
-        reservationsQuery,
-        revenueQuery,
-        mostReservedQuery
-    ]
-}
+  return [
+    usersQuery,
+    destinationsQuery,
+    ordersQuery,
+    revenueQuery,
+    mostOrderedQuery,
+  ];
+};

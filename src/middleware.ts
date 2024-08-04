@@ -7,15 +7,15 @@ export default async function middleware(req: NextRequest) {
   const urlOrigin = "https://a5ef-2400-9800-6036-91f-3c90-1e86-2cd6-b240.ngrok-free.app/";
 
   if (pathname.includes("/admin") && !token?.isAdmin) {
-    return NextResponse.redirect(urlOrigin);
+    return NextResponse.redirect('/');
   }
 
   if (!pathname.includes("/login") && !pathname.includes("/signup") && !token) {
-    return NextResponse.redirect(urlOrigin + "login");
+    return NextResponse.redirect("/login");
   }
 
   if ((pathname.includes("/login") || pathname.includes("/signup")) && token) {
-    return NextResponse.redirect(urlOrigin);
+    return NextResponse.redirect('/');
   } else {
     return NextResponse.next();
   }

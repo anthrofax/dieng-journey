@@ -76,14 +76,14 @@ const Navbar = () => {
                       Admin Dashboard
                     </Link>
                   )}
-                  <Link href="/reservations">Reservations</Link>
+                  <Link href="/orders">Transaksi</Link>
                   <Link
                     href={`/user/${session?.user.id}`}
                     className={`${
                       !session?.user.id ? "pointer-events-none" : ""
                     }`}
                   >
-                    User Settings
+                    Pengaturan Akun
                   </Link>
                   <button
                     onClick={() =>

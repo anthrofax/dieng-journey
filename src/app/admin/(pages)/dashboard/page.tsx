@@ -10,48 +10,55 @@ import Chart from "../../components/chart";
 function Dashboard() {
   const [
     usersQuery,
-    listingsQuery,
-    reservationsQuery,
+    destinationsQuery,
+    ordersQuery,
     revenueQuery,
-    mostReservedQuery,
+    mostOrderedQuery,
   ] = useWidgetHook();
 
   const widgetData = [
     {
       page: "users",
+      label: "Pengguna Aktif",
       data: usersQuery.data,
       icon: <AiOutlineUser color="#efefef" />,
     },
     {
-      page: "listings",
-      data: listingsQuery.data,
+      page: "destinations",
+      label: "Destinasi",
+      data: destinationsQuery.data,
       icon: <MdHotel color="#efefef" />,
     },
     {
-      page: "reservations",
-      data: reservationsQuery.data,
+      page: "orders",
+      label: "Transaksi",
+      data: ordersQuery.data,
       icon: <AiOutlineHome color="#efefef" />,
     },
     {
-      page: "revenue",
+      page: "orders",
+      label: "Pendapatan",
       data: revenueQuery.data,
       icon: <AiFillBank color="#efefef" />,
     },
   ];
 
-  console.log(revenueQuery.data);
-  console.log(reservationsQuery.data);
-
   return (
     <div className="lg-:w-full h-full flex flex-col col-span-10">
       <div className="grid grid-row-4 lg:grid-rows-1 grid-col-1 lg:grid-cols-4 gap-8 justify-items-center w-screen lg:w-full">
-        {widgetData?.map(({ page, data, icon }) => (
-          <Widget key={page} page={page} data={data} icon={icon} />
+        {widgetData?.map(({ page, data, icon, label }) => (
+          <Widget
+            key={page}
+            page={page}
+            data={data}
+            icon={icon}
+            label={label}
+          />
         ))}
       </div>
       <div className="flex flex-col gap-6 lg:grid lg:grid-cols-7 lg:gap-16 w-screen lg:w-full items-center py-10">
-        <BigWidget listing={mostReservedQuery.data} />
-        <Chart revenueDataProps={revenueQuery.data} />
+        <BigWidget destination={mostOrderedQuery.data} />
+        <Chart propsDataPendapatan={revenueQuery.data} />
       </div>
     </div>
   );

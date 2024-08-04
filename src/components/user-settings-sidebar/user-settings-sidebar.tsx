@@ -27,7 +27,7 @@ const Sidebar = () => {
     {
       text: "Transaction",
       icon: IoTicket,
-      href: "/reservations",
+      href: "/orders",
     },
   ];
 

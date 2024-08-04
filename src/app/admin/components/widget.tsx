@@ -6,10 +6,12 @@ import Skeleton from "react-loading-skeleton";
 const Widget = ({
   page,
   data,
+  label,
   icon,
 }: {
-  page: string;
+  page?: string;
   data: any;
+  label: string;
   icon: JSX.Element;
 }) => {
   return (
@@ -21,16 +23,16 @@ const Widget = ({
           <div className="w-full h-full flex flex-col justify-between">
             <div
               className={`flex justify-between gap-3 w-full ${
-                page === "revenue" ? "flex-col" : "flex-row"
+                label === "Pendapatan" ? "flex-col" : "flex-row"
               }`}
             >
               <h2 className="font-bold text-[18px] uppercase text-[#b6b0b0]">
-                {page}
+                {label}
               </h2>
               <div className="grow w-10 text-end ">
-                {page !== "revenue"
+                {label !== "Pendapatan"
                   ? data?.length
-                  : `${Rupiah.format(data?.totalRevenue.toFixed(2))}`}
+                  : `${Rupiah.format(data?.totalPendapatan?.toFixed(2))}`}
               </div>
             </div>
             <div className="flex justify-between">

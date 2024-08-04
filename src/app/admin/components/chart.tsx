@@ -32,11 +32,11 @@ type ChartData = {
 };
 
 const Chart = ({
-  revenueDataProps,
+  propsDataPendapatan,
 }: {
-  revenueDataProps: {
-    revenueData: { revenue: number; day: number }[];
-    totalRevenue: number;
+  propsDataPendapatan: {
+    dataPendapatan: { pendapatan: number; hari: number }[];
+    totalPendapatan: number;
   };
 }) => {
   const [chartData, setChartData] = useState<ChartData>({
@@ -53,27 +53,27 @@ const Chart = ({
   const [chartOptions, setChartOptions] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  const monRev = revenueDataProps?.revenueData
-    .filter((data) => data.day === 1)
-    .reduce((a, b) => a + b.revenue, 0);
-  const tuesRev = revenueDataProps?.revenueData
-    .filter((data) => data.day === 2)
-    .reduce((a, b) => a + b.revenue, 0);
-  const wedRev = revenueDataProps?.revenueData
-    .filter((data) => data.day === 3)
-    .reduce((a, b) => a + b.revenue, 0);
-  const thursRev = revenueDataProps?.revenueData
-    .filter((data) => data.day === 4)
-    .reduce((a, b) => a + b.revenue, 0);
-  const friRev = revenueDataProps?.revenueData
-    .filter((data) => data.day === 5)
-    .reduce((a, b) => a + b.revenue, 0);
-  const satRev = revenueDataProps?.revenueData
-    .filter((data) => data.day === 6)
-    .reduce((a, b) => a + b.revenue, 0);
-  const sunRev = revenueDataProps?.revenueData
-    .filter((data) => data.day === 7)
-    .reduce((a, b) => a + b.revenue, 0);
+  const monRev = propsDataPendapatan?.dataPendapatan
+    .filter((data) => data.hari === 1)
+    .reduce((a, b) => a + b.pendapatan, 0);
+  const tuesRev = propsDataPendapatan?.dataPendapatan
+    .filter((data) => data.hari === 2)
+    .reduce((a, b) => a + b.pendapatan, 0);
+  const wedRev = propsDataPendapatan?.dataPendapatan
+    .filter((data) => data.hari === 3)
+    .reduce((a, b) => a + b.pendapatan, 0);
+  const thursRev = propsDataPendapatan?.dataPendapatan
+    .filter((data) => data.hari === 4)
+    .reduce((a, b) => a + b.pendapatan, 0);
+  const friRev = propsDataPendapatan?.dataPendapatan
+    .filter((data) => data.hari === 5)
+    .reduce((a, b) => a + b.pendapatan, 0);
+  const satRev = propsDataPendapatan?.dataPendapatan
+    .filter((data) => data.hari === 6)
+    .reduce((a, b) => a + b.pendapatan, 0);
+  const sunRev = propsDataPendapatan?.dataPendapatan
+    .filter((data) => data.hari === 7)
+    .reduce((a, b) => a + b.pendapatan, 0);
 
   useEffect(() => {
     setChartData((e) => {
