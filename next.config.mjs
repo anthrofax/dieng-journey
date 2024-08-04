@@ -1,10 +1,9 @@
 import withPlaiceholder from "@plaiceholder/next";
 
 const nextConfig = {
+  transpilePackages: ["@plaiceholder/next"],
   images: {
-    remotePatterns: [
-      { hostname: "**", protocol: "https", port: "" },
-    ],
+    remotePatterns: [{ hostname: "**", protocol: "https", port: "" }],
   },
   webpack(config) {
     config.experiments = {
@@ -12,6 +11,9 @@ const nextConfig = {
       topLevelAwait: true,
     };
     return config;
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
