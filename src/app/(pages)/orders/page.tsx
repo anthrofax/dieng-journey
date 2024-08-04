@@ -70,14 +70,15 @@ export default async function OrdersPage() {
                 <p>Experience: {order.experience.join(", ") || "None"}</p>
               </div>
               {order.destination && (
-                <div className="mt-4">
+                <div className="mt-4 relative">
                   <h3 className="text-md font-semibold">Destination</h3>
                   <p>Name: {order.destination.destinationName}</p>
                   <p>City: {order.destination.city}</p>
-                  <img
+                  <Image
                     src={order.destination.imageUrls[0]}
                     alt={order.destination.destinationName}
                     className="mt-2 w-full h-48 object-cover rounded"
+                    fill
                   />
                 </div>
               )}

@@ -89,6 +89,8 @@ const EditLodgingModal = ({
     selectedLogding?.namaPenginapan,
     selectedLogding?.deskripsi,
     selectedLogding?.biaya,
+    reset,
+    selectedLogding,
   ]);
 
   const onSubmit = async (data: any) => {

@@ -91,6 +91,8 @@ const EditExperienceModal = ({
     selectedExperience?.namaExperience,
     selectedExperience?.deskripsi,
     selectedExperience?.biaya,
+    reset,
+    selectedExperience,
   ]);
 
   const onSubmit = async (data: any) => {

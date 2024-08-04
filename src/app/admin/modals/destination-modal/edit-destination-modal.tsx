@@ -104,6 +104,7 @@ const EditDestinationModal = ({
     selectedDestination?.description,
     selectedDestination?.city,
     selectedDestination?.price,
+    reset,
   ]);
 
   const onSubmit = async (data: any) => {

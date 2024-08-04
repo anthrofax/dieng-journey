@@ -1,5 +1,6 @@
 import { FaQuoteLeft } from "react-icons/fa6";
 import { Rating as FlowbiteRating, RatingStar } from "flowbite-react";
+import Image from "next/image";
 
 interface CommentItemProps {
   nama: string;
@@ -24,10 +25,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </div>
         <div className="flex flex-col justify-center items-center text-center mt-3">
           <div>
-            <img
+            <Image
               src="/img/person.jpg"
               alt=""
-              className="w-10 h-10 rounded-full object-cover"
+              className="rounded-full object-cover"
+              width={40}
+              height={40}
             />
           </div>
           <h4>{nama}</h4>

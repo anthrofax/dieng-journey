@@ -115,7 +115,7 @@ function DestinationDetails() {
         toast.error(`${form.formState.errors[key]?.message as string}`);
       });
     }
-  }, [form.formState.errors]);
+  }, [form.formState.errors, form]);
 
   useEffect(() => {
     const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";

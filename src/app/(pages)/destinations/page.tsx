@@ -45,7 +45,7 @@ const Destinations = () => {
         toast.error(`${form.formState.errors[key]?.message as string}`);
       });
     }
-  }, [form.formState.errors]);
+  }, [form, form.formState.errors]);
 
   function filterDestinations(
     destinations: Destination[],
