@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/currentUser";
 import { MidtransClient } from "midtrans-node-client";
 import { v4 as uuidv4 } from "uuid";
-import { getDatesInRange } from "@/lib/date-to-milliseconds";
 
 const snap = new MidtransClient.Snap({
   isProduction: false,
@@ -28,19 +27,21 @@ export async function POST(req: NextRequest) {
       qty,
       tanggalPerjalanan,
       totalBiaya,
-      destinationId
+      destinationId,
     } = await req.json();
+
+    console.log(hargaDestinasi);
+    console.log(namaDestinasi);
+    console.log(qty);
 
     // const reservedDates = getDatesInRange(startDate, endDate);
 
-    let parameter = {
-      item_details: {
-        name: namaDestinasi,
-        price: hargaDestinasi,
-        quantity: qty,
-        brand: "Dieng Journey",
-        category: "Travel Place",
-        userId: currentUser.id,
+    const parameter = {
+      customer_details: {
+        first_name: nama,
+        last_name: "",
+        email: currentUser.email,
+        phone: nomorHp,
       },
       transaction_details: {
         order_id: uuidv4(),
@@ -52,19 +53,27 @@ export async function POST(req: NextRequest) {
         masaPerjalanan,
         nama,
         nomorHp,
-        penginapan,
-        tanggalPerjalanan,
+        tanggalPerjalanan: new Date(tanggalPerjalanan),
         userId: currentUser.id,
         qty,
         totalBiaya,
-        destinationId
+        destinationId,
+        penginapan
       },
     };
 
+    console.log(
+      "Sending parameter to Midtrans:",
+      JSON.stringify(parameter, null, 2)
+    );
+
     const token = await snap.createTransactionToken(parameter);
+    console.log(token);
 
     return NextResponse.json({ token });
   } catch (error) {
-    return NextResponse.json({ error });
+    console.error("Midtrans Error: ", error);
+
+    return NextResponse.json({ error }, { status: 500 });
   }
 }

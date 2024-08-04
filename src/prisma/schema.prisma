@@ -95,7 +95,7 @@ model Order {
   masaPerjalanan    Int
   tanggalPerjalanan DateTime
   qty               Int
-  penginapan        String?
+  penginapan        String  @default("")
   totalBiaya        Int
   experience String[]
   createdAt         DateTime @default(now())

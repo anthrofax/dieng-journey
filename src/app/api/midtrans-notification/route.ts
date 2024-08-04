@@ -1,4 +1,3 @@
-import { metadata } from "@/app/layout";
 import { getCurrentUser } from "@/lib/currentUser";
 import { getDatesInRange } from "@/lib/date-to-milliseconds";
 import db from "@/lib/db";
@@ -15,12 +14,12 @@ export async function POST(req: NextRequest) {
         masaPerjalanan,
         nama,
         nomorHp,
-        penginapan,
         tanggalPerjalanan,
         userId,
         qty,
         totalBiaya,
         destinationId,
+        penginapan,
       },
     } = await req.json();
 
@@ -40,23 +39,22 @@ export async function POST(req: NextRequest) {
       transaction_status !== "pending"
     ) {
       // const reservedDates = getDatesInRange(startDate, endDate);
-
+      console.log("etst");
       const newReservation = await db.order.create({
         data: {
           lokasiPenjemputan,
-          masaPerjalanan,
+          masaPerjalanan: Number(masaPerjalanan),
           nama,
           nomorHp,
-          penginapan,
-          tanggalPerjalanan,
-          userId,
           qty,
+          tanggalPerjalanan: new Date(tanggalPerjalanan),
           totalBiaya,
+          penginapan,
+          userId,
           destinationId,
+          experience,
         },
       });
-
-      console.log(newReservation);
 
       return NextResponse.json(newReservation);
     }

@@ -1,43 +1,57 @@
 import { z } from "zod";
 
-export const schema = z.object({
-  nama: z
-    .string({
-      message: "Anda perlu mengisi kolom nama minimal 3 karakter",
-    })
-    .min(3, {
-      message: "Anda perlu mengisi kolom nama minimal 3 karakter",
+export const schema = z
+  .object({
+    nama: z
+      .string({
+        message: "Anda perlu mengisi kolom nama minimal 3 karakter",
+      })
+      .min(3, {
+        message: "Anda perlu mengisi kolom nama minimal 3 karakter",
+      }),
+    nomorHp: z
+      .string({
+        message: "Anda perlu mengisi kolom nama minimal 3 karakter",
+      })
+      .min(1, {
+        message: "Anda harus mengisi nomor telepon",
+      }),
+    lokasiPenjemputan: z
+      .string({
+        message: "Lokasi penjemputan tidak valid",
+      })
+      .min(1, {
+        message: "Lokasi penjemputan tidak valid",
+      }),
+    masaPerjalanan: z
+      .string({
+        message: "Anda harus mengisi jumlah pemesanan tiket minimal 1",
+      })
+      .min(1, { message: "Anda harus mengisi masa perjalanan minimal 1 hari" }),
+    penginapan: z
+      .string({
+        message: "Isian penginapan tidak valid",
+      })
+      .optional(),
+    tanggalPerjalanan: z.date({
+      message: "Anda belum mengisi tanggal perjalanan",
     }),
-  nomorHp: z
-    .string({
-      message: "Anda perlu mengisi kolom nama minimal 3 karakter",
-    })
-    .min(1, {
-      message: "Anda harus mengisi nomor telepon",
-    }),
-  lokasiPenjemputan: z
-    .string({
-      message: "Lokasi penjemputan tidak valid",
-    })
-    .min(1, {
-      message: "Lokasi penjemputan tidak valid",
-    }),
-  masaPerjalanan: z
-    .number()
-    .min(1, { message: "Anda harus mengisi masa perjalanan minimal 1 hari" }),
-  penginapan: z
-    .string({
-      message: "Isian penginapan tidak valid",
-    })
-    .min(1, {
-      message: "Isian penginapan tidak valid",
-    })
-    .optional(),
-  tanggalPerjalanan: z.date({
-    message: "Anda belum mengisi tanggal perjalanan",
-  }),
-  qty: z
-    .number()
-    .min(1, { message: "Anda harus mengisi jumlah pemesanan tiket minimal 1" }),
-  experience: z.array(z.string()).optional(),
-});
+    qty: z
+      .number({
+        message: "Anda harus mengisi jumlah pemesanan tiket minimal 1",
+      })
+      .min(1, {
+        message: "Anda harus mengisi jumlah pemesanan tiket minimal 1",
+      }),
+    experience: z.array(z.string()).optional(),
+  })
+  .superRefine(({ masaPerjalanan, penginapan }, ctx) => {
+    if (masaPerjalanan === "3" && penginapan === "") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Kamu harus memilih opsi penginapan jika masa perjalanan mu 3 hari",
+        path: ["penginapan"],
+      });
+    }
+  });

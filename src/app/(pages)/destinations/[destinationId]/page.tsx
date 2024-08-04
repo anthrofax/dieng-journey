@@ -18,7 +18,7 @@ import {
 } from "@/data/data";
 import { FaLocationDot } from "react-icons/fa6";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, Message, useForm, useWatch } from "react-hook-form";
+import { FieldValues, useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -64,6 +64,16 @@ function DestinationDetails() {
   });
 
   const form = useForm({
+    defaultValues: {
+      experience: [""],
+      lokasiPenjemputan: "",
+      masaPerjalanan: "1",
+      nama: "",
+      nomorHp: "",
+      penginapan: "",
+      qty: "0",
+      tanggalPerjalanan: new Date(),
+    },
     resolver: zodResolver(schema),
   });
 
@@ -74,49 +84,67 @@ function DestinationDetails() {
   });
 
   async function handlePayment(data: FieldValues) {
-    if (!dataDestinasi) return toast.error("Data destinasi tidak ditemukan");
+    try {
+      if (!dataDestinasi) return toast.error("Data destinasi tidak ditemukan");
 
-    if (Number(data.qty) > 2 && data.penginapan === "sikembang")
-      return toast.error(
-        "Penginapan di Sikembang Glamping hanya dapat menampung maksimum 2 orang"
-      );
+      if (Number(data.qty) > 2 && data.penginapan === "sikembang")
+        return toast.error(
+          "Penginapan di Sikembang Glamping hanya dapat menampung maksimum 2 orang"
+        );
 
-    toast.success("Data berhasil terkirim");
-    console.log(data);
-    let totalBiaya = 0;
+      toast.success("Data berhasil terkirim");
+      console.log(data);
+      let totalBiaya = 0;
 
-    const biayaExperience = experience.reduce((acc, experienceItem) => {
-      if (data.experience.includes(experienceItem.value))
-        return acc + experienceItem.harga;
+      const biayaExperience = experience.reduce((acc, experienceItem) => {
+        if (data.experience.includes(experienceItem.value))
+          return acc + experienceItem.harga;
 
-      return 0;
-    }, 0);
+        return 0;
+      }, 0);
 
-    const biayaPenginapan =
-      penginapan.find(
-        (penginapanItem) => penginapanItem.value === data.penginapan
-      )?.harga || 0;
+      const biayaPenginapan =
+        penginapan.find(
+          (penginapanItem) => penginapanItem.value === data.penginapan
+        )?.harga || 0;
 
-    totalBiaya =
-      dataDestinasi.price * Number(data.qty) +
-      biayaExperience +
-      biayaPenginapan * Number(data.masaPerjalanan);
+      totalBiaya =
+        dataDestinasi.price * Number(data.qty) +
+        biayaExperience +
+        biayaPenginapan * Number(data.masaPerjalanan);
 
-    await redirectToCheckout({
-      destinationId: dataDestinasi.destinationId,
-      experience: data.experience,
-      hargaDestinasi: dataDestinasi.price,
-      lokasiPenjemputan: data.lokasiPenjemputan,
-      masaPerjalanan: data.masaPerjalanan,
-      nama: data.nama,
-      namaDestinasi: dataDestinasi.destinationName,
-      nomorHp: data.nomorHp,
-      penginapan: data.penginapan,
-      qty: data.qty,
-      tanggalPerjalanan: data.tanggalPerjalanan,
-      totalBiaya,
-    });
+      await redirectToCheckout({
+        destinationId: dataDestinasi.destinationId,
+        experience: data.experience,
+        hargaDestinasi: dataDestinasi.price,
+        lokasiPenjemputan: data.lokasiPenjemputan,
+        masaPerjalanan: data.masaPerjalanan,
+        nama: data.nama,
+        namaDestinasi: dataDestinasi.destinationName,
+        nomorHp: data.nomorHp,
+        penginapan: data.penginapan,
+        qty: data.qty,
+        tanggalPerjalanan: data.tanggalPerjalanan,
+        totalBiaya
+      });
+    } catch (err) {
+      toast.error("Pembayaran gagal");
+    }
   }
+
+  useEffect(() => {
+    if (Object.keys(form.formState.errors).length > 0) {
+      console.log(form.formState.errors);
+
+      (
+        Object.keys(
+          form.formState.errors
+        ) as (keyof typeof form.formState.errors)[]
+      ).forEach((key) => {
+        toast.error(`${form.formState.errors[key]?.message as string}`);
+      });
+    }
+  }, [form.formState.errors]);
 
   useEffect(() => {
     const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
@@ -135,13 +163,10 @@ function DestinationDetails() {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(form.formState.errors)?.length > 0) {
-      console.log(form.formState.errors);
-      Object.keys(form.formState.errors)?.map((key) => {
-        toast.error(`${form.formState.errors[key]?.message as Message}`);
-      });
+    if (masaPerjalanan == "1") {
+      form.setValue("penginapan", "");
     }
-  }, [form.formState.errors]);
+  }, [masaPerjalanan, form]);
 
   if (!dataDestinasi) return null;
 
@@ -277,9 +302,7 @@ function DestinationDetails() {
                         Masa Perjalanan
                       </FormLabel>
                       <Select
-                        onValueChange={(value) =>
-                          field.onChange(parseInt(value, 10))
-                        }
+                        onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
@@ -423,7 +446,7 @@ function DestinationDetails() {
 
                 <FormField
                   control={form.control}
-                  name="orderExperience"
+                  name="experience"
                   render={() => (
                     <FormItem>
                       <div className="mb-4">

@@ -1,4 +1,5 @@
 "use client";
+
 import { Message, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
@@ -16,9 +17,19 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const Login = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const rememberedAccount = JSON.parse(
-    localStorage.getItem("remember-account") || "{}"
-  );
+  const [rememberedAccount, setRememberedAccount] = useState<{
+    email?: string | undefined;
+    password?: string | undefined;
+  }>({});
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const account = JSON.parse(
+        localStorage.getItem("remember-account") || "{}"
+      );
+      setRememberedAccount(account);
+    }
+  }, []);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -102,7 +113,7 @@ const Login = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="johndoe@email.com"
                   defaultValue={
-                    rememberedAccount.email ? rememberedAccount.email : ""
+                    rememberedAccount?.email ? rememberedAccount.email : ""
                   }
                   {...register("email")}
                 />

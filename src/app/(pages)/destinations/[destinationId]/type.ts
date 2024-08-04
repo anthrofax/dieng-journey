@@ -6,5 +6,5 @@ export type OrderFormFieldType = {
     nomorHp: string;
     penginapan: string;
     qty: string;
-    tanggaPerjalanan: Date
+    tanggalPerjalanan: Date
 }

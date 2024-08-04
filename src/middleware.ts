@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export default async function middleware(req: NextRequest) {
   const token = await getToken({ req });
   const pathname = req.nextUrl.pathname;
-  const urlOrigin = "http://localhost:3000/";
+  const urlOrigin = "https://a5ef-2400-9800-6036-91f-3c90-1e86-2cd6-b240.ngrok-free.app/";
 
   if (pathname.includes("/admin") && !token?.isAdmin) {
     return NextResponse.redirect(urlOrigin);
