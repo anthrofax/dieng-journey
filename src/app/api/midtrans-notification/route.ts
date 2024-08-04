@@ -17,9 +17,25 @@ export async function POST(req: NextRequest) {
         qty,
         totalBiaya,
         destinationId,
-        penginapan,
+        penginapanId,
       },
     } = await req.json();
+
+    const body = {
+      experience,
+      lokasiPenjemputan,
+      masaPerjalanan,
+      nama,
+      nomorHp,
+      tanggalPerjalanan,
+      userId,
+      qty,
+      totalBiaya,
+      destinationId,
+      penginapanId,
+    };
+
+    console.log(body);
 
     if (
       (transaction_status === "deny" ||
@@ -41,16 +57,15 @@ export async function POST(req: NextRequest) {
       const newReservation = await db.order.create({
         data: {
           lokasiPenjemputan,
-          masaPerjalanan: Number(masaPerjalanan),
+          masaPerjalanan,
           nama,
           nomorHp,
           qty,
-          tanggalPerjalanan: new Date(tanggalPerjalanan),
+          tanggalPerjalanan,
           totalBiaya,
-          penginapan,
+          penginapanId,
           userId,
           destinationId,
-          experience,
         },
       });
 

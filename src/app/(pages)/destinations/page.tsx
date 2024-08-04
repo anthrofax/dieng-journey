@@ -56,7 +56,7 @@ const Destinations = () => {
       if (
         filters.lokasi &&
         filters.lokasi !== "" &&
-        !destination.destinationName
+        !destination.city
           .toLowerCase()
           .startsWith(filters.lokasi.toLowerCase())
       )

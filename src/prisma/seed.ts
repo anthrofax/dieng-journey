@@ -149,26 +149,39 @@ async function main() {
   });
 
   // Seed Experiences
-  for (let j = 0; j < 10; j++) {
-    await prismaServer.experience.create({
-      data: {
-        namaExperience: faker.commerce.productName(),
-        biaya: faker.number.int({ min: 100000, max: 5000000 }),
-        deskripsi: faker.lorem.paragraph(),
-      },
-    });
-  }
+  await prismaServer.experience.create({
+    data: {
+      namaExperience: "Pabrik Carica",
+      biaya: 100000,
+      deskripsi:
+        'Mengunjungi dan melihat langsung pembuatan Carica di Pabrik Carica + membawa oleh" carica. (Price 100k/orang)',
+    },
+  });
 
   // Seed Penginapan
-  for (let j = 0; j < 10; j++) {
-    await prismaServer.penginapan.create({
-      data: {
-        biaya: faker.number.int({ min: 300000, max: 350000 }),
-        deskripsi: faker.lorem.paragraphs(),
-        namaPenginapan: faker.company.name(),
-      },
-    });
-  }
+  await prismaServer.penginapan.create({
+    data: {
+      namaPenginapan: "Hotel Tirta Arum",
+      deskripsi: "",
+      biaya: 300000,
+    },
+  });
+
+  await prismaServer.penginapan.create({
+    data: {
+      namaPenginapan: "Sikembang Tenda Safari Double",
+      deskripsi: "Include Breakfast, Waterheater, Tea & Coffe | Maks 2 Orang",
+      biaya: 350000,
+    },
+  });
+
+  await prismaServer.penginapan.create({
+    data: {
+      namaPenginapan: "CRA Hotel",
+      deskripsi: "Deluxe Room",
+      biaya: 320000,
+    },
+  });
 
   // Fetch some destination IDs
   const penginapan = await prismaServer.penginapan.findMany({
@@ -195,7 +208,10 @@ async function main() {
           "magelang",
           "wonosobo",
         ]),
-        penginapanId: penginapan[j].id,
+        penginapanId:
+          penginapan[
+            faker.helpers.arrayElement([0, 1, 2])
+          ].id,
       },
     });
   }
@@ -219,7 +235,7 @@ async function main() {
     await prismaServer.orderExperience.create({
       data: {
         orderId: orders[i].id,
-        experienceId: experiences[i].id,
+        experienceId: experiences[0].id,
       },
     });
   }

@@ -26,15 +26,20 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { experience, lokasiPenjemputan, penginapan } from "@/data/data";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 import { format } from "date-fns";
+import { useExperienceHooks } from "@/hooks/experience-hook";
+import { useLodgingHooks } from "@/hooks/lodging-hooks";
+import { Rupiah } from "@/utils/format-currency";
+import Skeleton from "react-loading-skeleton";
+import { OrderFormFieldType } from "../type";
 
 type Props = {
-  form: any;
+  form: UseFormReturn<OrderFormFieldType, any, undefined>;
   handlePayment: (data: FieldValues) => Promise<string | undefined>;
-  masaPerjalanan: string;
+  masaPerjalanan: number;
   namaDestinasi: string;
-  className?: string
+  className?: string;
 };
 
 function OrderFormCTA({
@@ -44,8 +49,18 @@ function OrderFormCTA({
   className = "",
   namaDestinasi,
 }: Props) {
+  // Fetch Data Experience
+  const { allExperiences, isLoadingQuery: isLoadingExperienceQuery } =
+    useExperienceHooks();
+
+  // Fetch Data Penginapan
+  const { allLodgings, isLoadingQuery: isLoadingLodgingQuery } =
+    useLodgingHooks();
+
   return (
-    <div className={`shadow-3xl bg-primary mt-3 p-5 text-black rounded-lg overflow-scroll max-h-[500px] ${className}`}>
+    <div
+      className={`shadow-3xl bg-primary mt-3 p-5 text-black rounded-lg overflow-scroll max-h-[500px] ${className}`}
+    >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handlePayment)} className="space-y-4">
           <FormField
@@ -133,14 +148,15 @@ function OrderFormCTA({
                   Masa Perjalanan
                 </FormLabel>
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(+value);
+                  }}
+                  defaultValue={field.value.toString()}
                 >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue
                         placeholder="Tentukan masa perjalanan anda"
-                        defaultValue="1"
                         className="placeholder:text-slate-300 text-slate-300"
                       />
                     </SelectTrigger>
@@ -159,18 +175,19 @@ function OrderFormCTA({
             )}
           />
 
-          {masaPerjalanan == "3" && (
+          {masaPerjalanan == 3 && (
             <FormField
               control={form.control}
-              name="penginapan"
+              name="penginapanId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white" htmlFor="penginapan">
+                  <FormLabel className="text-white" htmlFor="penginapanId">
                     Opsi Penginapan
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={isLoadingLodgingQuery}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -181,9 +198,13 @@ function OrderFormCTA({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-2/3">
-                      {penginapan.map((itemPenginapan, i) => (
-                        <SelectItem value={itemPenginapan.value} key={i}>
-                          {itemPenginapan.nama}
+                      {allLodgings.map((penginapan, i) => (
+                        <SelectItem value={penginapan.id} key={i}>
+                          {`${penginapan.namaPenginapan} ${
+                            penginapan.deskripsi !== ""
+                              ? `| ${penginapan.deskripsi}`
+                              : ""
+                          } ${`| ${Rupiah.format(penginapan.biaya)}`}`}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -273,60 +294,68 @@ function OrderFormCTA({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="experience"
-            render={() => (
-              <FormItem>
-                <div className="mb-4">
-                  <FormLabel className="text-base text-white">
-                    Pilih Experience
-                  </FormLabel>
-                  <FormDescription className="text-slate-300">
-                    {`Di destinasi "${namaDestinasi}" ada experience tambahan yang dapat kamu peroleh.`}
-                  </FormDescription>
-                </div>
-                {experience.map((experience, i) => (
-                  <FormField
-                    key={experience.value}
-                    control={form.control}
-                    name="experience"
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={experience.value}
-                          className="flex flex-row items-start space-x-3 space-y-0 text-white"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              className="border-white"
-                              checked={
-                                Array.isArray(field.value) &&
-                                field.value.includes(experience.value)
-                              }
-                              onCheckedChange={(checked) => {
-                                const newValue = checked
-                                  ? [...(field.value || []), experience.value]
-                                  : (field.value || []).filter(
-                                      (value: string) =>
-                                        value !== experience.value
-                                    );
-                                field.onChange(newValue);
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="text-sm font-normal">
-                            {experience.label}
-                          </FormLabel>
-                        </FormItem>
-                      );
-                    }}
-                  />
-                ))}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isLoadingExperienceQuery ? (
+            <Skeleton className="w-full h-5" />
+          ) : (
+            <FormField
+              control={form.control}
+              name="experience"
+              render={() => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base text-white">
+                      Pilih Experience
+                    </FormLabel>
+                    <FormDescription className="text-slate-300">
+                      {`Di destinasi "${namaDestinasi}" ada experience tambahan yang dapat kamu peroleh.`}
+                    </FormDescription>
+                  </div>
+                  {allExperiences?.map((experience, i) => (
+                    <FormField
+                      key={experience.id}
+                      control={form.control}
+                      name="experience"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={experience.id}
+                            className="flex flex-row items-start space-x-3 space-y-0 text-white"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                className="border-white"
+                                checked={
+                                  Array.isArray(field.value) &&
+                                  field.value.includes(experience.id)
+                                }
+                                onCheckedChange={(checked) => {
+                                  const newValue = checked
+                                    ? [...(field.value || []), experience.id]
+                                    : (field.value || []).filter(
+                                        (value: string) =>
+                                          value !== experience.id
+                                      );
+                                  field.onChange(newValue);
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal">
+                              {`${experience.namaExperience} ${
+                                experience.deskripsi !== ""
+                                  ? `| ${experience.deskripsi}`
+                                  : ""
+                              } ${`| ${Rupiah.format(experience.biaya)}`}`}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <Button type="submit" className="w-full">
             Pesan

@@ -18,11 +18,13 @@ import toast from "react-hot-toast";
 import { redirectToCheckout } from "./service";
 import OrderFormCTA from "./components/order-form-cta";
 import { schema } from "./schema";
+import { OrderFormFieldType } from "./type";
 
 function DestinationDetails() {
   let { destinationId } = useParams();
   if (Array.isArray(destinationId)) destinationId = destinationId[0];
 
+  // Fetch Data Destinasi
   const { data: dataDestinasi, isLoading } = useQuery<
     Destination & {
       experiences: Experience[];
@@ -32,15 +34,15 @@ function DestinationDetails() {
     queryFn: () => getSelectedDestination({ id: destinationId }),
   });
 
-  const form = useForm({
+  const form = useForm<OrderFormFieldType>({
     defaultValues: {
-      experience: [""],
+      experience: [],
       lokasiPenjemputan: "",
-      masaPerjalanan: "1",
+      masaPerjalanan: 1,
       nama: "",
       nomorHp: "",
-      penginapan: "",
-      qty: "0",
+      penginapanId: "",
+      qty: 0,
       tanggalPerjalanan: new Date(),
     },
     resolver: zodResolver(schema),
@@ -49,7 +51,7 @@ function DestinationDetails() {
   const masaPerjalanan = useWatch({
     control: form.control,
     name: "masaPerjalanan",
-    defaultValue: "1",
+    defaultValue: 1,
   });
 
   async function handlePayment(data: FieldValues) {
@@ -132,8 +134,8 @@ function DestinationDetails() {
   }, []);
 
   useEffect(() => {
-    if (masaPerjalanan == "1") {
-      form.setValue("penginapan", "");
+    if (masaPerjalanan == 1) {
+      form.setValue("penginapanId", "");
     }
   }, [masaPerjalanan, form]);
 

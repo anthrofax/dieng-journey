@@ -24,11 +24,11 @@ export const schema = z
         message: "Lokasi penjemputan tidak valid",
       }),
     masaPerjalanan: z
-      .string({
+      .number({
         message: "Anda harus mengisi jumlah pemesanan tiket minimal 1",
       })
       .min(1, { message: "Anda harus mengisi masa perjalanan minimal 1 hari" }),
-    penginapan: z
+    penginapanId: z
       .string({
         message: "Isian penginapan tidak valid",
       })
@@ -45,12 +45,12 @@ export const schema = z
       }),
     experience: z.array(z.string()).optional(),
   })
-  .superRefine(({ masaPerjalanan, penginapan }, ctx) => {
-    if (masaPerjalanan === "3" && penginapan === "") {
+  .superRefine(({ masaPerjalanan, penginapanId }, ctx) => {
+    if (masaPerjalanan === 3 && penginapanId === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message:
-          "Kamu harus memilih opsi penginapan jika masa perjalanan mu 3 hari",
+          "Kamu harus memilih opsi penginapan jikaId masa perjalanan mu 3 hari",
         path: ["penginapan"],
       });
     }

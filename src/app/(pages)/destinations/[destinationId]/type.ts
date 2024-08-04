@@ -1,10 +1,10 @@
 export type OrderFormFieldType = {
     experience: string[];
     lokasiPenjemputan: string;
-    masaPerjalanan: string;
+    masaPerjalanan: number;
     nama: string;
     nomorHp: string;
-    penginapan: string;
-    qty: string;
+    penginapanId: string;
+    qty: number;
     tanggalPerjalanan: Date
 }
