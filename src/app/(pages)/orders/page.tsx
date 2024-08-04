@@ -65,7 +65,7 @@ export default async function OrdersPage() {
                   {new Date(order.tanggalPerjalanan).toLocaleDateString()}
                 </p>
                 <p>Qty: {order.qty}</p>
-                <p>Penginapan: {order.penginapan || "N/A"}</p>
+                <p>Penginapan: {order.penginapanId || "N/A"}</p>
                 <p>Total Biaya: {Rupiah.format(order.totalBiaya)}</p>
                 <p>Experience: {order.experience.join(", ") || "None"}</p>
               </div>

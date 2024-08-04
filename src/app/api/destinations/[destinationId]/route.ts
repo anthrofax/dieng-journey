@@ -7,9 +7,6 @@ export async function GET(req: NextRequest, ctx: any) {
 
     const destination = await db.destination.findUnique({
       where: { destinationId },
-      include: {
-        experiences: true,
-      },
     });
 
     return NextResponse.json(destination);

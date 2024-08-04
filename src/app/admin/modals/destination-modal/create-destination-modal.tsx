@@ -6,15 +6,13 @@ import ModalLayout from "../../layout/modal-layout";
 import Input from "@/ui/Input";
 import Button from "@/ui/Button";
 import { FiUpload } from "react-icons/fi";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { FieldValues, Message, UseFormReturn } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  createNewDestination,
-} from "@/app/admin/(pages)/destinations/service";
+import { createNewDestination } from "@/app/admin/(pages)/destinations/service";
 import { clearImageInput, uploadImage } from "@/utils/helper-functions";
 import { MAXIMUM_IMAGE_UPLOAD } from "@/data/app-config";
 
@@ -107,7 +105,7 @@ const CreateDestinationModal = ({
             className="w-[300px] px-2 py-3 rounded-xl"
             type="text"
             placeholder="Pemandangan Air Hangat Segar Asri"
-            register={register("destinationName")}
+            {...register("destinationName")}
           />
         </div>
 
@@ -132,7 +130,7 @@ const CreateDestinationModal = ({
             className="w-[300px] px-2 py-3 rounded-xl"
             type="number"
             placeholder="500000"
-            register={register("price", { valueAsNumber: true })}
+            {...register("price", { valueAsNumber: true })}
           />
         </div>
 
@@ -144,7 +142,7 @@ const CreateDestinationModal = ({
             className="w-[300px] px-2 py-3 rounded-xl"
             type="text"
             placeholder="Candi Arjuna"
-            register={register("city")}
+            {...register("city")}
           />
         </div>
 
