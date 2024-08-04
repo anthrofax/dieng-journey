@@ -1,109 +1,73 @@
 "use client";
 
+import React, { useEffect } from "react";
 import ModalLayout from "../../layout/modal-layout";
+import Input from "@/ui/Input";
 import Button from "@/ui/Button";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { Message, UseFormReturn } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import {
-  getSelectedExperience,
-  updateExperience,
-} from "../../(pages)/experiences/service";
-import { useDestinationHook } from "../../hooks/destination-hook";
-import { Input } from "@/components/ui/input";
-import { MutateExperienceFormType } from "./type";
-import { Experience } from "@prisma/client";
-import { useEffect } from "react";
+import { MutateLodgingFormType } from "./type";
+import { createNewLodging } from "../../(pages)/lodging/service";
 
-const EditExperienceModal = ({
+const CreateLodgingModal = ({
   handleHideModal,
   formState,
-  experienceId,
 }: {
   handleHideModal: () => void;
-  formState: UseFormReturn<MutateExperienceFormType, any, undefined>;
-  experienceId: string;
+  formState: UseFormReturn<MutateLodgingFormType, any, undefined>;
 }) => {
   const queryClient = useQueryClient();
-  const { allDestinations } = useDestinationHook();
 
   const {
-    register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
-    control,
   } = formState;
 
-  const { data: selectedExperience, isLoading } = useQuery<Experience>({
-    queryKey: ["admin", "experiences", experienceId],
-    queryFn: () => getSelectedExperience({ id: experienceId }),
-  });
-
   const { mutateAsync, isPending: isPendingMutation } = useMutation({
-    mutationFn: ({
-      experienceId,
-      data,
-    }: {
-      experienceId: string;
-      data: MutateExperienceFormType;
-    }) =>
-      updateExperience({
-        experienceId,
-        data,
-      }),
+    mutationFn: (data: MutateLodgingFormType) => createNewLodging(data),
     onSuccess: () => {
       reset();
       queryClient.invalidateQueries({
-        queryKey: ["admin", "experiences"],
+        queryKey: ["admin", "lodging"],
       });
-      toast.success("Experience anda telah berhasil diperbarui");
+      toast.success("Penginapan anda telah berhasil ditambahkan");
       handleHideModal();
     },
   });
 
   useEffect(() => {
     if (Object.keys(errors)?.length > 0) {
+      console.log(errors);
       Object.keys(errors)?.map((key) => {
         toast.error(
-          (
-            errors as {
-              [key: string]: { message: string };
-            }
-          )[key]?.message as Message
+          `${
+            (
+              errors as {
+                [key: string]: { message: string };
+              }
+            )[key]?.message as Message
+          }`
         );
       });
     }
   }, [errors]);
 
-  useEffect(() => {
-    console.log(selectedExperience);
-    reset({
-      namaExperience: selectedExperience?.namaExperience,
-      deskripsi: selectedExperience?.deskripsi,
-      biaya: selectedExperience?.biaya,
-    });
-  }, [
-    selectedExperience?.namaExperience,
-    selectedExperience?.deskripsi,
-    selectedExperience?.biaya,
-  ]);
-
   const onSubmit = async (data: any) => {
-    await mutateAsync({
-      experienceId,
-      data,
-    });
+    await mutateAsync(data);
   };
 
   return (
     <ModalLayout
-      document="Experience"
-      description="Perbarui data experiencemu disini, klik simpan jika telah selesai."
+      document="Penginapan"
+      isCreating
+      description="Tambahkan data penginapan anda disini, klik simpan jika telah selesai."
     >
       <Form {...formState}>
         <form
@@ -112,18 +76,18 @@ const EditExperienceModal = ({
         >
           <FormField
             control={control}
-            name="namaExperience"
+            name="namaPenginapan"
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="namaExperience" className="text-right">
-                  Nama Experience
+                <Label htmlFor="namaPenginapan" className="text-right">
+                  Nama Penginapan
                 </Label>
 
                 <FormControl>
                   <Input
                     className="w-[300px] px-2 py-3 rounded-xl"
                     type="text"
-                    placeholder="Pabrik Carica"
+                    placeholder="Hotel Tirta Arum"
                     {...field}
                   />
                 </FormControl>
@@ -143,7 +107,7 @@ const EditExperienceModal = ({
                 <FormControl>
                   <Textarea
                     className="w-[300px]"
-                    placeholder="Tambahkan deskripsi experience disini."
+                    placeholder="Tambahkan deskripsi penginapan disini."
                     {...field}
                   />
                 </FormControl>
@@ -157,7 +121,7 @@ const EditExperienceModal = ({
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="biaya" className="text-right">
-                  Biaya
+                  Harga
                 </Label>
 
                 <FormControl>
@@ -184,4 +148,4 @@ const EditExperienceModal = ({
   );
 };
 
-export default EditExperienceModal;
+export default CreateLodgingModal;

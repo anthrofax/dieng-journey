@@ -1,69 +1,37 @@
 "use client";
 
-import React, { MutableRefObject, RefObject, useEffect } from "react";
-import { GrClearOption } from "react-icons/gr";
+import React, { useEffect } from "react";
 import ModalLayout from "../../layout/modal-layout";
 import Input from "@/ui/Input";
 import Button from "@/ui/Button";
-import { FiUpload } from "react-icons/fi";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { FieldValues, Message, UseFormReturn } from "react-hook-form";
+import { Message, UseFormReturn } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { clearImageInput, uploadImage } from "@/utils/helper-functions";
-import { MAXIMUM_IMAGE_UPLOAD } from "@/data/app-config";
-import { useDestinationHook } from "../../hooks/destination-hook";
-import Image from "next/image";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { createNewExperience } from "../../(pages)/experiences/service";
-import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
-import Link from "next/link";
+import { MutateExperienceFormType } from "./type";
 
 const CreateExperienceModal = ({
   handleHideModal,
   formState,
-  imageInput,
-  images,
-  setImages,
 }: {
   handleHideModal: () => void;
-  formState: UseFormReturn<FieldValues, any, undefined>;
-  imageInput: RefObject<HTMLInputElement>;
-  images: File[];
-  setImages: React.Dispatch<React.SetStateAction<File[]>>;
+  formState: UseFormReturn<MutateExperienceFormType, any, undefined>;
 }) => {
   const queryClient = useQueryClient();
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
     reset,
   } = formState;
 
-  const { allDestinations } = useDestinationHook();
-
   const { mutateAsync, isPending: isPendingMutation } = useMutation({
-    mutationFn: ({ data, imageUrls }: { data: any; imageUrls: string[] }) =>
-      createNewExperience({
-        data,
-        imageUrls,
-      }),
+    mutationFn: (data: MutateExperienceFormType) => createNewExperience(data),
     onSuccess: () => {
       reset();
       queryClient.invalidateQueries({
@@ -78,33 +46,21 @@ const CreateExperienceModal = ({
     if (Object.keys(errors)?.length > 0) {
       console.log(errors);
       Object.keys(errors)?.map((key) => {
-        toast.error(`${errors[key]?.message as Message}`);
+        toast.error(
+          `${
+            (
+              errors as {
+                [key: string]: { message: string };
+              }
+            )[key]?.message as Message
+          }`
+        );
       });
     }
   }, [errors]);
 
-  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newImages = Array.from(e.target.files || []);
-    if (images.length + newImages.length > MAXIMUM_IMAGE_UPLOAD) {
-      return toast.error(
-        `Hanya bisa mengunggah ${MAXIMUM_IMAGE_UPLOAD} gambar`
-      );
-    }
-
-    setImages((imageList) => [...imageList, ...newImages]);
-  };
-
   const onSubmit = async (data: any) => {
-    if (images.length < 1) return toast.error("Anda perlu mengunggah gambar");
-
-    const imageUrls = await Promise.all(
-      images.map(async function (image, i) {
-        const imageUrl = await uploadImage(image, i);
-        return imageUrl;
-      })
-    );
-
-    await mutateAsync({ data, imageUrls });
+    await mutateAsync(data);
   };
 
   return (
@@ -120,10 +76,10 @@ const CreateExperienceModal = ({
         >
           <FormField
             control={control}
-            name="experienceName"
+            name="namaExperience"
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="experienceName" className="text-right">
+                <Label htmlFor="namaExperience" className="text-right">
                   Nama Experience
                 </Label>
 
@@ -141,10 +97,10 @@ const CreateExperienceModal = ({
 
           <FormField
             control={control}
-            name="description"
+            name="deskripsi"
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="description" className="text-right">
+                <Label htmlFor="deskripsi" className="text-right">
                   Deskripsi
                 </Label>
 
@@ -161,11 +117,10 @@ const CreateExperienceModal = ({
 
           <FormField
             control={control}
-            
-            name="price"
+            name="biaya"
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="price" className="text-right">
+                <Label htmlFor="biaya" className="text-right">
                   Harga
                 </Label>
 
@@ -174,92 +129,15 @@ const CreateExperienceModal = ({
                     className="w-[300px] px-2 py-3 rounded-xl"
                     type="number"
                     placeholder="500000"
+                    min={0}
                     {...field}
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-
-          <FormField
-            control={control}
-            name="destinationId"
-            render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="destinationId" className="text-right leading-4">
-                  Destinasi yang Terkait
-                </Label>
-
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger className={`w-[300px]`}>
-                    <SelectValue placeholder="Destinasi dari Experience" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {allDestinations?.map((destination: any, i: number) => (
-                      <SelectItem key={i} value={destination.destinationId}>
-                        {destination.destinationName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-
-          <div className="grid grid-cols-12 items-start gap-2 place-items-start">
-            <Label htmlFor="images" className="text-right col-span-3 ">
-              Unggah Gambar Experience
-            </Label>
-            <div className="flex flex-col gap-3 col-span-4 pl-1">
-              <Button
-                type="button"
-                disabled={images.length >= MAXIMUM_IMAGE_UPLOAD}
-                onClick={() => {
-                  console.log(imageInput.current);
-                  if (imageInput.current) imageInput.current.click();
-                }}
-              >
-                <FiUpload className="mr-4 h-4 w-4" /> Unggah Gambar
-              </Button>
-              <ul>
-                {images.slice(0, 6).length > 0 &&
-                  images.map((image) => (
-                    <li className="text-xs text-slate-700" key={image.name}>
-                      {image.name}
-                    </li>
-                  ))}
-                {images.length > 5 && (
-                  <p className="underline">
-                    {images.length - 5} gambar lainnya teunggah.
-                  </p>
-                )}
-              </ul>
-            </div>
-
-            <Button
-              variant="outline"
-              size="icon"
-              disabled={images.length < 1}
-              onClick={() => clearImageInput(imageInput, setImages)}
-            >
-              <GrClearOption className="h-4 w-4" />
-            </Button>
-
-            <input
-              type="file"
-              name="images"
-              onChange={handleImage}
-              id="images"
-              className="hidden"
-              accept="image/png, image/jpg, image/jpeg"
-              multiple={true}
-              ref={imageInput}
-              disabled={images.length >= MAXIMUM_IMAGE_UPLOAD}
-            />
-          </div>
 
           <DialogFooter>
             <Button disabled={isPendingMutation} label="Simpan" />

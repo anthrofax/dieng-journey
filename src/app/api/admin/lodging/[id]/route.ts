@@ -8,13 +8,13 @@ export async function GET(req: NextRequest, ctx: any) {
 
     const { id } = ctx.params;
 
-    const selectedExperience = await db.experience.findUnique({
+    const selectedLodging = await db.penginapan.findUnique({
       where: {
         id,
       },
     });
 
-    return NextResponse.json(selectedExperience);
+    return NextResponse.json(selectedLodging);
   } catch (error) {
     return NextResponse.json({ error });
   }
@@ -29,13 +29,13 @@ export async function PATCH(req: NextRequest, ctx: any) {
 
     console.log(body);
 
-    await db.experience.update({
+    await db.penginapan.update({
       where: { id },
       data: body,
     });
 
     return NextResponse.json({
-      message: "Data experience telah berasil diperbarui",
+      message: "Data penginapan telah berasil diperbarui",
       status: 200,
     });
   } catch (error) {
@@ -48,11 +48,11 @@ export async function DELETE(req: NextRequest, ctx: any) {
     await isAdminUser();
     const { id } = ctx.params;
 
-    const deletedExperience = await db.experience.delete({
+    const deletedLodging = await db.penginapan.delete({
       where: { id },
     });
 
-    if (deletedExperience) {
+    if (deletedLodging) {
       return NextResponse.json(
         { message: "Data experience telah berhasil dihapus" },
         { status: 200 }

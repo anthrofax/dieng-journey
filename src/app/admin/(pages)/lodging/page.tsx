@@ -12,29 +12,31 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { handleHideModal } from "@/utils/helper-functions";
 import { useExperienceHook } from "../../hooks/experience-hook";
 import CreateExperienceModal from "../../modals/experience-modal/create-experience-modal";
-import { createSchema } from "../../modals/experience-modal/create-schema";
-import { MutateExperienceFormType } from "../../modals/experience-modal/type";
+import { useLodgingHook } from "../../hooks/lodging-hook";
+import { createSchema } from "../../modals/lodging-modal/create-schema";
+import { MutateLodgingFormType } from "../../modals/lodging-modal/type";
+import CreateLodgingModal from "../../modals/lodging-modal/create-lodging-modal";
 
-function Experiences() {
-  const { isLoadingQuery, allExperiences } = useExperienceHook();
+function Lodging() {
+  const { isLoadingQuery, allLodgings } = useLodgingHook();
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const createFormState = useForm<MutateExperienceFormType>({
+  const createFormState = useForm<MutateLodgingFormType>({
     defaultValues: {
-      namaExperience: "",
+      namaPenginapan: "",
       deskripsi: "",
       biaya: 0,
     },
     resolver: zodResolver(createSchema),
   });
 
-  console.log(allExperiences)
+  console.log(allLodgings)
 
   return (
     <div className="py-10 col-span-12 lg:col-span-10 grid grid-rows-12">
       <div className="row-span-12 px-5">
         <div className="flex justify-between py-3 items-center">
           <h2 className="text-3xl text-slate-800 font-semibold text-center lg:text-left">
-            Pengelolaan Data Pengalaman Perjalanan
+            Pengelolaan Data Penginapan
           </h2>
           <Dialog
             onOpenChange={() =>
@@ -47,10 +49,10 @@ function Experiences() {
           >
             <DialogTrigger asChild className="px-2 py-1">
               <Button className="text-sm flex gap-3 px-3 items-center bg-primary hover:text-primary hover:bg-slate-300">
-                <IoIosCreate size={20} /> Tambah Data Experience Tambahan
+                <IoIosCreate size={20} /> Tambah Data Penginapan
               </Button>
             </DialogTrigger>
-            <CreateExperienceModal
+            <CreateLodgingModal
               handleHideModal={() =>
                 handleHideModal({
                   formState: createFormState,
@@ -67,9 +69,9 @@ function Experiences() {
           ) : (
             <DataTable
               columns={columns}
-              data={allExperiences}
-              filterBy="namaExperience"
-              filterByLabel="nama experience"
+              data={allLodgings}
+              filterBy="namaPenginapan"
+              filterByLabel="nama penginapan"
             />
           )}
         </div>
@@ -78,4 +80,4 @@ function Experiences() {
   );
 }
 
-export default Experiences;
+export default Lodging;

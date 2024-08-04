@@ -17,7 +17,7 @@ const BigWidget = ({
       ) : (
         <div className="flex flex-col gap-4">
           <h3 className="p-6 text-slate-700 text-center font-bold text-2xl">
-            #1 Destination Terpopuler
+            #1 Destinasi Terpopuler
           </h3>
           <div>
             <Image

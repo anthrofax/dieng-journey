@@ -93,14 +93,13 @@ function User({ params }: { params: { id: string } }) {
     }
   };
 
-  console.log(errors);
-
   return (
-    <div className="p-4 col-span-7 w-full pl-5">
-      <h1 className="font-semibold text-2xl mb-5">Pengaturan Pengguna</h1>
-
+    <div className="p-4 col-span-8 lg:col-span-7 w-full pl-5">
+      <h1 className="font-semibold text-2xl mb-5 text-center lg:text-left">
+        Pengaturan Pengguna
+      </h1>
       <form
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-3 items-center lg:items-start"
         onSubmit={handleSubmit((data) => {
           confirmAlert({
             customUI: ({ onClose }: { onClose: () => void }) => {
@@ -119,9 +118,9 @@ function User({ params }: { params: { id: string } }) {
           });
         })}
       >
-        <div className="flex items-center gap-3">
-          <div className="w-[80px] aspect-square rounded-full relative overflow-hidden group">
-            {isLoading || isPending ? (
+        <div className="flex flex-col lg:flex-row items-center gap-3">
+          <div className="w-[200px] lg:w-[80px] aspect-square rounded-full relative overflow-hidden group">
+            {!data.user || isLoading || isPending ? (
               <Skeleton height="100%" />
             ) : (
               <Image
@@ -137,7 +136,7 @@ function User({ params }: { params: { id: string } }) {
             )}
 
             <div
-              className="absolute -bottom-0 bg-primary/50 flex items-center justify-center text-[8px] text-center text-white w-full h-8 transition-all translate-y-10 group-hover:-translate-y-0 cursor-pointer"
+              className="absolute -bottom-0 bg-primary/50 flex items-center justify-center text-[16px] lg:text-[8px] text-center text-white w-full h-16 lg:h-8 transition-all translate-y-16 lg:translate-y-10 group-hover:-translate-y-0 cursor-pointer "
               onClick={() => {
                 if (fileInput.current) fileInput.current.click();
               }}
@@ -148,7 +147,7 @@ function User({ params }: { params: { id: string } }) {
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 flex-grow-1 w-[10%]">
+          <div className="flex flex-col items-center lg:items-start gap-2 flex-grow-1 w-full lg:w-[10%]">
             {isLoading || isPending ? (
               <Skeleton count={2} />
             ) : (

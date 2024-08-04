@@ -82,7 +82,7 @@ export const fasilitas = [
 ];
 
 export const penginapan = [
-  { nama: "Hotel Tirta Arum Price | Rp.300rb ", harga: 300000, value: "tirta" },
+  { nama: "Hotel Tirta Arum Price | Rp.300rb ", harga: 300000, value: "tirta", },
   {
     nama: "Sikembang Glamping Tenda Safari Double (Include Breakfast, Waterheater, Tea & Coffe) | Maks 2 Orang | Rp.350rb",
     value: "sikembang",

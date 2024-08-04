@@ -1,4 +1,5 @@
 import AXIOS_API from "@/utils/axios-api";
+import { MutateExperienceFormType } from "../../modals/experience-modal/type";
 
 export async function getSelectedExperience({ id }: { id: string }) {
   const { data: selectedExperience } = await AXIOS_API.get(
@@ -8,32 +9,25 @@ export async function getSelectedExperience({ id }: { id: string }) {
   return selectedExperience;
 }
 
-export async function createNewExperience({
-  data,
-  imageUrls,
-}: {
-  data: any;
-  imageUrls: string[];
-}) {
-  const { data: newExperience } = await AXIOS_API.post("/admin/experience", {
-    ...data,
-    imageUrls,
-  });
+export async function createNewExperience(data: MutateExperienceFormType) {
+  const { data: newExperience } = await AXIOS_API.post(
+    "/admin/experience",
+    data
+  );
 
-  console.log(newExperience);
   return newExperience;
 }
 
 export async function updateExperience({
   experienceId,
-  body,
+  data,
 }: {
   experienceId: string;
-  body: any;
+  data: MutateExperienceFormType;
 }) {
-  const { data: updatedExperience } = await AXIOS_API.put(
+  const { data: updatedExperience } = await AXIOS_API.patch(
     `/admin/experience/${experienceId}`,
-    body
+    data
   );
 
   return updatedExperience;

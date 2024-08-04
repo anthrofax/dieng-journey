@@ -3,17 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Input from "@/ui/Input";
 import Button from "@/ui/Button";
-import Image, { StaticImageData } from "next/image";
-import destination from "../../../../public/img/AbuDhabi.jpg";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useDestinationHook } from "@/hooks/destination-hooks";
 import { Destination } from "@prisma/client";
 import Card from "@/components/destination-card/card";
@@ -226,7 +215,7 @@ const Destinations = () => {
             />
           </form>
         </Form>
-        <div className="w-full py-20 flex flex-wrap justify-center items-center gap-14 flex-grow-1">
+        <div className="w-full flex flex-wrap justify-center items-center gap-14 flex-grow-1 py-20">
           {isLoading
             ? Array.from({ length: 5 }).map((_, idx) => (
                 <Skeleton

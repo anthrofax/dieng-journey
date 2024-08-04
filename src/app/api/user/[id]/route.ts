@@ -5,13 +5,18 @@ export async function GET(req: NextRequest, res: any) {
   try {
     const { id } = res.params;
 
+    console.log(id)
+
     const user = await db.user.findUnique({
       where: { id },
     });
 
+    console.log(user)
+
     if (!user) throw new Error("User not found");
 
     const { password, ...foundUser } = user;
+    console.log(foundUser)
 
     return NextResponse.json({ user: foundUser });
   } catch (error) {

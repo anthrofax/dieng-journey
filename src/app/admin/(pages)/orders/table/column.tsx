@@ -57,14 +57,14 @@ export const columns = [
     },
   },
   {
-    accessorKey: "totalPrice",
+    accessorKey: "totalBiaya",
     header: ({ column }: { column: any }) => {
       return (
         <button
           className="flex justify-center items-center gap-1"
           onClick={() => column.toggleSorting(column.getIsSorted === "asc")}
         >
-          Total Harga
+          Total Biaya
           <span className="flex items-center">
             <AiOutlineArrowUp />
             <AiOutlineArrowDown />
@@ -73,32 +73,20 @@ export const columns = [
       );
     },
     cell: ({ row }: { row: any }) => {
-      const qty = row.original.qty;
-      const destinationPrice = row.original.destination.price;
-      const experienceTotalPrice = row.original.orderExperience.reduce(
-        (
-          acc: number,
-          {
-            experience,
-          }: { experience: { experienceName: string; price: number } }
-        ) => {
-          return acc + experience.price;
-        },
-        0
-      );
+      const totalBiaya = row.original.totalBiaya;
 
       return (
         <span className="block text-left">
-          {Rupiah.format(qty * (destinationPrice + experienceTotalPrice))}
+          {Rupiah.format(totalBiaya)}
         </span>
       );
     },
   },
   {
-    accessorKey: "orderExperience",
+    accessorKey: "orderExperiences",
     header: "Experience Tambahan",
     cell: ({ row }: { row: any }) => {
-      const experienceOrderItems = row.original.orderExperience;
+      const experienceOrderItems = row.original.orderExperiences;
 
       return <span>{experienceOrderItems.length} Tempat</span>;
     },
@@ -119,7 +107,7 @@ function ActionsColumn({ row }: { row: any }) {
         onClick={() => {}}
         className="cursor-pointer disabled:bg-slate-200 px-2 py-1 rounded-xl"
       >
-        <IoEye color="yellow" />
+        <IoEye color="rgb(37 99 235)" />
       </button>
     </>
   );

@@ -1,3 +1,4 @@
+import { MutateExperienceFormType } from "@/app/admin/modals/experience-modal/type";
 import { postImages } from "@/lib/cloudinary-helpers";
 import React, { MutableRefObject, RefObject } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
@@ -48,7 +49,7 @@ export const handleHideModal = ({
   imageInputRef,
   imageListSetState,
 }: {
-  formState: UseFormReturn<FieldValues, any, undefined> | undefined;
+  formState: UseFormReturn<any, any, undefined>;
   showModalStateSetter: React.Dispatch<React.SetStateAction<boolean>>;
   imageInputRef?: RefObject<HTMLInputElement>;
   imageListSetState?: React.Dispatch<React.SetStateAction<File[]>> | undefined;

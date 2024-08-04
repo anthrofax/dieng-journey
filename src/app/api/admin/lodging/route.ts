@@ -12,19 +12,17 @@ export async function POST(req: NextRequest) {
       if (v === "") return NextResponse.json({ error: "Fill all fields!" });
     });
 
-    const { namaExperience, deskripsi, biaya } = body;
+    const { namaPenginapan, deskripsi, biaya } = body;
 
     console.log(body);
 
-    const test = await db.experience.create({
+    await db.penginapan.create({
       data: {
-        namaExperience,
+        namaPenginapan,
         deskripsi,
         biaya,
       },
     });
-
-    console.log(test);
 
     return NextResponse.json({
       message: "Data Experience telah berhasil ditambahkan",

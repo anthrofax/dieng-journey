@@ -1,5 +1,3 @@
-import { getCurrentUser } from "@/lib/currentUser";
-import { getDatesInRange } from "@/lib/date-to-milliseconds";
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -2,6 +2,7 @@ import AXIOS_API from "@/utils/axios-api";
 
 export async function getUserData(id: string) {
   const { data: user } = await AXIOS_API.get(`/user/${id}`);
+  console.log(user)
 
   return user;
 }

@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { AiFillStar, AiOutlineHome, AiOutlineUser } from "react-icons/ai";
+import {  AiOutlineUser } from "react-icons/ai";
 import { MdDashboard, MdHotel, MdCardTravel } from "react-icons/md";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
-import { LuHotel } from "react-icons/lu";
+import { MdNightsStay } from "react-icons/md";
 
 const Sidebar = () => {
   const currentPage = usePathname().split("/")[2];
@@ -32,7 +32,13 @@ const Sidebar = () => {
       isCurrentPage: currentPage === "experiences",
     },
     {
-      text: "Users",
+      text: "Penginapan",
+      icon: MdNightsStay,
+      href: "/admin/lodging",
+      isCurrentPage: currentPage === "lodging",
+    },
+    {
+      text: "Pengguna",
       icon: AiOutlineUser,
       href: "/admin/users",
       isCurrentPage: currentPage === "users",
@@ -42,12 +48,6 @@ const Sidebar = () => {
       icon: IoTicket,
       href: "/admin/orders",
       isCurrentPage: currentPage === "orders",
-    },
-    {
-      text: "Reviews",
-      icon: AiFillStar,
-      href: "/admin/reviews",
-      isCurrentPage: currentPage === "reviews",
     },
   ];
 

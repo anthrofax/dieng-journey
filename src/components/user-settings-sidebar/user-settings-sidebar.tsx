@@ -14,7 +14,6 @@ import { GoInfo } from "react-icons/go";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 const Sidebar = () => {
-  const currentPage = usePathname().split("/")[2];
   const { data: session } = useSession();
   const pathname = usePathname();
 
@@ -25,14 +24,14 @@ const Sidebar = () => {
       href: `/user/${session?.user.id}`,
     },
     {
-      text: "Transaction",
+      text: "Transaksi",
       icon: IoTicket,
       href: "/orders",
     },
   ];
 
   return (
-    <div className="w-full flex flex-col justify-between pl-[15%] ">
+    <div className="w-full hidden lg:flex flex-col justify-between pl-[15%]">
       <div className="h-full w-full flex flex-col gap-10">
         {sidebarData.map((data) => (
           <Link

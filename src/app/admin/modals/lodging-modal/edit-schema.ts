@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const editSchema = z.object({
-  namaExperience: z
-    .string({ message: "Kolom nama experience harus diisi!" })
-    .min(1, { message: "Kolom nama experience harus diisi!" }),
+  namaPenginapan: z
+    .string({ message: "Kolom nama penginapan harus diisi!" })
+    .min(1, { message: "Kolom nama penginapan harus diisi!" }),
   deskripsi: z
     .string({ message: "Kolom deskripsi harus diisi!" })
     .min(1, { message: "Kolom deskripsi harus diisi!" }),

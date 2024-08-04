@@ -4,18 +4,18 @@ import { NextRequest, NextResponse } from "next/server";
 export default async function middleware(req: NextRequest) {
   const token = await getToken({ req });
   const pathname = req.nextUrl.pathname;
-  const urlOrigin = "https://a5ef-2400-9800-6036-91f-3c90-1e86-2cd6-b240.ngrok-free.app/";
+  const urlOrigin = req.nextUrl.origin;
 
   if (pathname.includes("/admin") && !token?.isAdmin) {
-    return NextResponse.redirect('/');
+    return NextResponse.redirect(urlOrigin + "/");
   }
 
   if (!pathname.includes("/login") && !pathname.includes("/signup") && !token) {
-    return NextResponse.redirect("/login");
+    return NextResponse.redirect(urlOrigin + "/login");
   }
 
   if ((pathname.includes("/login") || pathname.includes("/signup")) && token) {
-    return NextResponse.redirect('/');
+    return NextResponse.redirect(urlOrigin + "/");
   } else {
     return NextResponse.next();
   }
@@ -24,6 +24,7 @@ export default async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     "/details/((?!general).*)",
+    "/orders",
     "/user/((?!general).*)",
     "/reservations",
     "/login",

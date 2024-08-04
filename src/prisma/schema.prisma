@@ -19,9 +19,7 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  reservations Reservation[]
-  orders       Order[]
-  reviews      Review[]
+  orders Order[]
 }
 
 model Destination {
@@ -34,57 +32,31 @@ model Destination {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  reviews     Review[]
-  experiences Experience[]
-  hotels      Hotel[]
-  orders      Order[]
-}
-
-model Hotel {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  hotelName     String
-  description   String
-  location      String
-  destinationId String   @db.ObjectId
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  rooms Room[]
-
-  destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
-}
-
-model Room {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  beds          Int
-  pricePerNight Float
-  fasilitas     Json[]
-  spaciousRoom  Float
-  description   String
-  image         String[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  hotelId String @db.ObjectId
-
-  reservations Reservation[]
-
-  hotel Hotel @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  orders Order[]
 }
 
 model Experience {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  experienceName  String
-  price           Int
-  imageUrls       String[]
-  description     String
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  destinationId   String            @db.ObjectId
-  orderExperience OrderExperience[]
+  namaExperience String
+  biaya          Int
+  deskripsi      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
+  orderExperiences OrderExperience[]
+}
+
+model Penginapan {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  namaPenginapan String
+  deskripsi      String
+  biaya          Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  orders Order[]
 }
 
 model Order {
@@ -95,72 +67,26 @@ model Order {
   masaPerjalanan    Int
   tanggalPerjalanan DateTime
   qty               Int
-  penginapan        String   @default("")
   totalBiaya        Int
   experience        String[] @default([])
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
   destinationId String @db.ObjectId
+  penginapanId  String @db.ObjectId
   userId        String @db.ObjectId
 
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination      Destination       @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
+  orderExperiences OrderExperience[]
+  penginapan       Penginapan        @relation(fields: [penginapanId], references: [id], onDelete: Cascade)
 }
 
-// Join table for Order and Experience
 model OrderExperience {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   orderId      String @db.ObjectId
   experienceId String @db.ObjectId
 
-  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
-}
-
-model Listing {
-  id            String        @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  location      String
-  type          String
-  desc          String
-  pricePerNight Float
-  beds          Int
-  hasFreeWifi   Boolean
-  imageUrls     String[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  reviews       Review[]
-  reservations  Reservation[]
-}
-
-model Reservation {
-  id             String     @id @default(auto()) @map("_id") @db.ObjectId
-  startDate      DateTime
-  endDate        DateTime
-  chargeId       String
-  daysDifference Int
-  reservedDates  DateTime[] @default([])
-  listingId      String     @db.ObjectId
-  userId         String     @db.ObjectId
-  roomId         String     @db.ObjectId
-  createdAt      DateTime   @default(now())
-
-  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  room    Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
-}
-
-model Review {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  text          String
-  stars         Int
-  listingId     String?  @db.ObjectId
-  destinationId String   @db.ObjectId
-  userId        String   @db.ObjectId
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  listing     Listing?    @relation(fields: [listingId], references: [id], onDelete: Cascade)
-  destination Destination @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  experiences Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  orders      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import { GiMountainRoad } from "react-icons/gi";
 import { IoIosArrowForward } from "react-icons/io";
@@ -7,10 +8,12 @@ function About() {
     <section className="relative w-full my-36">
       <section className="flex w-5/6 gap-5 mx-auto justify-center relative">
         <section className="w-[40%] relative">
-          <img
+          <Image
             src="/img/dieng.jfif"
             alt="Dieng"
-            className="w-[350px] rounded-2xl object-cover"
+            width={350}
+            height={500}
+            className=" rounded-2xl object-cover"
           />
           <div className="absolute right-5 top-10 w-[100px] bg-white flex justify-center items-center gap-2 shadow-xl rounded-2xl py-2 px-4">
             <div className="bg-blue-300 rounded-2xl flex justify-center items-center py-2 px-4">

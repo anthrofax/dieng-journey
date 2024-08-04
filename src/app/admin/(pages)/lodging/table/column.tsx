@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { MdAutoDelete } from "react-icons/md";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -13,16 +12,16 @@ import { confirmAlert } from "react-confirm-alert";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { format } from "timeago.js";
 import { handleHideModal } from "@/utils/helper-functions";
-import { useExperienceHook } from "@/app/admin/hooks/experience-hook";
 import { Rupiah } from "@/utils/format-currency";
-import EditExperienceModal from "@/app/admin/modals/experience-modal/edit-experience-modal";
-import { editSchema } from "@/app/admin/modals/experience-modal/edit-schema";
-import { MutateExperienceFormType } from "@/app/admin/modals/experience-modal/type";
+import { editSchema } from "@/app/admin/modals/lodging-modal/edit-schema";
+import { MutateLodgingFormType } from "@/app/admin/modals/lodging-modal/type";
+import EditLodgingModal from "@/app/admin/modals/lodging-modal/edit-lodging-modal";
+import { useLodgingHook } from "@/app/admin/hooks/lodging-hook";
 
 export const columns = [
   {
-    accessorKey: "namaExperience",
-    header: "Experience",
+    accessorKey: "namaPenginapan",
+    header: "Penginapan",
   },
   {
     accessorKey: "deskripsi",
@@ -76,6 +75,7 @@ export const columns = [
     },
     cell: ({ row }: { row: any }) => {
       const value = row.getValue("createdAt");
+      console.log(value);
       return <div>{format(new Date(value))}</div>;
     },
   },
@@ -108,14 +108,14 @@ export const columns = [
 ];
 
 function ActionsColumn({ row }: { row: any }) {
-  const { id, namaExperience } = row.original;
-  const { handleDeleteExperience, isPendingDelete } = useExperienceHook();
+  const { id, namaPenginapan } = row.original;
+  const { handleDeleteLodging, isPendingDelete } = useLodgingHook();
   const [showEditModal, setShowEditModal] = useState(false);
-  const editFormState = useForm<MutateExperienceFormType>({
+  const editFormState = useForm<MutateLodgingFormType>({
     defaultValues: {
       biaya: 0,
       deskripsi: "",
-      namaExperience: "",
+      namaPenginapan: "",
     },
     resolver: zodResolver(editSchema),
   });
@@ -132,9 +132,9 @@ function ActionsColumn({ row }: { row: any }) {
                 <ConfirmationBox
                   icon={<MdAutoDelete />}
                   judul="Konfirmasi Penghapusan Data"
-                  pesan={`Apakah anda yakin ingin melakukan menghapus "${namaExperience}"?`}
+                  pesan={`Apakah anda yakin ingin melakukan menghapus "${namaPenginapan}"?`}
                   onClose={onClose}
-                  onClickIya={() => handleDeleteExperience(id)}
+                  onClickIya={() => handleDeleteLodging(id)}
                   labelIya="Yakin"
                   labelTidak="Ohh, sebentar"
                 />
@@ -163,7 +163,7 @@ function ActionsColumn({ row }: { row: any }) {
           </Button>
         </DialogTrigger>
 
-        <EditExperienceModal
+        <EditLodgingModal
           handleHideModal={() =>
             handleHideModal({
               formState: editFormState,
@@ -171,7 +171,7 @@ function ActionsColumn({ row }: { row: any }) {
             })
           }
           formState={editFormState}
-          experienceId={id}
+          lodgingId={id}
         />
       </Dialog>
     </>

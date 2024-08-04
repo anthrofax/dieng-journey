@@ -4,17 +4,6 @@ const { faker } = require("@faker-js/faker");
 // import { faker } from "@faker-js/faker";
 const bcryptjs = require("bcryptjs");
 
-const optionLocations = [
-  "dubai",
-  "abu-dhabi",
-  "mumbai",
-  "delhi",
-  "berlin",
-  "hamburg",
-  "st-tropez",
-  "paris",
-];
-
 const prismaServer = new PrismaClient();
 
 async function main() {
@@ -52,7 +41,7 @@ async function main() {
       price: 500000,
       city: "Wonosobo",
       imageUrls: [
-        "https://res.cloudinary.com/dmc0cvmf5/image/upload/v1722746067 menikmati-keindahan-golden-sunrise-bukit-sikunir-di-dieng-Elk-thumb_xbtov4.jpg",
+        "https://res.cloudinary.com/dmc0cvmf5/image/upload/v1722746067/menikmati-keindahan-golden-sunrise-bukit-sikunir-di-dieng-Elk-thumb_xbtov4.jpg",
         "https://res.cloudinary.com/dmc0cvmf5/image/upload/v1722746068/Sunrise_di_Bukit_Sikunir_fgojko.jpg",
         "https://res.cloudinary.com/dmc0cvmf5/image/upload/v1722746068/golden-sunrise-sikunir_b1rojm.jpg",
         "https://res.cloudinary.com/dmc0cvmf5/image/upload/v1722746068/Matahari-Terbit-Bukit-Sikunir-Dieng-Wonosobo-by-Ade-Chrisnadhi_gornd2.jpg",
@@ -159,30 +148,34 @@ async function main() {
     },
   });
 
-  // Seed Hotels
-  for (let j = 0; j < 10; j++) {
-    await prismaServer.hotel.create({
-      data: {
-        hotelName: faker.company.name(),
-        description: faker.lorem.paragraphs(),
-        location: `${faker.location.city()}, ${faker.location.state()}`, // Create a location in the format of "City, State"
-        destinationId: destinations[j].destinationId,
-      },
-    });
-  }
-
   // Seed Experiences
   for (let j = 0; j < 10; j++) {
     await prismaServer.experience.create({
       data: {
-        experienceName: faker.commerce.productName(), // Generate a random experience name
-        price: faker.number.int({ min: 100000, max: 5000000 }), // Random price for the experience
-        imageUrls: [faker.image.url(), faker.image.url(), faker.image.url()], // Array of image URLs
-        description: faker.lorem.paragraph(), // A paragraph describing the experience
-        destinationId: destinations[j].destinationId, // Assign each experience to a destination
+        namaExperience: faker.commerce.productName(),
+        biaya: faker.number.int({ min: 100000, max: 5000000 }),
+        deskripsi: faker.lorem.paragraph(),
       },
     });
   }
+
+  // Seed Penginapan
+  for (let j = 0; j < 10; j++) {
+    await prismaServer.penginapan.create({
+      data: {
+        biaya: faker.number.int({ min: 300000, max: 350000 }),
+        deskripsi: faker.lorem.paragraphs(),
+        namaPenginapan: faker.company.name(),
+      },
+    });
+  }
+
+  // Fetch some destination IDs
+  const penginapan = await prismaServer.penginapan.findMany({
+    select: {
+      id: true,
+    },
+  });
 
   // Seed Orders
   for (let j = 0; j < 10; j++) {
@@ -202,17 +195,10 @@ async function main() {
           "magelang",
           "wonosobo",
         ]),
-        penginapan: faker.helpers.arrayElement(["tirta", "sikembang", "cra"]),
+        penginapanId: penginapan[j].id,
       },
     });
   }
-
-  // Fetch some hotel IDs
-  const hotels = await prismaServer.hotel.findMany({
-    select: {
-      id: true,
-    },
-  });
 
   // Fetch some order IDs
   const orders = await prismaServer.order.findMany({
@@ -237,116 +223,6 @@ async function main() {
       },
     });
   }
-
-  // Seed Rooms
-  for (let j = 0; j < 10; j++) {
-    await prismaServer.room.create({
-      data: {
-        beds: faker.number.int(),
-        pricePerNight: faker.number.float(),
-        fasilitas: faker.helpers.arrayElements([
-          "Wifi Gratis",
-          "Kasur Lebar",
-          "Mesin Kopi",
-          "AC",
-          "Bathub",
-          "Netflix",
-        ]),
-        spaciousRoom: faker.number.float(),
-        description: faker.lorem.paragraphs(),
-        image: faker.helpers.arrayElements([
-          faker.image.url(),
-          faker.image.url(),
-          faker.image.url(),
-          faker.image.url(),
-          faker.image.url(),
-          faker.image.url(),
-        ]),
-        hotelId: hotels[j].id,
-      },
-    });
-  }
-
-  // Seed Listings
-  for (let j = 0; j < 10; j++) {
-    await prismaServer.listing.create({
-      data: {
-        name: faker.company.name(), // Generate a random property name
-        location: faker.helpers.arrayElement(
-          optionLocations.map((location: string) => location)
-        ), // Create a location in the format of "City, State"
-        type: faker.helpers.arrayElement([
-          "luxury",
-          "budget",
-          "threeStars",
-          "fourStars",
-          "fiveStars",
-        ]), // Randomly select a type of property
-        desc: faker.lorem.paragraphs(), // Generate a short description for the listing
-        pricePerNight: faker.number.float({ min: 100000, max: 5000000 }), // Generate a random price per night
-        beds: faker.number.int({ min: 1, max: 5 }), // Random number of beds
-        hasFreeWifi: faker.datatype.boolean(), // Randomly determine if there's free WiFi
-        imageUrls: [faker.image.url(), faker.image.url(), faker.image.url()], // Array of image URLs
-      },
-    });
-  }
-
-  // Fetch some rooms IDs
-  const rooms = await prismaServer.room.findMany({
-    select: {
-      id: true,
-    },
-  });
-
-  // Fetch some listings IDs
-  const listings = await prismaServer.listing.findMany({
-    select: {
-      id: true,
-    },
-  });
-
-  // Seed Reservations
-  for (let j = 0; j < 10; j++) {
-    const startDate = faker.date.soon(); // Generate a start date in the near future
-    const endDate = new Date(
-      startDate.getTime() +
-        faker.number.int({ min: 1, max: 14 }) * 24 * 60 * 60 * 1000
-    ); // End date based on start date, adding 1-14 days
-    await prismaServer.reservation.create({
-      data: {
-        startDate: startDate,
-        endDate: endDate,
-        chargeId: faker.string.uuid(), // Generate a random transaction ID
-        daysDifference:
-          (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24), // Calculate the number of days between start and end dates
-        reservedDates: Array.from(
-          {
-            length:
-              (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24),
-          },
-          (_, i) => new Date(startDate.getTime() + i * 1000 * 3600 * 24)
-        ), // Generate an array of all dates between start and end
-        listingId: listings[j].id, // Cycle through available listings
-        userId: users[j].id, // Cycle through available users
-        roomId: rooms[j].id, // Cycle through available rooms
-      },
-    });
-  }
-
-  // Seed Reviews
-  for (let j = 0; j < 10; j++) {
-    await prismaServer.review.create({
-      data: {
-        text: faker.lorem.sentences(faker.number.int({ min: 1, max: 3 })), // Generate 1 to 3 sentences of review text
-        stars: faker.number.int({ min: 1, max: 5 }), // Generate a star rating between 1 and 5
-        listingId: listings[j].id, // Cycle through available listings
-        destinationId: destinations[j].destinationId, // Cycle through available destinations
-        userId: users[j].id, // Cycle through available users
-      },
-    });
-  }
-
-  console.log("Orders have been seeded.");
 }
 
 main()

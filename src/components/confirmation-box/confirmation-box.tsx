@@ -23,7 +23,7 @@ function ConfirmationBox({
 }: Props) {
   return (
     <div
-      className="bg-white/20 backdrop-blur-lg rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative shadow-lg"
+      className="bg-white/20 backdrop-blur-lg rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-[999] mb-4 mx-4 md:relative shadow-lg"
       onClick={onClose}
     >
       <div className="md:flex items-center">
