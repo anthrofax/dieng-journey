@@ -10,8 +10,8 @@ import { useParams } from "next/navigation";
 import { Badge } from "flowbite-react";
 import { Rupiah } from "@/utils/format-currency";
 import ImageGallery from "@/components/image-gallery/image-gallery";
-import { experience, fasilitas, penginapan } from "@/data/data";
-import { FaLocationDot } from "react-icons/fa6";
+// import { experience, fasilitas, penginapan } from "@/data/data";
+import { FaLocationDot, FaSquareParking } from "react-icons/fa6";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -19,6 +19,41 @@ import { redirectToCheckout } from "./service";
 import OrderFormCTA from "./components/order-form-cta";
 import { schema } from "./schema";
 import { OrderFormFieldType } from "./type";
+import { MdEmojiTransportation } from "react-icons/md";
+import { RiGuideLine, RiSteering2Line } from "react-icons/ri";
+import { IoFastFood, IoTicketOutline } from "react-icons/io5";
+import { GiPirateCoat } from "react-icons/gi";
+
+export const fasilitas = [
+  {
+    icon: MdEmojiTransportation,
+    label: "Transportasi",
+  },
+  {
+    icon: RiSteering2Line,
+    label: "Driver",
+  },
+  {
+    icon: FaSquareParking,
+    label: "Parkir",
+  },
+  {
+    icon: IoTicketOutline,
+    label: "Ticketing",
+  },
+  {
+    icon: RiGuideLine,
+    label: "Tour Guide",
+  },
+  {
+    icon: IoFastFood,
+    label: "Welcome Snack",
+  },
+  {
+    icon: GiPirateCoat,
+    label: "Jas Hujan 1x Pakai",
+  },
+];
 
 function DestinationDetails() {
   let { destinationId } = useParams();
@@ -67,37 +102,37 @@ function DestinationDetails() {
       console.log(data);
       let totalBiaya = 0;
 
-      const biayaExperience = experience.reduce((acc, experienceItem) => {
-        if (data.experience.includes(experienceItem.value))
-          return acc + experienceItem.harga;
+      // const biayaExperience = experience.reduce((acc, experienceItem) => {
+      //   if (data.experience.includes(experienceItem.value))
+      //     return acc + experienceItem.harga;
 
-        return 0;
-      }, 0);
+      //   return 0;
+      // }, 0);
 
-      const biayaPenginapan =
-        penginapan.find(
-          (penginapanItem) => penginapanItem.value === data.penginapan
-        )?.harga || 0;
+      // const biayaPenginapan =
+      //   penginapan.find(
+      //     (penginapanItem) => penginapanItem.value === data.penginapan
+      //   )?.harga || 0;
 
-      totalBiaya =
-        dataDestinasi.price * Number(data.qty) +
-        biayaExperience +
-        biayaPenginapan * Number(data.masaPerjalanan);
+      // totalBiaya =
+      //   dataDestinasi.price * Number(data.qty) +
+      //   biayaExperience +
+      //   biayaPenginapan * Number(data.masaPerjalanan);
 
-      await redirectToCheckout({
-        destinationId: dataDestinasi.destinationId,
-        experience: data.experience,
-        hargaDestinasi: dataDestinasi.price,
-        lokasiPenjemputan: data.lokasiPenjemputan,
-        masaPerjalanan: data.masaPerjalanan,
-        nama: data.nama,
-        namaDestinasi: dataDestinasi.destinationName,
-        nomorHp: data.nomorHp,
-        penginapan: data.penginapan,
-        qty: data.qty,
-        tanggalPerjalanan: data.tanggalPerjalanan,
-        totalBiaya,
-      });
+      // await redirectToCheckout({
+      //   destinationId: dataDestinasi.destinationId,
+      //   experience: data.experience,
+      //   hargaDestinasi: dataDestinasi.price,
+      //   lokasiPenjemputan: data.lokasiPenjemputan,
+      //   masaPerjalanan: data.masaPerjalanan,
+      //   nama: data.nama,
+      //   namaDestinasi: dataDestinasi.destinationName,
+      //   nomorHp: data.nomorHp,
+      //   penginapan: data.penginapan,
+      //   qty: data.qty,
+      //   tanggalPerjalanan: data.tanggalPerjalanan,
+      //   totalBiaya,
+      // });
     } catch (err) {
       toast.error("Pembayaran gagal");
     }

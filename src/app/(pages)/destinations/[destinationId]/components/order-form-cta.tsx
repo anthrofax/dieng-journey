@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { experience, lokasiPenjemputan, penginapan } from "@/data/data";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { format } from "date-fns";
 import { useExperienceHooks } from "@/hooks/experience-hook";
@@ -33,6 +32,21 @@ import { useLodgingHooks } from "@/hooks/lodging-hooks";
 import { Rupiah } from "@/utils/format-currency";
 import Skeleton from "react-loading-skeleton";
 import { OrderFormFieldType } from "../type";
+
+export const lokasiPenjemputan = [
+  {
+    label: "Yogyakarta",
+    value: "yogyakarta",
+  },
+  {
+    label: "Wonosobo",
+    value: "wonosobo",
+  },
+  {
+    label: "Magelang",
+    value: "magelang",
+  },
+];
 
 type Props = {
   form: UseFormReturn<OrderFormFieldType, any, undefined>;

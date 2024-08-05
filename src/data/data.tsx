@@ -35,52 +35,6 @@ export const optionTypes = [
   { text: "5 Stars", value: "fiveStars" },
 ];
 
-export const lokasiPenjemputan = [
-  {
-    label: "Yogyakarta",
-    value: "yogyakarta",
-  },
-  {
-    label: "Wonosobo",
-    value: "wonosobo",
-  },
-  {
-    label: "Magelang",
-    value: "magelang",
-  },
-];
-
-export const fasilitas = [
-  {
-    icon: MdEmojiTransportation,
-    label: "Transportasi",
-  },
-  {
-    icon: RiSteering2Line,
-    label: "Driver",
-  },
-  {
-    icon: FaSquareParking,
-    label: "Parkir",
-  },
-  {
-    icon: IoTicketOutline,
-    label: "Ticketing",
-  },
-  {
-    icon: RiGuideLine,
-    label: "Tour Guide",
-  },
-  {
-    icon: IoFastFood,
-    label: "Welcome Snack",
-  },
-  {
-    icon: GiPirateCoat,
-    label: "Jas Hujan 1x Pakai",
-  },
-];
-
 export const penginapan = [
   { nama: "Hotel Tirta Arum Price | Rp.300rb ", harga: 300000, value: "tirta", },
   {
