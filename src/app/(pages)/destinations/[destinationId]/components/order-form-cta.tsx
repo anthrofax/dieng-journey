@@ -31,6 +31,11 @@ import { Rupiah } from "@/utils/format-currency";
 import Skeleton from "react-loading-skeleton";
 import { OrderFormFieldType } from "../type";
 import { Experience, Penginapan } from "@prisma/client";
+import { confirmAlert } from "react-confirm-alert";
+import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
+import { GoInfo } from "react-icons/go";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 export const lokasiPenjemputan = [
   {
@@ -72,12 +77,38 @@ function OrderFormCTA({
   isLoadingExperienceQuery,
   isLoadingLodgingQuery,
 }: Props) {
+  const { data: session } = useSession();
+
   return (
     <div
       className={`shadow-3xl bg-primary mt-3 p-5 text-black rounded-lg overflow-scroll max-h-[500px] ${className}`}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handlePayment)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit((data) => {
+            if (!session)
+              return toast.error(
+                "Anda belum login, silahkan login terlebih dahulu"
+              );
+
+            confirmAlert({
+              customUI: ({ onClose }: { onClose: () => void }) => {
+                return (
+                  <ConfirmationBox
+                    icon={<GoInfo />}
+                    judul="Konfirmasi Data"
+                    pesan="Sebelum melakukan pemesanan, dicek lagi, apakah data yang anda masukkan sudah benar?"
+                    onClose={onClose}
+                    onClickIya={() => handlePayment(data)}
+                    labelIya="Sudah"
+                    labelTidak="Sebentar, saya cek lagi"
+                  />
+                );
+              },
+            });
+          })}
+          className="space-y-4"
+        >
           <FormField
             control={form.control}
             name="nama"

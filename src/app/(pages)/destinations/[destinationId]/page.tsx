@@ -1,6 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
 import React, { useEffect } from "react";
 import Spinner from "@/components/spinner/spinner";
 import { getSelectedDestination } from "@/services/destination-services";
@@ -79,7 +78,7 @@ function DestinationDetails() {
   const { allLodgings, isLoadingQuery: isLoadingLodgingQuery } =
     useLodgingHooks();
 
-    // Default Input Value
+  // Default Input Value
   const today = new Date();
   const defaultDate = new Date();
   defaultDate.setDate(today.getDate() + 3);
@@ -114,17 +113,20 @@ function DestinationDetails() {
         );
 
       toast.success("Data berhasil terkirim");
-      console.log(data);
       let totalBiaya = 0;
 
-      const biayaExperience = allExperiences.reduce((acc, experienceItem) => {
-        data.experience.forEach((selectedExperienceId) => {
-          if (selectedExperienceId === experienceItem.id)
+      const biayaExperience = data.experience.reduce(
+        (acc, selectedExperienceId) => {
+          const experienceItem = allExperiences.find(
+            (exp) => exp.id === selectedExperienceId
+          );
+          if (experienceItem) {
             return acc + experienceItem.biaya;
-        });
-
-        return 0;
-      }, 0);
+          }
+          return acc;
+        },
+        0
+      );
 
       const biayaPenginapan =
         allLodgings.find((penginapan) => penginapan.id === data.penginapanId)
