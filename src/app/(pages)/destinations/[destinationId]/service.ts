@@ -23,7 +23,6 @@ export const redirectToCheckout = async (checkoutData: {
 
     // @ts-ignore
     await window!.snap.pay(requestData.token);
-    return toast.success("Pembayaran berhasil");
   } catch (error) {
     toast.error("Pembayaran tidak valid");
   }
