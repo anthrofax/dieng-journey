@@ -76,7 +76,11 @@ export const columns = [
 
       return (
         <p className="w-[70%] text-justify mx-auto">
-          {`${description.slice(0, 200)}${description.length >= 200 && "..."}`}
+          {description !== ""
+            ? `${description.slice(0, 200)}${
+                description.length >= 200 ? "..." : ""
+              }`
+            : ""}
         </p>
       );
     },

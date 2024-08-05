@@ -13,6 +13,8 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    console.log(getAllOrders)
+
     if (getAllOrders.length === 0) return NextResponse.json(0);
 
     const dataPendapatan = getAllOrders.map((order) => {

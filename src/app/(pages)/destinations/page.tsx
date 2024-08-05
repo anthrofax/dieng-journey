@@ -117,7 +117,7 @@ const Destinations = () => {
   // Image URLs for the slider
   const sliderImages = [
     "/img/AbuDhabi.jpg",
-    "/img/Dubai.jpg",
+    "/img/dubai.jpg",
     "/img/berlin.jpg",
   ];
 

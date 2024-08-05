@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import {  AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 import { MdDashboard, MdHotel, MdCardTravel } from "react-icons/md";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
@@ -58,20 +58,12 @@ const Sidebar = () => {
           <Link
             href={data.href}
             key={data.text}
-            className={`flex items-center gap-2 p-3 rounded-xl transition-all cursor-pointer ${
-              data.isCurrentPage && "bg-blue-600  w-fit"
-            }`}
+            className={`flex items-center gap-2 p-3 w-fit rounded-xl transition-all cursor-pointer text-[#cec7c7] ${
+              data.isCurrentPage && "bg-blue-600 text-white"
+            } hover:bg-blue-300 transition-all hover:text-white`}
           >
-            <span>
-              {<data.icon color={data.isCurrentPage ? "#fff" : "#cec7c7"} />}
-            </span>
-            <span
-              className={`${
-                data.isCurrentPage ? "text-white" : "text-[#cec7c7]"
-              }`}
-            >
-              {data.text}
-            </span>
+            <span>{<data.icon />}</span>
+            <span>{data.text}</span>
           </Link>
         ))}
       </div>

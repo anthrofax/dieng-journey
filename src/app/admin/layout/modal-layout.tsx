@@ -18,7 +18,7 @@ const ModalLayout = ({
   children: React.ReactNode;
 }) => {
   return (
-    <DialogContent className="sm:max-w-[600px] h-fit h-min-[600px]">
+    <DialogContent className="sm:max-w-[600px] min-h-[300px]">
       <DialogHeader >
         <DialogTitle>
           {isCreating ? "Tambah Data " : "Perbarui Data "}
