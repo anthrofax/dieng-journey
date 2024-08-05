@@ -10,17 +10,16 @@ export const redirectToCheckout = async (checkoutData: {
   masaPerjalanan: number;
   nama: string;
   nomorHp: string;
-  penginapan: string ;
+  penginapanId: string ;
   qty: number;
   tanggalPerjalanan: Date;
   totalBiaya: number;
 }) => {
+  console.log(checkoutData)
   try {
     const response = await AXIOS_API.post("/tokenizer", checkoutData);
 
     const requestData = response.data;
-
-    console.log({ requestData, response });
 
     // @ts-ignore
     await window!.snap.pay(requestData.token);

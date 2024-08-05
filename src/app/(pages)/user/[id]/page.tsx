@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "flowbite-react";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 import { getUserData, updateUserData } from "./service";
@@ -16,6 +16,13 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { confirmAlert } from "react-confirm-alert";
 
+type UpdateUserFormType = {
+  displayName: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+};
+
 function User({ params }: { params: { id: string } }) {
   const { id } = params;
   const fileInput = useRef<HTMLInputElement>();
@@ -23,6 +30,21 @@ function User({ params }: { params: { id: string } }) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<UpdateUserFormType>({
+    defaultValues: {
+      displayName: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+    },
+    resolver: zodResolver(schema),
+  });
 
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
@@ -38,17 +60,21 @@ function User({ params }: { params: { id: string } }) {
         queryKey: ["currentUser"],
       });
 
+      reset();
       toast.success("Data akun anda berhasil diperbarui");
     },
+    onError: (err) => console.log(err),
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      console.log(errors);
+
+      (Object.keys(errors) as (keyof typeof errors)[]).forEach((key) => {
+        toast.error(`${errors[key]?.message as string}`);
+      });
+    }
+  }, [errors]);
 
   if (!data) return null;
 
@@ -67,16 +93,19 @@ function User({ params }: { params: { id: string } }) {
   };
 
   const onSubmit = async (data: any) => {
+    if (Object.values(data).every((value) => value === "") && !image)
+      return toast.error("Tidak ada perubahan yang anda lakukan");
+
     try {
       let body: {
-        username?: string;
+        displayName?: string;
         phone?: string;
         password?: string;
         profileImage?: string;
       } = {};
       let profileImage = "";
 
-      if (data.username) body.username = data.username;
+      if (data.displayName) body.displayName = data.displayName;
       if (data.phone) body.phone = data.phone;
       if (data.password) body.password = data.password;
 
@@ -94,7 +123,7 @@ function User({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="p-4 col-span-8 lg:col-span-7 w-full pl-5">
+    <div className="p-4 col-span-8 lg:col-span-7 w-full pl-5 h-fit">
       <h1 className="font-semibold text-2xl mb-5 text-center lg:text-left">
         Pengaturan Pengguna
       </h1>
@@ -176,8 +205,8 @@ function User({ params }: { params: { id: string } }) {
                     : data.user?.displayName
                 }
               />
-              {errors?.name && (
-                <p className="text-red-500">{`${errors?.name.message}`}</p>
+              {errors?.displayName && (
+                <p className="text-red-500">{`${errors?.displayName.message}`}</p>
               )}
             </>
           )}

@@ -3,12 +3,15 @@ import { z } from "zod";
 // Define the schema for the object
 export const schema = z
   .object({
-    username: z.string(),
+    displayName: z
+      .string({ message: "Nama yang anda masukkan tidak valid" })
+      .optional(),
     phone: z
-      .string()
-      .max(15, { message: "Nomor yang anda inputkan tidak valid" }),
-    password: z.string(),
-    confirmPassword: z.string(),
+      .string({ message: "Nomor yang anda inputkan tidak valid" })
+      .max(15, { message: "Nomor yang anda inputkan tidak valid" })
+      .optional(),
+    password: z.string({ message: "Kata sandi yang anda inputkan tidak valid" }).optional(),
+    confirmPassword: z.string({ message: "Kata sandi yang anda inputkan tidak valid" }).optional(),
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {

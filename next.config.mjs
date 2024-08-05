@@ -1,6 +1,7 @@
 import withPlaiceholder from "@plaiceholder/next";
 
 const nextConfig = {
+  fastRefresh: true,
   transpilePackages: ["@plaiceholder/next"],
   images: {
     remotePatterns: [{ hostname: "**", protocol: "https", port: "" }],

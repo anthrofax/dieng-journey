@@ -27,11 +27,10 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { format } from "date-fns";
-import { useExperienceHooks } from "@/hooks/experience-hook";
-import { useLodgingHooks } from "@/hooks/lodging-hooks";
 import { Rupiah } from "@/utils/format-currency";
 import Skeleton from "react-loading-skeleton";
 import { OrderFormFieldType } from "../type";
+import { Experience, Penginapan } from "@prisma/client";
 
 export const lokasiPenjemputan = [
   {
@@ -50,10 +49,16 @@ export const lokasiPenjemputan = [
 
 type Props = {
   form: UseFormReturn<OrderFormFieldType, any, undefined>;
-  handlePayment: (data: FieldValues) => Promise<string | undefined>;
+  handlePayment: (
+    data: FieldValues & OrderFormFieldType
+  ) => Promise<string | undefined>;
   masaPerjalanan: number;
   namaDestinasi: string;
   className?: string;
+  allExperiences: Experience[];
+  allLodgings: Penginapan[];
+  isLoadingExperienceQuery: boolean;
+  isLoadingLodgingQuery: boolean;
 };
 
 function OrderFormCTA({
@@ -62,15 +67,11 @@ function OrderFormCTA({
   masaPerjalanan,
   className = "",
   namaDestinasi,
+  allExperiences,
+  allLodgings,
+  isLoadingExperienceQuery,
+  isLoadingLodgingQuery,
 }: Props) {
-  // Fetch Data Experience
-  const { allExperiences, isLoadingQuery: isLoadingExperienceQuery } =
-    useExperienceHooks();
-
-  // Fetch Data Penginapan
-  const { allLodgings, isLoadingQuery: isLoadingLodgingQuery } =
-    useLodgingHooks();
-
   return (
     <div
       className={`shadow-3xl bg-primary mt-3 p-5 text-black rounded-lg overflow-scroll max-h-[500px] ${className}`}
@@ -265,9 +266,12 @@ function OrderFormCTA({
                       onSelect={field.onChange}
                       disabled={(date) => {
                         const today = new Date();
+                        const minDate = new Date();
                         const maxDate = new Date();
+
+                        minDate.setDate(today.getDate() + 3);
                         maxDate.setDate(today.getDate() + 30);
-                        return date > maxDate || date < new Date();
+                        return date > maxDate || date < minDate;
                       }}
                       initialFocus
                     />

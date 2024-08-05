@@ -15,7 +15,8 @@ import { FaLocationDot, FaSquareParking } from "react-icons/fa6";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
-import { redirectToCheckout } from "./service";
+import { useExperienceHooks } from "@/hooks/experience-hook";
+import { useLodgingHooks } from "@/hooks/lodging-hooks";
 import OrderFormCTA from "./components/order-form-cta";
 import { schema } from "./schema";
 import { OrderFormFieldType } from "./type";
@@ -23,6 +24,7 @@ import { MdEmojiTransportation } from "react-icons/md";
 import { RiGuideLine, RiSteering2Line } from "react-icons/ri";
 import { IoFastFood, IoTicketOutline } from "react-icons/io5";
 import { GiPirateCoat } from "react-icons/gi";
+import { redirectToCheckout } from "./service";
 
 export const fasilitas = [
   {
@@ -69,6 +71,19 @@ function DestinationDetails() {
     queryFn: () => getSelectedDestination({ id: destinationId }),
   });
 
+  // Fetch Data Experience
+  const { allExperiences, isLoadingQuery: isLoadingExperienceQuery } =
+    useExperienceHooks();
+
+  // Fetch Data Penginapan
+  const { allLodgings, isLoadingQuery: isLoadingLodgingQuery } =
+    useLodgingHooks();
+
+    // Default Input Value
+  const today = new Date();
+  const defaultDate = new Date();
+  defaultDate.setDate(today.getDate() + 3);
+
   const form = useForm<OrderFormFieldType>({
     defaultValues: {
       experience: [],
@@ -78,7 +93,7 @@ function DestinationDetails() {
       nomorHp: "",
       penginapanId: "",
       qty: 0,
-      tanggalPerjalanan: new Date(),
+      tanggalPerjalanan: defaultDate,
     },
     resolver: zodResolver(schema),
   });
@@ -89,7 +104,7 @@ function DestinationDetails() {
     defaultValue: 1,
   });
 
-  async function handlePayment(data: FieldValues) {
+  async function handlePayment(data: FieldValues & OrderFormFieldType) {
     try {
       if (!dataDestinasi) return toast.error("Data destinasi tidak ditemukan");
 
@@ -102,37 +117,38 @@ function DestinationDetails() {
       console.log(data);
       let totalBiaya = 0;
 
-      // const biayaExperience = experience.reduce((acc, experienceItem) => {
-      //   if (data.experience.includes(experienceItem.value))
-      //     return acc + experienceItem.harga;
+      const biayaExperience = allExperiences.reduce((acc, experienceItem) => {
+        data.experience.forEach((selectedExperienceId) => {
+          if (selectedExperienceId === experienceItem.id)
+            return acc + experienceItem.biaya;
+        });
 
-      //   return 0;
-      // }, 0);
+        return 0;
+      }, 0);
 
-      // const biayaPenginapan =
-      //   penginapan.find(
-      //     (penginapanItem) => penginapanItem.value === data.penginapan
-      //   )?.harga || 0;
+      const biayaPenginapan =
+        allLodgings.find((penginapan) => penginapan.id === data.penginapanId)
+          ?.biaya || 0;
 
-      // totalBiaya =
-      //   dataDestinasi.price * Number(data.qty) +
-      //   biayaExperience +
-      //   biayaPenginapan * Number(data.masaPerjalanan);
+      totalBiaya =
+        dataDestinasi.price * Number(data.qty) +
+        biayaExperience +
+        biayaPenginapan * Number(data.masaPerjalanan);
 
-      // await redirectToCheckout({
-      //   destinationId: dataDestinasi.destinationId,
-      //   experience: data.experience,
-      //   hargaDestinasi: dataDestinasi.price,
-      //   lokasiPenjemputan: data.lokasiPenjemputan,
-      //   masaPerjalanan: data.masaPerjalanan,
-      //   nama: data.nama,
-      //   namaDestinasi: dataDestinasi.destinationName,
-      //   nomorHp: data.nomorHp,
-      //   penginapan: data.penginapan,
-      //   qty: data.qty,
-      //   tanggalPerjalanan: data.tanggalPerjalanan,
-      //   totalBiaya,
-      // });
+      await redirectToCheckout({
+        destinationId: dataDestinasi.destinationId,
+        experience: data.experience,
+        hargaDestinasi: dataDestinasi.price,
+        lokasiPenjemputan: data.lokasiPenjemputan,
+        masaPerjalanan: data.masaPerjalanan,
+        nama: data.nama,
+        namaDestinasi: dataDestinasi.destinationName,
+        nomorHp: data.nomorHp,
+        penginapanId: data.penginapanId,
+        qty: data.qty,
+        tanggalPerjalanan: data.tanggalPerjalanan,
+        totalBiaya,
+      });
     } catch (err) {
       toast.error("Pembayaran gagal");
     }
@@ -225,6 +241,10 @@ function DestinationDetails() {
               handlePayment={handlePayment}
               masaPerjalanan={masaPerjalanan}
               namaDestinasi={dataDestinasi.destinationName}
+              allExperiences={allExperiences}
+              allLodgings={allLodgings}
+              isLoadingExperienceQuery={isLoadingExperienceQuery}
+              isLoadingLodgingQuery={isLoadingLodgingQuery}
               className="lg:hidden"
             />
           </div>
@@ -233,6 +253,10 @@ function DestinationDetails() {
             handlePayment={handlePayment}
             masaPerjalanan={masaPerjalanan}
             namaDestinasi={dataDestinasi.destinationName}
+            allExperiences={allExperiences}
+            allLodgings={allLodgings}
+            isLoadingExperienceQuery={isLoadingExperienceQuery}
+            isLoadingLodgingQuery={isLoadingLodgingQuery}
             className="hidden lg:block lg:col-span-4 sticky top-20"
           />
         </>

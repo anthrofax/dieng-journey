@@ -5,18 +5,18 @@ export async function GET(req: NextRequest, res: any) {
   try {
     const { id } = res.params;
 
-    console.log(id)
+    console.log(id);
 
     const user = await db.user.findUnique({
       where: { id },
     });
 
-    console.log(user)
+    console.log(user);
 
     if (!user) throw new Error("User not found");
 
     const { password, ...foundUser } = user;
-    console.log(foundUser)
+    console.log(foundUser);
 
     return NextResponse.json({ user: foundUser });
   } catch (error) {
@@ -38,7 +38,7 @@ export async function PATCH(req: NextRequest, ctx: any) {
       where: { id },
     });
 
-    console.log("Result => " + updatedUser)
+    console.log("Result => " + updatedUser);
 
     return NextResponse.json(updatedUser);
   } catch (error) {
