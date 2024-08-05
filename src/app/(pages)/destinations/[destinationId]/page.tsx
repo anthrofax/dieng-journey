@@ -112,7 +112,7 @@ function DestinationDetails() {
           "Penginapan di Sikembang Glamping hanya dapat menampung maksimum 2 orang"
         );
 
-      toast.success("Data berhasil terkirim");
+      toast.success("Mohon tunggu sebentar...");
       let totalBiaya = 0;
 
       const biayaExperience = data.experience.reduce(

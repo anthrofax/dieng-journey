@@ -33,8 +33,6 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  console.log(rememberedAccount);
-
   const {
     register,
     handleSubmit,

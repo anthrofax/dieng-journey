@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
           nomorHp,
           qty,
           tanggalPerjalanan,
-          totalBiaya: totalBiaya.toString(),
+          totalBiaya,
           penginapanId,
           userId,
           destinationId,
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         });
       });
 
-      return NextResponse.json({ message: "Pembayaran berhasil" });
+      return NextResponse.redirect('/orders');
     }
 
     return NextResponse.json({ message: "Loading" });
