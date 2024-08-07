@@ -2,38 +2,6 @@ import Delhi from "../../public/img/delhi.jpg";
 import Dubai from "../../public/img/dubai.jpg";
 import Berlin from "../../public/img/berlin.jpg";
 import Paris from "../../public/img/paris.jpg";
-import { MdEmojiTransportation } from "react-icons/md";
-import { RiGuideLine, RiSteering2Line } from "react-icons/ri";
-import { IoFastFood, IoTicketOutline } from "react-icons/io5";
-import { GiPirateCoat } from "react-icons/gi";
-import { FaLocationDot, FaSquareParking } from "react-icons/fa6";
-
-export const popularCities = [
-  {
-    city: "Delhi",
-    image: Delhi,
-  },
-  {
-    city: "Dubai",
-    image: Dubai,
-  },
-  {
-    city: "Berlin",
-    image: Berlin,
-  },
-  {
-    city: "Paris",
-    image: Paris,
-  },
-];
-
-export const optionTypes = [
-  { text: "Luxury", value: "luxury" },
-  { text: "Budget", value: "budget" },
-  { text: "3 Stars", value: "threeStars" },
-  { text: "4 Stars", value: "fourStars" },
-  { text: "5 Stars", value: "fiveStars" },
-];
 
 export const penginapan = [
   { nama: "Hotel Tirta Arum Price | Rp.300rb ", harga: 300000, value: "tirta", },

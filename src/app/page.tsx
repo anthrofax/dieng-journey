@@ -7,9 +7,8 @@ export default function Home() {
   return (
     <>
       <HeroSlider />
-      <PopularDestinations />
-      {/* <BestHotels /> */}
       <About />
+      <PopularDestinations />
       <Comments />
     </>
   );

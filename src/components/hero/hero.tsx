@@ -1,77 +1,199 @@
 "use client";
-import React, { useState } from "react";
-import Image, { StaticImageData } from "next/image";
-import Slider from "react-slick";
-import { SampleNextArrow, SamplePrevArrow } from "./arrow-components";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { HeroContextType, SliderImageType } from "./type";
+import LoadingBar from "./loading-bar";
+import SliderButton from "./slider-button";
+import Image from "next/image";
+import { useWindowDimensions } from "@/hooks/use-window-dimention";
+
+const sliderImages: SliderImageType[] = [
+  {
+    imageUrl: "/img/sea.jpg",
+    title: "Apakah kamu siap dengan petualangan baru?",
+    caption: "Eksplor Berbagai Destinasi Menarik!",
+  },
+  {
+    imageUrl: "/img/AbuDhabi.jpg",
+    title: "Nikmati Keindahan Pegunungan",
+    caption: "Temukan ketenangan di puncak gunung yang megah.",
+  },
+  {
+    imageUrl: "/img/StTropez.jpg",
+    title: "Keindahan Danau yang Tenang",
+    caption: "Nikmati keindahan danau yang damai dan menenangkan.",
+  },
+];
+
+const animationName = [
+  {
+    title: "firstAnimation",
+    caption: "firstAnimation",
+  },
+  {
+    title: "secondTitleAnimation",
+    caption: "secondCaptionAnimation",
+  },
+  {
+    title: "thirdTitleAnimation",
+    caption: "thirdCaptionAnimation",
+  },
+];
+
+const HeroSliderContext = createContext<HeroContextType>({
+  sliderImages: [],
+  currentImageLoadedIndex: 0,
+  setCurrentImageLoadedIndex: () => {},
+  handleNextImage: () => {},
+  handlePrevImage: () => {},
+  loadingProgress: 0,
+  setLoadingProgress: () => {},
+  isAnimating: true,
+});
+
+export function useHeroSliderContext() {
+  const context = useContext(HeroSliderContext);
+
+  if (!context) alert("Anda menggunakan context di luar jangkauan");
+
+  return context;
+}
 
 const HeroSlider = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    cssEase: "linear",
-    adaptiveHeight: true,
-    arrows: true,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [showText, setShowText] = useState(false);
+  const [currentImageLoadedIndex, setCurrentImageLoadedIndex] = useState(0);
+
+  const { height, width } = useWindowDimensions();
+
+  const handleNextImage = function () {
+    setShowText(false); // Hide text before changing image
+    setLoadingProgress(0);
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 2500);
+
+    if (!isAnimating) {
+      setCurrentImageLoadedIndex((prevImageIndex: number) => {
+        if (prevImageIndex === sliderImages.length - 1) return 0;
+
+        return prevImageIndex + 1;
+      });
+
+      setIsAnimating(true);
+    }
   };
 
-  const sliderImages = [
-    {
-      imageUrl: "/img/sea.jpg",
-      title: "Apakah kamu siap dengan petualangan baru?",
-      caption: "Eksplor Berbagai Destinasi Menarik!",
-    },
-    {
-      imageUrl: "/img/AbuDhabi.jpg",
-      title: "Nikmati Keindahan Pegunungan",
-      caption: "Temukan ketenangan di puncak gunung yang megah.",
-    },
-    {
-      imageUrl: "/img/Mumbai.jpg",
-      title: "Petualangan di Tengah Hutan",
-      caption: "Jelajahi hutan yang misterius dan penuh keajaiban.",
-    },
-    {
-      imageUrl: "/img/paris.jpg",
-      title: "Eksplorasi Gurun Pasir",
-      caption: "Rasakan panasnya petualangan di padang pasir yang luas.",
-    },
-    {
-      imageUrl: "/img/StTropez.jpg",
-      title: "Keindahan Danau yang Tenang",
-      caption: "Nikmati keindahan danau yang damai dan menenangkan.",
+  const handlePrevImage = function () {
+    setShowText(false); // Hide text before changing image
+    setLoadingProgress(0);
+
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 2500);
+
+    if (!isAnimating) {
+      setCurrentImageLoadedIndex((prevImageIndex: number) => {
+        if (prevImageIndex === 0) return sliderImages.length - 1;
+
+        return prevImageIndex - 1;
+      });
+
+      setIsAnimating(true);
     }
-  ];
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowText(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [currentImageLoadedIndex]);
 
   return (
-    <div className="relative w-full">
-      <Slider {...settings}>
-        {sliderImages.map((slide, index) => (
-          <div key={index} className="w-full h-screen relative">
-            <Image
-              src={slide.imageUrl}
-              alt="Hero Image"
-              layout="fill"
-              objectFit="cover"
-              className="brightness-50"
-            />
-
-            <div className="absolute top-1/2 left-1/2 text-center -translate-x-1/2 -translate-y-1/2 w-2/3 flex flex-col gap-5">
-              <h2 className="text-white text-3xl lg:text-6xl font-bold">
-                {slide.title}
-              </h2>
-              <h5 className="text-white text-xl lg:text-4xl font-semibold">
-                {slide.caption}
-              </h5>
-            </div>
-          </div>
-        ))}
-      </Slider>
+    <div
+      className={`jumbotron border-0 relative overflow-hidden transition-[background-image] bg-center bg-blend-multiply bg-no-repeat bg-cover cursor-pointer h-screen flex flex-col gap-3 justify-center items-center ${
+        currentImageLoadedIndex % 3 === 0 && "lg:items-start"
+      } ${currentImageLoadedIndex % 3 === 1 && "lg:items-center"} ${
+        currentImageLoadedIndex % 3 === 2 && "lg:items-end"
+      } text-white`}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        setIsLoading(false);
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsLoading(true);
+      }}
+    >
+      <Image
+        src={sliderImages[currentImageLoadedIndex].imageUrl}
+        alt="Fierto Hero Section Image"
+        fill
+        className={`object-cover scale-125 z-0 transition-opacity duration-[2000ms] opacity-[${
+          showText ? "100" : "50"
+        }]`}
+        priority
+        quality={100}
+      />
+      <HeroSliderContext.Provider
+        value={{
+          sliderImages,
+          currentImageLoadedIndex,
+          setCurrentImageLoadedIndex,
+          handleNextImage,
+          handlePrevImage,
+          loadingProgress,
+          setLoadingProgress,
+          isAnimating,
+        }}
+      >
+        <div className="bg-black opacity-50 absolute top-0 left-0 right-0 bottom-0 z-10"></div>
+        <LoadingBar isLoading={isLoading} />
+        <SliderButton direction="left" showed={isHovered} />
+        {showText && (
+          <>
+            <h2
+              className={`hero-title text-2xl w-[70%] lg:w-full lg:text-4xl font-semibold z-10 text-center ${
+                currentImageLoadedIndex % 3 === 0 && "lg:text-left"
+              } ${currentImageLoadedIndex % 3 === 1 && "lg:text-center"} ${
+                currentImageLoadedIndex % 3 === 2 && "lg:text-right"
+              }`}
+              style={{
+                animationName:
+                  width >= 1024
+                    ? animationName[currentImageLoadedIndex].title
+                    : "secondTitleAnimation",
+                animationDuration: "1s",
+                animationFillMode: "forwards",
+              }}
+            >
+              {sliderImages[currentImageLoadedIndex].title}
+            </h2>
+            <h3
+              className={`hero-caption text-md w-[70%] lg:w-full lg:text-2xl font-medium z-10 text-center ${
+                currentImageLoadedIndex % 3 === 0 && "lg:text-left"
+              } ${currentImageLoadedIndex % 3 === 1 && "lg:text-center"} ${
+                currentImageLoadedIndex % 3 === 2 && "lg:text-right"
+              }`}
+              style={{
+                animationName:
+                  width >= 1024
+                    ? animationName[currentImageLoadedIndex].caption
+                    : "secondCaptionAnimation",
+                animationDuration: "2s",
+                animationFillMode: "forwards",
+              }}
+            >
+              {sliderImages[currentImageLoadedIndex].caption}
+            </h3>
+          </>
+        )}
+        <SliderButton direction="right" showed={isHovered} />
+      </HeroSliderContext.Provider>
     </div>
   );
 };

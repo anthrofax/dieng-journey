@@ -1,9 +1,103 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  
+
 * {
-    transition: all;
-    scroll-behavior: smooth;
-    box-sizing: border-box;
+  transition: all;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+.appear {
+  opacity: 1;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.translate-left {
+  transform: translateX(-5rem);
+}
+
+.translate-right {
+  transform: translateX(5rem);
+}
+
+.translate-up {
+  transform: translateY(-5rem);
+}
+
+.translate-down {
+  transform: translateY(5rem);
+}
+
+/* Hero Section Animation */
+@keyframes firstAnimation {
+  0% {
+    opacity: 0;
+    right: 0;
+  }
+  50% {
+    left: 0px;
+  }
+  100% {
+    transform: translateX(5rem);
+    opacity: 1;
+  }
+}
+
+@keyframes secondTitleAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-5rem);
+  }
+  50% {
+    left: 50%;
+  }
+  75% {
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes secondCaptionAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+  50% {
+    left: 50%;
+  }
+  75% {
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes thirdTitleAnimation {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    right: 0px;
+  }
+  100% {
+    transform: translateX(-5rem);
+    opacity: 1;
+  }
+}
+
+@keyframes thirdCaptionAnimation {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    right: 0px;
+  }
+  100% {
+    transform: translateX(-5rem);
+    opacity: 1;
+  }
 }
