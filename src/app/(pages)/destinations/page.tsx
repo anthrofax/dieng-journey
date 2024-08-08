@@ -116,9 +116,9 @@ const Destinations = () => {
 
   // Image URLs for the slider
   const sliderImages = [
-    "/img/AbuDhabi.jpg",
-    "/img/dubai.jpg",
-    "/img/berlin.jpg",
+    "/img/brand_image_4.jpg",
+    "/img/brand_image_5.jpg",
+    "/img/brand_image_1.jpg",
   ];
 
   return (

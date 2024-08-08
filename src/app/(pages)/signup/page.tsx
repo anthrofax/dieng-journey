@@ -62,7 +62,7 @@ const SignUp = () => {
   };
 
   return (
-    <section className=" bg-[url('/img/dubai.jpg')] bg-contain bg-blend-darken relative">
+    <section className=" bg-[url('/img/brand_image_8.jpg')] bg-contain bg-blend-darken relative">
       <div className="absolute w-full h-full bg-black/50 mix-blend-multiply"></div>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0 relative z-10">
         <a
