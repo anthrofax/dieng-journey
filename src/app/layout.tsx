@@ -11,7 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Fiero Travel Agency | Dieng Journey",
+  title: "Fierto Travel Agency | Dieng Journey",
   description: "Dieng Journey",
   
 };

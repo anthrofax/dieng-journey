@@ -99,9 +99,8 @@ function Comments() {
         <h2 className="text-center text-3xl font-extrabold tracking-tight sm:text-4xl">
           Testimoni
         </h2>
-        <p className="mt-4 text-center text-xl leading-6 text-slate-800">
-          Jelajahi seluruh koleksi komponen dan elemen web sumber terbuka yang
-          dibuat dengan kelas utilitas dari Tailwind
+        <p className="mt-4 text-center text-lg leading-6 text-slate-800">
+          Yuk, jadilah bagian dari perjalanan indah seperti yang sudah dialami oleh Fierto Customer sebelumnya!
         </p>
         <div
           className={`mt-12 grid gap-8 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 ${styles.gridAutoFlowDense}`}
