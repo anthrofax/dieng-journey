@@ -7,7 +7,7 @@ const Card = ({ destination }: { destination: Destination }) => {
   return (
     <Link
       href={`/destinations/${destination.destinationId}`}
-      className="cursor-pointer h-[500px] w-[350px] flex flex-wrap rounded-xl shadow-md"
+      className="cursor-pointer h-[500px] w-[300px] flex flex-wrap rounded-xl shadow-md"
     >
       <div className="relative h-2/3 w-full">
         <Image

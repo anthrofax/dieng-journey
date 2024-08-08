@@ -24,6 +24,11 @@ const config = {
         primary: "rgb(37 99 235)",
         secondary: "#a4cafe",
       },
+      gridRowEnd: {
+        "span-1": "span 1",
+        "span-2": "span 2",
+        "span-3": "span 3",
+      },
     },
   },
   plugins: [require("tailwindcss-animate"), flowbite.plugin()],

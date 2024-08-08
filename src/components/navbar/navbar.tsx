@@ -56,7 +56,7 @@ const Navbar = () => {
               isScrolled ? "text-blue-600" : "text-[#cec7c7]"
             } text-lg lg:text-2xl font-bold`}
           >
-            Dieng Journey
+          Fierto Agency
           </h1>
           <MdOutlineTravelExplore
             size={25}

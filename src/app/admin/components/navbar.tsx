@@ -32,7 +32,7 @@ const Navbar = () => {
         href="/"
         className="flex items-center gap-2 transition-all text-xl lg:2xl"
       >
-        <h1 className="text-blue-600 font-bold">Dieng Journey</h1>
+        <h1 className="text-blue-600 font-bold">Fierto Admin</h1>
         <MdOutlineTravelExplore color="rgb(37 99 235)" />
       </Link>
       <button
