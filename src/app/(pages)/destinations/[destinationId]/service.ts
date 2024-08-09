@@ -1,4 +1,5 @@
 import AXIOS_API from "@/utils/axios-api";
+import { Experience, Penginapan } from "@prisma/client";
 import toast from "react-hot-toast";
 
 export const redirectToCheckout = async (checkoutData: {
@@ -10,12 +11,12 @@ export const redirectToCheckout = async (checkoutData: {
   masaPerjalanan: number;
   nama: string;
   nomorHp: string;
-  penginapanId: string ;
+  penginapanId: string;
   qty: number;
   tanggalPerjalanan: Date;
-  totalBiaya: number;
+  allExperiences: Experience[];
 }) => {
-  console.log(checkoutData)
+  console.log(checkoutData);
   try {
     const response = await AXIOS_API.post("/tokenizer", checkoutData);
 

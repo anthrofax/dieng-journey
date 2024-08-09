@@ -133,8 +133,8 @@ const HeroSlider = () => {
         src={sliderImages[currentImageLoadedIndex].imageUrl}
         alt="Fierto Hero Section Image"
         fill
-        className={`object-cover scale-125 z-0 transition-opacity duration-[2000ms] opacity-[${
-          showText ? "100" : "50"
+        className={`object-cover scale-125 z-0 transition-opacity duration-[2000ms] ${
+          showText ? "opacity-[100]" : "opacity-[50]"
         }]`}
         priority
         quality={100}

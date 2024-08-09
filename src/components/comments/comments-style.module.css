@@ -1,3 +1,6 @@
 .gridAutoFlowDense {
-  grid-auto-rows: minmax(100px, auto); /* Adjusts row height dynamically */
+  /* grid-auto-: minmax(100px, auto);  */
+  display: grid;
+  grid-auto-flow: dense;
+  grid-template-rows: auto;
 }

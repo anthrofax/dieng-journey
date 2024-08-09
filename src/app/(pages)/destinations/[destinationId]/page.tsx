@@ -113,29 +113,6 @@ function DestinationDetails() {
         );
 
       toast.success("Mohon tunggu sebentar...");
-      let totalBiaya = 0;
-
-      const biayaExperience = data.experience.reduce(
-        (acc, selectedExperienceId) => {
-          const experienceItem = allExperiences.find(
-            (exp) => exp.id === selectedExperienceId
-          );
-          if (experienceItem) {
-            return acc + experienceItem.biaya;
-          }
-          return acc;
-        },
-        0
-      );
-
-      const biayaPenginapan =
-        allLodgings.find((penginapan) => penginapan.id === data.penginapanId)
-          ?.biaya || 0;
-
-      totalBiaya =
-        dataDestinasi.price * Number(data.qty) +
-        biayaExperience +
-        biayaPenginapan * Number(data.masaPerjalanan);
 
       await redirectToCheckout({
         destinationId: dataDestinasi.destinationId,
@@ -149,7 +126,7 @@ function DestinationDetails() {
         penginapanId: data.penginapanId,
         qty: data.qty,
         tanggalPerjalanan: data.tanggalPerjalanan,
-        totalBiaya,
+        allExperiences,
       });
     } catch (err) {
       toast.error("Pembayaran gagal");

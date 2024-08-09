@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/currentUser";
 import { MidtransClient } from "midtrans-node-client";
 import { v4 as uuidv4 } from "uuid";
+import { Experience, Penginapan } from "@prisma/client";
+import db from "@/lib/db";
 
 const snap = new MidtransClient.Snap({
   isProduction: false,
@@ -23,20 +25,64 @@ export async function POST(req: NextRequest) {
       masaPerjalanan,
       nama,
       nomorHp,
-      penginapan,
+      penginapanId,
       qty,
       tanggalPerjalanan,
-      totalBiaya,
       destinationId,
+      allLodgings,
+      allExperiences,
     } = await req.json();
 
-    console.log(hargaDestinasi);
-    console.log(namaDestinasi);
-    console.log(qty);
+    const penginapanYangDipilih = await db.penginapan.findUnique({
+      where: {
+        id: penginapanId,
+      },
+      select: {
+        namaPenginapan: true,
+        biaya: true,
+      },
+    });
 
-    // const reservedDates = getDatesInRange(startDate, endDate);
+    const biayaExperience = experience.reduce(
+      (acc: number, selectedExperienceId: string) => {
+        const experienceItem = allExperiences.find(
+          (exp: Experience) => exp.id === selectedExperienceId
+        );
+        if (experienceItem) {
+          return acc + experienceItem.biaya;
+        }
+        return acc;
+      },
+      0
+    );
+
+    const totalBiaya =
+      hargaDestinasi * qty +
+      biayaExperience +
+      (penginapanYangDipilih?.biaya || 0) * masaPerjalanan;
 
     const parameter = {
+      item_details: [
+        {
+          price: hargaDestinasi,
+          quantity: qty,
+          name: `Tiket Destinasi ${namaDestinasi}`,
+        },
+        {
+          price: penginapanYangDipilih?.biaya || 0,
+          quantity: masaPerjalanan,
+          name: `${
+            penginapanYangDipilih?.namaPenginapan
+              ? `Malam | ${penginapanYangDipilih.namaPenginapan}`
+              : "Tidak memesan penginapan"
+          }`,
+        },
+        {
+          price: biayaExperience,
+          quantity: 1,
+          name: "Experience yang dipilih",
+        },
+      ],
       customer_details: {
         first_name: nama,
         last_name: "",
@@ -53,12 +99,12 @@ export async function POST(req: NextRequest) {
         masaPerjalanan,
         nama,
         nomorHp,
-        tanggalPerjalanan: new Date(tanggalPerjalanan),
+        tanggalPerjalanan: tanggalPerjalanan,
         userId: currentUser.id,
         qty,
         totalBiaya,
         destinationId,
-        penginapan
+        penginapanId,
       },
     };
 
