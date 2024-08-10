@@ -171,8 +171,8 @@ function User({ params }: { params: { id: string } }) {
               }}
             >
               <p>
-                Change <br />
-                image
+                Ubah <br />
+                Profil
               </p>
             </div>
           </div>

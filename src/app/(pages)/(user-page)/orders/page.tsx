@@ -15,8 +15,10 @@ export default async function OrdersPage() {
   if (!currentUser || !currentUser.id) {
     return (
       <div className="orders-container">
-        <h1>My Orders</h1>
-        <p>No current user found. Please log in to view your orders.</p>
+        <h1>Transaksi Saya</h1>
+        <p>
+          Mohon untuk login terlebih dahulu untuk melihat daftar transaksimu.
+        </p>
       </div>
     );
   }
@@ -40,9 +42,9 @@ export default async function OrdersPage() {
   if (!orders) {
     return (
       <div className="max-w-4xl mx-auto p-8">
-        <h1 className="text-xl font-bold mb-6">My Orders</h1>
+        <h1 className="text-xl font-bold mb-6">Transaksi saya</h1>
         <p className="text-gray-600">
-          No current user found. Please log in to view your orders.
+          Mohon untuk login terlebih dahulu untuk melihat daftar transaksimu.
         </p>
       </div>
     );
@@ -51,11 +53,11 @@ export default async function OrdersPage() {
   return (
     <div className="col-span-8 lg:col-span-7 w-full px-5">
       <h1 className="text-3xl font-bold mb-6 text-center lg:text-left">
-        My Orders
+        Transaksi Saya
       </h1>
       {orders.length === 0 ? (
         <p className="text-gray-600 text-center lg:text-left">
-          No orders found for your account.
+          Anda belum melakukan transaksi apapun.
         </p>
       ) : (
         <div className="space-y-6 flex gap-5 relative flex-wrap justify-center lg:justify-start">
@@ -68,13 +70,13 @@ export default async function OrdersPage() {
                 Order ID: {order.id}
               </h2>
 
-                <Image
-                  src={order.destination.imageUrls[0]}
-                  alt={order.destination.destinationName}
-                  className="my-3 object-cover rounded"
-                  width={300}
-                  height={200}
-                />
+              <Image
+                src={order.destination.imageUrls[0]}
+                alt={order.destination.destinationName}
+                className="my-3 object-cover rounded"
+                width={300}
+                height={200}
+              />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                 <h3 className="text-md font-semibold">Destinasi</h3>

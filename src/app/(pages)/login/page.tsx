@@ -38,14 +38,19 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    defaultValues: {
+      email: rememberedAccount?.email ? rememberedAccount.email : "",
+      password: rememberedAccount?.password ? rememberedAccount.password : "",
+      rememberMe: false,
+    },
     resolver: zodResolver(schema),
   });
 
   useEffect(() => {
     if (Object.keys(errors)?.length > 0) {
       console.log(errors);
-      Object.keys(errors)?.map((key) => {
-        toast.error(`${errors[key]?.message as Message}`);
+      (Object.keys(errors) as Array<keyof typeof errors>)?.map((key) => {
+        toast.error(`${errors[key]?.message}`);
       });
     }
   }, [errors]);
@@ -79,7 +84,7 @@ const Login = () => {
   };
 
   return (
-  <section className=" bg-[url('/img/brand_image_1.jpg')] bg-no-repeat bg-cover bg-blend-darken relative">
+    <section className=" bg-[url('/img/brand_image_1.jpg')] bg-no-repeat bg-cover bg-blend-darken relative">
       <div className="absolute w-full h-full bg-black/50 mix-blend-multiply" />
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0 relative">
         <a
