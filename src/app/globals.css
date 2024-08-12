@@ -8,11 +8,16 @@
   box-sizing: border-box;
 }
 
-.appear {
-  opacity: 1;
-  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+/* Component */
+.btn-primary {
+  @apply px-6 md:px-[50px] lg:px-[72px] py-2 md:py-5 bg-primary rounded-lg md:rounded-2xl shadow-sm shadow-primary text-white font-bold text-base md:text-3xl hover:scale-105 duration-300 transition-all;
 }
 
+.btn-tertiary {
+  @apply px-6 md:px-[50px] lg:px-[72px] py-2 md:py-5 bg-secondary rounded-lg md:rounded-2xl shadow-sm shadow-secondary text-white font-bold text-base md:text-xl hover:scale-110 duration-300 transition-all;
+}
+
+/* Hero Animations */
 .translate-left {
   transform: translateX(-5rem);
 }
@@ -100,4 +105,15 @@
     transform: translateX(-7rem);
     opacity: 1;
   }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

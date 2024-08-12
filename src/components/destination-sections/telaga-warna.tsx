@@ -29,9 +29,9 @@ function TelagaWarnaSection() {
             dan fotografi.
           </p>
           <Link className="mt-3" href="/destinations/66af7a20c4f78db57ce01332">
-            <div className="bg-primary hover:bg-secondary flex gap-2 items-center rounded-lg w-max p-3">
-              <h1 className="text-white">Read More</h1>
-              <IoIosArrowForward color="white" size={20} />
+            <div className="bg-primary hover:bg-secondary flex gap-2 items-center rounded-lg w-max p-3 text-white hover:text-black">
+              <h1>Lihat Selengkapnya</h1>
+              <IoIosArrowForward size={20} />
             </div>
           </Link>
         </section>

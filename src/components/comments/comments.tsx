@@ -92,7 +92,7 @@ function Comments() {
   return (
     <div className="bg-white shadow-xl text-black py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-3xl font-extrabold tracking-tight sm:text-4xl">
+        <h2 className="text-center text-3xl font-medium sm:text-4xl tracking-widest uppercase">
           Testimoni
         </h2>
         <p className="mt-4 text-center text-lg leading-6 text-slate-800">

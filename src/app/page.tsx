@@ -7,6 +7,8 @@ import BatuRatapanAnginSection from "@/components/destination-sections/batu-rata
 import KawahSikidangSection from "@/components/destination-sections/kawah-sikidang";
 import TelagaWarnaSection from "@/components/destination-sections/telaga-warna";
 import CandiArjunaSection from "@/components/destination-sections/candi-arjuna";
+import Contact from "@/components/contact/contact";
+import Paket from "@/components/paket/paket";
 
 export default function Home() {
   return (
@@ -18,8 +20,9 @@ export default function Home() {
       <KawahSikidangSection />
       <TelagaWarnaSection />
       <CandiArjunaSection />
-      <PopularDestinations />
+      <Paket />
       <Comments />
+      <Contact />
     </>
   );
 }
