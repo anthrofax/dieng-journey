@@ -7,8 +7,39 @@ import Link from "next/link";
 import { gsap } from "gsap";
 
 function CandiArjunaSection() {
-  const [signHovered, setSignHovered] = useState(false);
+  useEffect(() => {
+    const elementsToAnimate = [
+      { selector: ".candi-arjuna-image", animation: animateFromLeft },
+      { selector: ".candi-arjuna-title", animation: animateFromLeft },
+      { selector: ".candi-arjuna-description", animation: animateFromLeft },
+      { selector: ".candi-arjuna-link", animation: animateFromLeft },
+    ];
 
+    elementsToAnimate.forEach(({ selector, animation }) => {
+      const element = document.querySelector(selector);
+      if (element) {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              animation(entry.target);
+              observer.unobserve(entry.target); // Stop observing after animation is triggered
+            }
+          },
+          { threshold: 0.15 }
+        );
+        observer.observe(element);
+      }
+    });
+
+    function animateFromLeft(element: Element) {
+      gsap.fromTo(
+        element,
+        { opacity: 0, x: -100 },
+        { opacity: 1, x: 0, duration: 1, ease: "power2.out" }
+      );
+    }
+  }, []);
+  
   function animateBush() {
     gsap.to("#bush", {
       x: () => Math.random() * 10 - 10,
@@ -46,7 +77,6 @@ function CandiArjunaSection() {
   }, []);
 
   const handleMouseEnter = () => {
-    setSignHovered(true);
     document
       .querySelector("#sign")
       ?.classList.replace("-bottom-80", "bottom-24");
@@ -61,12 +91,8 @@ function CandiArjunaSection() {
     const bush = parrentElement.closest("#bush");
     const sign = parrentElement.closest("#sign");
 
-    console.log(bush)
-    console.log(sign)
-
     // Cek apakah kursor benar-benar keluar dari #bush atau #sign
     if (!bush && !sign) {
-      setSignHovered(false);
       document
         .querySelector("#sign")
         ?.classList.replace("bottom-24", "-bottom-80");
@@ -79,11 +105,11 @@ function CandiArjunaSection() {
 
   return (
     <section
-      className="relative w-full my-36 pb-80 overflow-hidden"
+      className="relative w-full mt-36 mb-24 pb-80 overflow-hidden"
       onMouseLeave={handleMouseLeave}
     >
       <section className="flex flex-col lg:flex-row w-5/6 gap-10 mx-auto justify-center items-center relative">
-        <section className="min-w-[18rem] min-h-[12rem] relative">
+        <section className="min-w-[18rem] min-h-[12rem] relative candi-arjuna-image">
           <Image
             src="/img/candi_arjuna.webp"
             alt="Golden Sunrise Sikunir"
@@ -93,10 +119,10 @@ function CandiArjunaSection() {
           />
         </section>
         <section className="w-[80%] flex flex-col justify-center items-center lg:items-start gap-3 text-center lg:text-left">
-          <h1 className="sm:text-2xl text-4xl w-[80%] text-slate-800 font-bold mb-4">
+          <h1 className="sm:text-2xl text-4xl w-[80%] text-slate-800 font-bold mb-4 candi-arjuna-title">
             Candi Arjuna
           </h1>
-          <p className="text-slate-500 text-justify leading-8">
+          <p className="text-slate-500 text-justify leading-8 candi-arjuna-description">
             Kompleks Candi Arjuna, yang berusia lebih dari seribu tahun,
             merupakan saksi bisu peradaban Hindu kuno di Dataran Tinggi Dieng.
             Candi ini menampilkan arsitektur batu kuno yang megah dan merupakan
@@ -104,7 +130,7 @@ function CandiArjunaSection() {
             menyelami sejarah dan arsitektur Hindu kuno, serta menikmati
             pemandangan alam yang mempesona sekitarnya.
           </p>
-          <Link className="mt-3" href="/destinations/66af7a20c4f78db57ce01333">
+          <Link className="mt-3 candi-arjuna-link" href="/destinations/66af7a20c4f78db57ce01333">
             <div className="bg-primary hover:bg-secondary flex gap-2 items-center rounded-lg w-max p-3 text-white hover:text-black">
               <h1>Lihat Selengkapnya</h1>
               <IoIosArrowForward size={20} />
@@ -120,7 +146,7 @@ function CandiArjunaSection() {
           alt="Sign Icon"
           width={210}
           height={210}
-          className="absolute -bottom-80 rotate-[0deg] left-[55%] -translate-x-1/2 duration-1000"
+          className="absolute -bottom-80 rotate-[0deg] left-[55%] -translate-x-1/2 duration-1000 z-10"
         />
       </Link>
       <Image
@@ -129,7 +155,7 @@ function CandiArjunaSection() {
         alt="Bush"
         width={300}
         height={300}
-        className="absolute bottom-0 left-1/2 -translate-x-1/2"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10"
         onMouseEnter={handleMouseEnter}
       />
       <Image
@@ -138,10 +164,16 @@ function CandiArjunaSection() {
         alt="Warn Icon"
         width={150}
         height={150}
-        className="absolute bottom-40 left-[63%] -translate-x-1/2 duration-1000"
+        className="absolute bottom-40 left-[63%] -translate-x-1/2 duration-1000 z-10"
       />
 
-      <hr className="h-1 rounded-full bg-black w-full absolute bottom-0" />
+      <Image
+        src="/asset/land.svg"
+        alt="Land"
+        width={0}
+        height={0}
+        className="absolute bottom-0 left-0 w-full scale-x-110 border border-white/0"
+      />
     </section>
   );
 }

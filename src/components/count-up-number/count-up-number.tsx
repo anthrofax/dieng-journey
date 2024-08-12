@@ -7,11 +7,13 @@ function CountUpNumber({
   endValue,
   suffix,
   className = "",
+  isSectionInterSecting,
 }: {
   duration: number;
   endValue: number;
   suffix?: string;
   className?: string;
+  isSectionInterSecting?: boolean | undefined;
 }) {
   const [count, setCount] = useState(0);
 
@@ -32,11 +34,12 @@ function CountUpNumber({
         }
       };
 
-      animationFrameId = requestAnimationFrame(updateCount);
+      if (isSectionInterSecting || true)
+        animationFrameId = requestAnimationFrame(updateCount);
 
       return () => cancelAnimationFrame(animationFrameId);
     },
-    [duration, endValue]
+    [duration, endValue, isSectionInterSecting]
   );
 
   return (

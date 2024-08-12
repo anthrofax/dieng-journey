@@ -1,7 +1,7 @@
 function Contact() {
   return (
-    <section className="py-10 bg-white" id="contact-section">
-      <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+    <section className="bg-white" id="contact-section">
+      <div className="max-w-[85rem] px-4 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         <div className="max-w-2xl lg:max-w-5xl mx-auto">
           <div className="text-center">
             <h1 className="text-center font-medium text-2xl sm:text-3xl tracking-widest">

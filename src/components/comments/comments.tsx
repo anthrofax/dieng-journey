@@ -1,6 +1,9 @@
-import styles from "./comments-style.module.css";
+"use client";
 
+import styles from "./comments-style.module.css";
 import Image from "next/image";
+import { useEffect } from "react";
+import { gsap } from "gsap";
 
 const column1 = [
   {
@@ -89,6 +92,28 @@ const column3 = [
 ];
 
 function Comments() {
+  useEffect(() => {
+    const testimonialItems = document.querySelectorAll(".testimonial-item");
+
+    testimonialItems.forEach((item) => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            gsap.to(entry.target, {
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: "power2.out",
+            });
+            observer.unobserve(entry.target);
+          }
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(item);
+    });
+  }, []);
+
   return (
     <div className="bg-white shadow-xl text-black py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -104,7 +129,17 @@ function Comments() {
             {column1.map((testimonial, index) => (
               <div
                 key={index}
-                className={`bg-white shadow-md p-6 rounded-lg cursor-pointer duration-1000 hover:-translate-y-5 h-fit w-full`}
+                className={`testimonial-item bg-white shadow-md p-6 rounded-lg cursor-pointer opacity-0 translate-y-10 duration-1000 h-fit w-full`}
+                style={{
+                  transition: "transform 0.3s ease",
+                  transform: "translateY(0)",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "translateY(-10px)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "translateY(0)")
+                }
               >
                 <blockquote className="mt-4 text-lg leading-6">
                   <p className="relative">&quot;{testimonial.quote}&quot;</p>
@@ -131,7 +166,17 @@ function Comments() {
             {column2.map((testimonial, index) => (
               <div
                 key={index}
-                className={`bg-white shadow-md p-6 rounded-lg cursor-pointer duration-1000 hover:-translate-y-5 h-fit w-full`}
+                className={`testimonial-item bg-white shadow-md p-6 rounded-lg cursor-pointer opacity-0 translate-y-10 duration-1000 h-fit w-full`}
+                style={{
+                  transition: "transform 0.3s ease",
+                  transform: "translateY(0)",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "translateY(-10px)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "translateY(0)")
+                }
               >
                 <blockquote className="mt-4 text-lg leading-6">
                   <p className="relative">&quot;{testimonial.quote}&quot;</p>
@@ -158,7 +203,17 @@ function Comments() {
             {column3.map((testimonial, index) => (
               <div
                 key={index}
-                className={`bg-white shadow-md p-6 rounded-lg cursor-pointer duration-1000 hover:-translate-y-5 h-fit w-full`}
+                className={`testimonial-item bg-white shadow-md p-6 rounded-lg cursor-pointer opacity-0 translate-y-10 duration-1000 h-fit w-full`}
+                style={{
+                  transition: "transform 0.3s ease",
+                  transform: "translateY(0)",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.transform = "translateY(-10px)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.transform = "translateY(0)")
+                }
               >
                 <blockquote className="mt-4 text-lg leading-6">
                   <p className="relative">&quot;{testimonial.quote}&quot;</p>

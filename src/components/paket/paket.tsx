@@ -1,10 +1,15 @@
+"use client";
+
 import { Badge, Button } from "flowbite-react";
+import Image from "next/image";
+import { useEffect } from "react";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { FaSquareParking } from "react-icons/fa6";
 import { GiPirateCoat } from "react-icons/gi";
 import { IoFastFood, IoTicketOutline } from "react-icons/io5";
 import { MdEmojiTransportation, MdNightsStay } from "react-icons/md";
 import { RiGuideLine, RiSteering2Line } from "react-icons/ri";
+import { gsap } from "gsap";
 
 const paket = [
   {
@@ -90,14 +95,47 @@ const paket = [
 ];
 
 function Paket() {
+  useEffect(() => {
+    const paketItems = document.querySelectorAll(".paket-item");
+
+    paketItems.forEach((item) => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            gsap.to(entry.target, {
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: "power2.out",
+            });
+            observer.unobserve(entry.target);
+          }
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(item);
+    });
+  }, []);
+
   return (
     <section className="bg-white shadow-xl text-black py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-3xl font-medium sm:text-4xl tracking-widest uppercase">
-          Paket Hemat!
-        </h2>
+        <div className="relative w-fit mx-auto px-12 py-3 shadow-lg rounded-full">
+          <Image
+            id="package-badge"
+            src="/asset/badge.svg"
+            alt="Package Order Requirements Badge"
+            width={85}
+            height={85}
+            className="absolute -right-10 -top-10 rotate-[30deg] duration-1000"
+          />
+
+          <h2 className="text-center text-3xl font-medium sm:text-4xl tracking-widest uppercase">
+            Paket Hemat!
+          </h2>
+        </div>
         <p className="mt-4 text-center text-lg leading-6 text-slate-800">
-          Kami menawarkan paket perjalanan untukmu, memungkinkan kamu
+          Kami menawarkan paket perjalanan kelompok wisata mu, memungkinkan kamu
           mendapatkan pengalaman berwisata dengan harga yang terjangkau
         </p>
       </div>
@@ -105,7 +143,18 @@ function Paket() {
       <div className="mt-8 flex justify-center items-start gap-8 p-5 flex-wrap">
         {paket.map((paketItem) => (
           <div
-            className="w-[350px] rounded-lg flex flex-col items-center px-5 py-8 duration-1000 text-center duration-[2000] hover:-translate-y-5 shadow-[0_0px_30px_-5px_rgba(0,0,0,0.3)]"
+            className="paket-item w-[350px] rounded-lg flex flex-col items-center px-5 py-8 duration-1000 text-center opacity-0 translate-y-10 hover:translate-y-10 shadow-[0_0px_30px_-5px_rgba(0,0,0,0.3)]"
+            id="paket-item"
+            style={{
+              transition: "transform 0.3s ease",
+              transform: "translateY(0)",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "translateY(-10px)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "translateY(0)")
+            }
             key={paketItem.nama}
           >
             <div className="flex flex-col gap-2">
@@ -118,6 +167,7 @@ function Paket() {
                 <sup>Rp</sup>
                 <span className="font-medium">{paketItem.harga / 1000}</span>
                 <span className="text-3xl">k</span>
+                <span className="text-xl">/orang</span>
               </h1>
             </div>
 
