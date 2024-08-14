@@ -1,7 +1,5 @@
 "use client";
 
-import { getAllDestinations } from "../../services/service";
-import { useQuery } from "@tanstack/react-query";
 import { columns } from "./table/column";
 import { DataTable } from "../../components/data-table";
 import Skeleton from "react-loading-skeleton";

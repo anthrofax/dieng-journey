@@ -139,14 +139,14 @@ function CandiArjunaSection() {
         </section>
       </section>
 
-      <Link href="/destinations">
+      <Link href="/destinations" >
         <Image
           id="sign"
           src="/asset/sign.svg"
           alt="Sign Icon"
           width={210}
           height={210}
-          className="absolute -bottom-80 rotate-[0deg] left-[55%] -translate-x-1/2 duration-1000 z-10"
+          className="absolute -bottom-80 rotate-[0deg] left-[55%] -translate-x-1/2 duration-1000 z-20"
         />
       </Link>
       <Image
@@ -155,7 +155,7 @@ function CandiArjunaSection() {
         alt="Bush"
         width={300}
         height={300}
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 z-30"
         onMouseEnter={handleMouseEnter}
       />
       <Image

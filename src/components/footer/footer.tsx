@@ -18,7 +18,7 @@ function Footer() {
             href="/"
             className="flex items-center gap-2 transition-all hover:text-primary"
           >
-            <h1 className={` text-lg lg:text-2xl font-bold`}>Dieng Journey</h1>
+            <h1 className={` text-lg lg:text-2xl font-bold`}>Fierto Agency</h1>
             <MdOutlineTravelExplore size={25} />
           </Link>
           <FooterLinkGroup>

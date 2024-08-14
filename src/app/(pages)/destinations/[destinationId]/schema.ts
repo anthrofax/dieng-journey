@@ -11,7 +11,7 @@ export const schema = z
       }),
     nomorHp: z
       .string({
-        message: "Anda perlu mengisi kolom nama minimal 3 karakter",
+        message: "Anda perlu mengisi kolom nomor telepon",
       })
       .min(1, {
         message: "Anda harus mengisi nomor telepon",

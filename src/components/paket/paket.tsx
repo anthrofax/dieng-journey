@@ -10,10 +10,16 @@ import { IoFastFood, IoTicketOutline } from "react-icons/io5";
 import { MdEmojiTransportation, MdNightsStay } from "react-icons/md";
 import { RiGuideLine, RiSteering2Line } from "react-icons/ri";
 import { gsap } from "gsap";
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { healingSchema } from "./healing-schema";
+import { travellingSchema } from "./travelling-schema";
+import { useRouter } from "next/navigation";
 
 const paket = [
   {
-    nama: "Paket Healing ",
+    nama: "Paket Healing",
     deskripsi:
       "Coba pengalaman baru ke Desa Wisata Indah Dieng dengan harga yang paling terjangkau",
     harga: 500000,
@@ -117,17 +123,30 @@ function Paket() {
     });
   }, []);
 
+  const router = useRouter();
+
+  const healingForm = useForm({
+    resolver: zodResolver(healingSchema),
+  });
+
+  const travellingForm = useForm({
+    resolver: zodResolver(travellingSchema),
+  });
+
   return (
     <section className="bg-white shadow-xl text-black py-16">
+      <div className="fixed w-[300px] h-[500px] overflow-y-scroll shadow-lg bg-red-500">
+        testt
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative w-fit mx-auto px-12 py-3 shadow-lg rounded-full">
           <Image
             id="package-badge"
             src="/asset/badge.svg"
             alt="Package Order Requirements Badge"
-            width={85}
-            height={85}
-            className="absolute -right-10 -top-10 rotate-[30deg] duration-1000"
+            width={0}
+            height={0}
+            className="absolute -right-3 lg:-right-10 -top-3 lg:-top-10 rotate-[30deg] duration-1000 w-[85px] aspect-square"
           />
 
           <h2 className="text-center text-3xl font-medium sm:text-4xl tracking-widest uppercase">
@@ -190,6 +209,9 @@ function Paket() {
               pill
               gradientDuoTone="purpleToBlue"
               className="overflow-visible mt-5"
+              onClick={() => {
+                router.push("/order-package");
+              }}
             >
               Pesan
             </Button>
