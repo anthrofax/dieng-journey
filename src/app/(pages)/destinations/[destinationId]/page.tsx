@@ -107,11 +107,6 @@ function DestinationDetails() {
     try {
       if (!dataDestinasi) return toast.error("Data destinasi tidak ditemukan");
 
-      if (Number(data.qty) > 2 && data.penginapan === "sikembang")
-        return toast.error(
-          "Penginapan di Sikembang Glamping hanya dapat menampung maksimum 2 orang"
-        );
-
       toast.success("Mohon tunggu sebentar...");
 
       await redirectToCheckout({

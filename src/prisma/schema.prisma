@@ -19,7 +19,8 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  orders Order[]
+  orders        Order[]
+  packageOrders PackageOrder[]
 }
 
 model Destination {
@@ -32,7 +33,8 @@ model Destination {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  orders Order[]
+  packageOrders PackageOrderDestination[]
+  orders        Order[]
 }
 
 model Experience {
@@ -44,7 +46,8 @@ model Experience {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  orderExperiences OrderExperience[]
+  orderExperiences        OrderExperience[]
+  packageOrderExperiences PackageOrderExperience[]
 }
 
 model Penginapan {
@@ -56,12 +59,13 @@ model Penginapan {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  orders Order[]
+  orders        Order[]
+  packageOrders PackageOrder[]
 }
 
 model Order {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  nama              String
+  nama              String[]
   nomorHp           String
   lokasiPenjemputan String
   masaPerjalanan    Int
@@ -73,13 +77,43 @@ model Order {
   updatedAt         DateTime @updatedAt
 
   destinationId String @db.ObjectId
-  penginapanId  String @db.ObjectId @default("")
+  penginapanId  String @default("") @db.ObjectId
   userId        String @db.ObjectId
 
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  destination      Destination       @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
-  orderExperiences OrderExperience[]
-  penginapan       Penginapan?        @relation(fields: [penginapanId], references: [id], onDelete: Cascade)
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destination Destination       @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
+  experiences OrderExperience[]
+  penginapan  Penginapan?       @relation(fields: [penginapanId], references: [id], onDelete: Cascade)
+}
+
+model PackageOrder {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama              String[]
+  nomorHp           String
+  lokasiPenjemputan String
+  masaPerjalanan    Int
+  tanggalPerjalanan DateTime
+  totalBiaya        Int
+  experience        String[] @default([])
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  penginapanId String @default("") @db.ObjectId
+  userId       String @db.ObjectId
+
+  user         User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destinations PackageOrderDestination[]
+  experiences  PackageOrderExperience[]
+  penginapan   Penginapan?               @relation(fields: [penginapanId], references: [id], onDelete: Cascade)
+}
+
+model PackageOrderDestination {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  packageOrderId String @db.ObjectId
+  destinationId  String @db.ObjectId
+
+  destinations Destination  @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
+  orders       PackageOrder @relation(fields: [packageOrderId], references: [id], onDelete: Cascade)
 }
 
 model OrderExperience {
@@ -89,4 +123,13 @@ model OrderExperience {
 
   experiences Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
   orders      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model PackageOrderExperience {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  packageOrderId String @db.ObjectId
+  experienceId   String @db.ObjectId
+
+  experiences Experience   @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  orders      PackageOrder @relation(fields: [packageOrderId], references: [id], onDelete: Cascade)
 }

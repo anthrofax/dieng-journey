@@ -29,6 +29,7 @@ export const config = {
     "/reservations",
     "/login",
     "/signup",
+    "/order-package",
     "/admin/dashboard",
     "/admin/users",
     "/admin/reservations",

@@ -2,7 +2,7 @@
 
 import { Badge, Button } from "flowbite-react";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { FaSquareParking } from "react-icons/fa6";
 import { GiPirateCoat } from "react-icons/gi";
@@ -10,12 +10,13 @@ import { IoFastFood, IoTicketOutline } from "react-icons/io5";
 import { MdEmojiTransportation, MdNightsStay } from "react-icons/md";
 import { RiGuideLine, RiSteering2Line } from "react-icons/ri";
 import { gsap } from "gsap";
-import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { healingSchema } from "./healing-schema";
 import { travellingSchema } from "./travelling-schema";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const paket = [
   {
@@ -101,6 +102,8 @@ const paket = [
 ];
 
 function Paket() {
+  const { data: session } = useSession();
+
   useEffect(() => {
     const paketItems = document.querySelectorAll(".paket-item");
 
@@ -135,9 +138,6 @@ function Paket() {
 
   return (
     <section className="bg-white shadow-xl text-black py-16">
-      <div className="fixed w-[300px] h-[500px] overflow-y-scroll shadow-lg bg-red-500">
-        testt
-      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative w-fit mx-auto px-12 py-3 shadow-lg rounded-full">
           <Image
@@ -210,7 +210,16 @@ function Paket() {
               gradientDuoTone="purpleToBlue"
               className="overflow-visible mt-5"
               onClick={() => {
-                router.push("/order-package");
+                if (!session)
+                  return toast.error(
+                    "Anda belum login, silahkan login terlebih dahulu"
+                  );
+
+                router.push(
+                  `/order-package?selected-package=${
+                    paketItem.nama === "Paket Travelling" ? "travelling" : "healing"
+                  }`
+                );
               }}
             >
               Pesan

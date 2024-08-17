@@ -28,86 +28,91 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useLodgingHooks } from "@/hooks/lodging-hooks";
-import { Rupiah } from "@/utils/format-currency";
 import Skeleton from "react-loading-skeleton";
-import { useExperienceHooks } from "@/hooks/experience-hook";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useDestinationHook } from "@/hooks/destination-hooks";
-import { Destination, Experience, Penginapan } from "@prisma/client";
+import { Destination } from "@prisma/client";
 import Link from "next/link";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import { useOrderPackageContext } from "./page";
 
-const healingSchema = z.object({
-  nama: z
-    .array(
-      z
-        .string({
-          message: "Anda perlu mengisi kolom nama minimal 3 karakter",
-        })
-        .min(3, {
-          message: "Anda perlu mengisi kolom nama minimal 3 karakter",
-        })
-    )
-    .min(4, {
-      message:
-        "Anda perlu melengkapi anggota kelompok perjalananmu, minimal 4 orang.",
-    }),
-  nomorHp: z
-    .string({
-      message: "Anda harus mengisi nomor telepon",
-    })
-    .min(1, {
-      message: "Anda harus mengisi nomor telepon",
-    }),
-  destinasi: z.array(z.string()).max(3, {
-    message: "Destinasi yang dapat dipilih pada paket Healing maksimal 3.",
-  }),
-  lokasiPenjemputan: z
-    .string({
-      message: "Lokasi penjemputan tidak valid",
-    })
-    .min(1, {
-      message: "Lokasi penjemputan tidak valid",
-    }),
-  tanggalPerjalanan: z.date({
-    message: "Anda belum mengisi tanggal perjalanan",
-  }),
-});
+function HealingForm() {
+  const {
+    healingForm,
+    names,
+    handleHealingFormNameInputChange,
+    removeHealingFormNameInputField,
+    addNameField,
+    isAddButtonDisabled,
+    isLoadingDestinationQuery,
+    allDestinations,
+    lokasiPenjemputan,
+    healingFormRef,
+  } = useOrderPackageContext();
 
-type Props = {
-  allDestinations: Destination[];
-  isLoadingDestinationQuery: boolean;
-  lokasiPenjemputan: {
-    label: string;
-    value: string;
-  }[];
-};
+  // useEffect(() => {
+  //   if (Object.keys(healingForm.formState.errors).length > 0) {
+  //     (
+  //       Object.keys(
+  //         healingForm.formState.errors
+  //       ) as (keyof typeof healingForm.formState.errors)[]
+  //     ).forEach((key) => {
+  //       toast.error(`${healingForm.formState.errors[key]?.message as string}`);
+  //     });
+  //   }
+  // }, [healingForm, healingForm.formState.errors]);
 
-function HealingForm({
-  allDestinations,
-  isLoadingDestinationQuery,
-  lokasiPenjemputan,
-}: Props) {
-  const healingForm = useForm({
-    resolver: zodResolver(healingSchema),
-  });
   return (
     <Form {...healingForm}>
-      <form onSubmit={() => {}} className="flex flex-col gap-5">
+      <form
+        ref={healingFormRef}
+        className="flex flex-col gap-5 col-span-4 xl:col-span-3 shadow p-5"
+      >
         <FormField
           control={healingForm.control}
           name="nama"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
-              <FormLabel htmlFor="name">Nama</FormLabel>
+              <FormLabel>Nama</FormLabel>
 
-              <div className="space-y-1">
-                <FormControl>
-                  <Input placeholder="Andi" {...field} />
-                </FormControl>
+              <div className="space-y-2">
+                {names.map((name, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder={`Nama anggota ke-${index + 1}`}
+                        value={name}
+                        onChange={(e) =>
+                          handleHealingFormNameInputChange({
+                            index,
+                            value: e.target.value,
+                          })
+                        }
+                      />
+                    </FormControl>
+                    {names.length > 1 && (
+                      <Button
+                        variant="outline"
+                        type="button"
+                        onClick={() =>
+                          removeHealingFormNameInputField({ index })
+                        }
+                      >
+                        <FaTrash />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  onClick={addNameField}
+                  className="bg-primary text-white w-full space-x-2 text-xs mt-3"
+                  type="button"
+                  disabled={isAddButtonDisabled}
+                >
+                  <p>Tambah Nama Lain</p>
+                  <FaPlus />
+                </Button>
                 <FormDescription>
                   Inputkan nama-nama orang yang akan ikut dalam perjalanan anda.
                 </FormDescription>
@@ -116,6 +121,7 @@ function HealingForm({
             </FormItem>
           )}
         />
+
         <FormField
           control={healingForm.control}
           name="nomorHp"
@@ -145,9 +151,15 @@ function HealingForm({
             <FormItem className="flex flex-col gap-2">
               <FormLabel>Pilih Destinasi</FormLabel>
 
-              <div className="h-56 overflow-y-scroll">
+              <div className="h-fit max-h-56 overflow-y-scroll">
                 {isLoadingDestinationQuery ? (
-                  <Skeleton className="w-full h-full" />
+                  <div className="w-full h-full flex flex-col gap-1">
+                    {Array.from({ length: allDestinations?.length || 3 }).map(
+                      (_, idx) => (
+                        <Skeleton key={idx} className="w-full h-8 shadow-md" />
+                      )
+                    )}
+                  </div>
                 ) : (
                   allDestinations?.map(
                     (destination: Destination, i: number) => (
@@ -305,10 +317,6 @@ function HealingForm({
             </FormItem>
           )}
         />
-
-        <Button className="bg-primary hover:bg-primary/80" type="submit">
-          Pesan
-        </Button>
       </form>
     </Form>
   );

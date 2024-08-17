@@ -4,6 +4,7 @@ import { MidtransClient } from "midtrans-node-client";
 import { v4 as uuidv4 } from "uuid";
 import { Experience, Penginapan } from "@prisma/client";
 import db from "@/lib/db";
+import { TokenizerRequestBodyType } from "@/app/(pages)/order-package/type";
 
 const snap = new MidtransClient.Snap({
   isProduction: false,
@@ -18,80 +19,36 @@ export async function POST(req: NextRequest) {
     if (!currentUser) throw new Error("Kamu belum login.");
 
     const {
-      namaDestinasi,
-      hargaDestinasi,
       experience,
       lokasiPenjemputan,
       masaPerjalanan,
       nama,
       nomorHp,
       penginapanId,
-      qty,
       tanggalPerjalanan,
-      destinationId,
-      allLodgings,
-      allExperiences,
-    } = await req.json();
-
-    const penginapanYangDipilih = await db.penginapan.findUnique({
-      where: {
-        id: penginapanId,
-      },
-      select: {
-        namaPenginapan: true,
-        biaya: true,
-      },
-    });
-
-    const biayaExperience = experience.reduce(
-      (acc: number, selectedExperienceId: string) => {
-        const experienceItem = allExperiences.find(
-          (exp: Experience) => exp.id === selectedExperienceId
-        );
-        if (experienceItem) {
-          return acc + experienceItem.biaya;
-        }
-        return acc;
-      },
-      0
-    );
-
-    const totalBiaya =
-      hargaDestinasi * qty +
-      biayaExperience +
-      (penginapanYangDipilih?.biaya || 0) * masaPerjalanan;
+      daftarDestinasi,
+      totalBiaya,
+      selectedPackage,
+    } = (await req.json()) as TokenizerRequestBodyType;
 
     const parameter = {
-      item_details: [
-        {
-          price: hargaDestinasi,
-          quantity: qty,
-          name: `Tiket Destinasi ${namaDestinasi}`,
-        },
-        {
-          price: penginapanYangDipilih?.biaya || 0,
-          quantity: masaPerjalanan,
-          name: `${
-            penginapanYangDipilih?.namaPenginapan
-              ? `Malam | ${penginapanYangDipilih.namaPenginapan}`
-              : "Tidak memesan penginapan"
-          }`,
-        },
-        {
-          price: biayaExperience,
-          quantity: 1,
-          name: "Experience yang dipilih",
-        },
-      ],
+      item_details: {
+        price: totalBiaya,
+        quantity: nama.length,
+        name: `Tiket Paket ${
+          selectedPackage === "travelling" ? "Travelling" : "Healing"
+        }`,
+      },
+
       customer_details: {
-        first_name: nama,
+        first_name: nama[0],
         last_name: "",
         email: currentUser.email,
         phone: nomorHp,
       },
       transaction_details: {
         order_id: uuidv4(),
-        gross_amount: totalBiaya,
+        gross_amount: totalBiaya * nama.length,
       },
       metadata: {
         experience,
@@ -101,10 +58,9 @@ export async function POST(req: NextRequest) {
         nomorHp,
         tanggalPerjalanan: tanggalPerjalanan,
         userId: currentUser.id,
-        qty,
         totalBiaya,
-        destinationId,
         penginapanId,
+        daftarDestinasi,
       },
     };
 

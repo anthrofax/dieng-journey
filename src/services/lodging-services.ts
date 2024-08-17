@@ -5,3 +5,9 @@ export async function getAllLodgings() {
 
   return data;
 }
+
+export async function getSelectedLodging(id: string) {
+  const { data } = await AXIOS_API.get(`/lodgings/${id}`);
+
+  return data;
+}

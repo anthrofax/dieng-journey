@@ -79,6 +79,7 @@ const SignUp = () => {
             </h1>
             <form
               className="space-y-4 md:space-y-6"
+              method="POST"
               onSubmit={handleSubmit((data) => {
                 confirmAlert({
                   customUI: ({ onClose }: { onClose: () => void }) => {

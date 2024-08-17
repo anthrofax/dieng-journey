@@ -9,7 +9,7 @@ export const redirectToCheckout = async (checkoutData: {
   experience: string[];
   lokasiPenjemputan: string;
   masaPerjalanan: number;
-  nama: string;
+  nama: string[];
   nomorHp: string;
   penginapanId: string;
   qty: number;
@@ -18,7 +18,7 @@ export const redirectToCheckout = async (checkoutData: {
 }) => {
   console.log(checkoutData);
   try {
-    const response = await AXIOS_API.post("/tokenizer", checkoutData);
+    const response = await AXIOS_API.post("/order-tokenizer", checkoutData);
 
     const requestData = response.data;
 

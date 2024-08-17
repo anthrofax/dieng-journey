@@ -102,6 +102,7 @@ const Login = () => {
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={handleSubmit(onSubmit)}
+              method="POST"
             >
               <div>
                 <label

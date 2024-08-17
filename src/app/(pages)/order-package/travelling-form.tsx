@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { Button as ShadButton } from "@/components/ui/button";
+import { Button, Button as ShadButton } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -28,100 +28,102 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useLodgingHooks } from "@/hooks/lodging-hooks";
 import { Rupiah } from "@/utils/format-currency";
 import Skeleton from "react-loading-skeleton";
-import { useExperienceHooks } from "@/hooks/experience-hook";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useDestinationHook } from "@/hooks/destination-hooks";
-import { Destination, Experience, Penginapan } from "@prisma/client";
+import { Destination } from "@prisma/client";
 import Link from "next/link";
+import { useEffect } from "react";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { useOrderPackageContext } from "./page";
 
-const travellingSchema = z.object({
-  nama: z
-    .array(
-      z
-        .string({
-          message: "Anda perlu mengisi kolom nama minimal 3 karakter",
-        })
-        .min(3, {
-          message: "Anda perlu mengisi kolom nama minimal 3 karakter",
-        })
-    )
-    .min(4, {
-      message:
-        "Anda perlu melengkapi anggota kelompok perjalananmu, minimal 4 orang.",
-    }),
-  nomorHp: z
-    .string({
-      message: "Anda harus mengisi nomor telepon",
-    })
-    .min(1, {
-      message: "Anda harus mengisi nomor telepon",
-    }),
-  destination: z.array(z.string()).max(5, {
-    message: "Destinasi yang dapat dipilih pada paket Travelling maksimal 5.",
-  }),
-  lokasiPenjemputan: z
-    .string({
-      message: "Lokasi penjemputan tidak valid",
-    })
-    .min(1, {
-      message: "Lokasi penjemputan tidak valid",
-    }),
-  penginapanId: z
-    .string({
-      message: "Isian penginapan tidak valid",
-    })
-    .optional(),
-  tanggalPerjalanan: z.date({
-    message: "Anda belum mengisi tanggal perjalanan",
-  }),
-  experience: z.array(z.string()).optional(),
-});
+function TravellingForm() {
+  const {
+    travellingForm,
+    names,
+    handleTravellingFormNameInputChange,
+    removeTravellingFormNameInputField,
+    addNameField,
+    isAddButtonDisabled,
+    isLoadingDestinationQuery,
+    allDestinations,
+    lokasiPenjemputan,
+    allLodgings,
+    allExperiences,
+    isLoadingExperienceQuery,
+    isLoadingLodgingQuery,
+    travellingFormRef,
+  } = useOrderPackageContext();
 
-type Props = {
-  allLodgings: Penginapan[];
-  allExperiences: Experience[];
-  allDestinations: Destination[];
-  isLoadingLodgingQuery: boolean;
-  isLoadingExperienceQuery: boolean;
-  isLoadingDestinationQuery: boolean;
-  lokasiPenjemputan: {
-    label: string;
-    value: string;
-  }[];
-};
+  // useEffect(() => {
+  //   if (Object.keys(travellingForm.formState.errors).length > 0) {
+  //     console.log(travellingForm.formState.errors);
 
-function TravellingForm({
-  allLodgings,
-  allExperiences,
-  allDestinations,
-  isLoadingLodgingQuery,
-  isLoadingExperienceQuery,
-  isLoadingDestinationQuery,
-  lokasiPenjemputan,
-}: Props) {
-  const travellingForm = useForm({
-    resolver: zodResolver(travellingSchema),
-  });
+  //     (
+  //       Object.keys(
+  //         travellingForm.formState.errors
+  //       ) as (keyof typeof travellingForm.formState.errors)[]
+  //     ).forEach((key) => {
+  //       toast.error(
+  //         `${travellingForm.formState.errors[key]?.message as string}`
+  //       );
+  //     });
+  //   }
+  // }, [travellingForm, travellingForm.formState.errors]);
+
   return (
     <Form {...travellingForm}>
-      <form onSubmit={() => {}} className="flex flex-col gap-5">
+      <form
+        ref={travellingFormRef}
+        className="flex flex-col gap-5 col-span-4 xl:col-span-3 shadow p-5"
+      >
         <FormField
           control={travellingForm.control}
           name="nama"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
-              <FormLabel htmlFor="name">Nama</FormLabel>
+              <FormLabel>Nama</FormLabel>
 
-              <div className="space-y-1">
-                <FormControl>
-                  <Input placeholder="Andi" {...field} />
-                </FormControl>
+              <div className="space-y-2">
+                {names.map((name, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder={`Nama anggota ke-${index + 1}`}
+                        value={name}
+                        onChange={(e) =>
+                          handleTravellingFormNameInputChange({
+                            index,
+                            value: e.target.value,
+                          })
+                        }
+                      />
+                    </FormControl>
+                    {names.length > 1 && (
+                      <Button
+                        variant="outline"
+                        type="button"
+                        onClick={() =>
+                          removeTravellingFormNameInputField({
+                            index,
+                          })
+                        }
+                      >
+                        <FaTrash />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  onClick={addNameField}
+                  className="bg-primary text-white w-full space-x-2 text-xs mt-3"
+                  type="button"
+                  disabled={isAddButtonDisabled}
+                >
+                  <p>Tambah Nama Lain</p>
+                  <FaPlus />
+                </Button>
                 <FormDescription>
                   Inputkan nama-nama orang yang akan ikut dalam perjalanan anda.
                 </FormDescription>
@@ -130,6 +132,7 @@ function TravellingForm({
             </FormItem>
           )}
         />
+
         <FormField
           control={travellingForm.control}
           name="nomorHp"
@@ -159,9 +162,15 @@ function TravellingForm({
             <FormItem className="flex flex-col gap-2">
               <FormLabel>Pilih Destinasi</FormLabel>
 
-              <div className="h-56 overflow-y-scroll">
+              <div className="h-fit max-h-56 overflow-y-scroll">
                 {isLoadingDestinationQuery ? (
-                  <Skeleton className="w-full h-full" />
+                  <div className="w-full h-full flex flex-col gap-1">
+                    {Array.from({ length: 3 }).map(
+                      (_, idx) => (
+                        <Skeleton key={idx} className="w-full h-8 shadow-md" />
+                      )
+                    )}
+                  </div>
                 ) : (
                   allDestinations?.map(
                     (destination: Destination, i: number) => (
@@ -341,7 +350,7 @@ function TravellingForm({
                       />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="w-[85vw]">
+                  <SelectContent className="w-[300px] overflow-x-scroll">
                     {allLodgings &&
                       allLodgings.length > 0 &&
                       allLodgings.map((penginapan, i) => (
@@ -372,7 +381,11 @@ function TravellingForm({
               <FormLabel>Pilih Experience</FormLabel>
 
               {isLoadingExperienceQuery ? (
-                <Skeleton className="w-full h-full" />
+                <>
+                  <Skeleton className="w-full h-8" />
+                  <Skeleton className="w-full h-8" />
+                  <Skeleton className="w-full h-8" />
+                </>
               ) : (
                 allExperiences?.map((experience, i) => (
                   <FormField
