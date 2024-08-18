@@ -31,6 +31,8 @@ import { GoInfo } from "react-icons/go";
 import toast from "react-hot-toast";
 import { redirectToCheckout } from "./service";
 import { Rupiah } from "@/utils/format-currency";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export const lokasiPenjemputan = [
   {
@@ -127,8 +129,12 @@ function OrderPackage() {
     useExperienceHooks();
   const { allDestinations, isLoading: isLoadingDestinationQuery } =
     useDestinationHook();
-  const selectedPackage =
+  const selectedPackageSearchQuery: string =
     useSearchParams().get("selected-package") || "healing";
+
+  const [selectedPackage, setSelectedPackage] = useState<
+    "healing" | "travelling"
+  >("healing");
 
   const healingFormRef = useRef<HTMLFormElement>(null);
   const travellingFormRef = useRef<HTMLFormElement>(null);
@@ -222,7 +228,7 @@ function OrderPackage() {
         tanggalPerjalanan: data.tanggalPerjalanan,
         experience: [],
         totalBiaya: 499000,
-        selectedPackage
+        selectedPackage,
       });
     },
     (errors) => {
@@ -246,7 +252,7 @@ function OrderPackage() {
         experience: data.experience,
         penginapanId: data.penginapanId,
         totalBiaya: 1200000,
-        selectedPackage
+        selectedPackage,
       });
     },
     (errors) => {
@@ -260,6 +266,15 @@ function OrderPackage() {
     if (selectedPackage === "travelling") handleTravellingFormSubmit();
     else handleHealingFormSubmit();
   }
+
+  useEffect(
+    function () {
+      setSelectedPackage(
+        selectedPackageSearchQuery as "healing" | "travelling"
+      );
+    },
+    [selectedPackageSearchQuery]
+  );
 
   useEffect(() => {
     const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
@@ -315,7 +330,36 @@ function OrderPackage() {
             Lengkapi data perjalananmu disini, sebelum melakukan pemesanan
           </p>
 
-          
+          <div className="flex justify-center items-center space-x-4 mt-5">
+            <div className="flex flex-col items-center w-fit">
+              <Label className="text-xs md:text-sm lg:text-lg">
+                Paket Healing
+              </Label>
+              <div
+                className={`${
+                  selectedPackage === "healing" ? "w-full" : "w-0"
+                } duration-1000 h-1 bg-black`}
+              />
+            </div>
+            <Switch
+              className="w-14 h-8 lg:h-12 lg:w-[5.25rem]"
+              thumbClassName="w-6 h-6 lg:w-9 lg:h-9"
+              checked={selectedPackage === "travelling"}
+              onCheckedChange={(val) => {
+                setSelectedPackage(val ? "travelling" : "healing");
+              }}
+            />
+            <div className="flex flex-col items-center w-fit">
+              <Label className="text-xs md:text-sm lg:text-lg">
+                Paket Travelling
+              </Label>
+              <div
+                className={`${
+                  selectedPackage === "travelling" ? "w-full" : "w-0"
+                } duration-1000 h-1 bg-black`}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-4 gap-3">
