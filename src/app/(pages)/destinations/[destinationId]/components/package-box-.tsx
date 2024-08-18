@@ -21,7 +21,7 @@ function PackageBox() {
         <p className="text-sm">
           Kami menyediakan Paket Hemat yang dapat kamu pilih, dengan paket ini,
           kamu dapat mengujungi ke berbagai destinasi sekaligus dengan harga
-          yang lebih .
+          yang lebih murah.
         </p>
       </div>
 
