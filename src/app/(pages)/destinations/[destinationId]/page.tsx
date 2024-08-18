@@ -31,6 +31,9 @@ import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { GoInfo } from "react-icons/go";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import Link from "next/link";
+import Image from "next/image";
+import PackageBox from "./components/package-box-";
 
 export const fasilitas = [
   {
@@ -254,9 +257,16 @@ function DestinationDetails() {
                 <p>{dataDestinasi.description}</p>
               </div>
 
-              <OrderFormCTA className="lg:hidden" />
+              <div className="lg:hidden space-y-8">
+                <OrderFormCTA />
+                <PackageBox />
+              </div>
             </div>
-            <OrderFormCTA className="hidden lg:block lg:col-span-4 sticky top-28" />
+
+            <div className="hidden lg:block lg:col-span-4 sticky top-28 space-y-4">
+              <OrderFormCTA />
+              <PackageBox />
+            </div>
 
             {isModalOpen && (
               <>

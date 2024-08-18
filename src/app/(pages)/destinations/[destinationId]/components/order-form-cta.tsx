@@ -53,7 +53,7 @@ export const lokasiPenjemputan = [
   },
 ];
 
-function OrderFormCTA({ className = "" }: { className: string }) {
+function OrderFormCTA({ className = "" }: { className?: string }) {
   const { data: session } = useSession();
 
   const {
@@ -108,7 +108,7 @@ function OrderFormCTA({ className = "" }: { className: string }) {
               <FormItem>
                 <FormLabel htmlFor="nama">Nama</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="johndoe" {...field} />
                 </FormControl>
                 <FormDescription className="text-slate-500">
                   Isi nama anda untuk data pemesanan.
@@ -125,7 +125,7 @@ function OrderFormCTA({ className = "" }: { className: string }) {
               <FormItem>
                 <FormLabel htmlFor="nomorHp">Nomor Telepon</FormLabel>
                 <FormControl>
-                  <Input placeholder="0857....." {...field} />
+                  <Input placeholder="+62" {...field} />
                 </FormControl>
                 <FormDescription className="text-slate-500">
                   Isi nomor telepon anda untuk data pemesanan.

@@ -128,16 +128,8 @@ function Paket() {
 
   const router = useRouter();
 
-  const healingForm = useForm({
-    resolver: zodResolver(healingSchema),
-  });
-
-  const travellingForm = useForm({
-    resolver: zodResolver(travellingSchema),
-  });
-
   return (
-    <section id="section-paket" className="bg-white shadow-xl text-black py-16">
+    <section id="package-section" className="bg-white shadow-xl text-black py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative w-fit mx-auto px-12 py-3 shadow-lg rounded-full">
           <Image

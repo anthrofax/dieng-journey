@@ -210,7 +210,7 @@ const Navbar = () => {
                 {link.text}
               </FlowbiteNavbar.Link>
             ))}
-            <FlowbiteNavbar.Link
+            <Link
               href={pathname === "/" ? "#contact-section" : "/#contact-section"}
               className={`navbar-link hover:border-b-2 transition-all text-base ${
                 pathname === "/" || pathname === "/destinations"
@@ -221,9 +221,10 @@ const Navbar = () => {
                     }`
                   : "text-black"
               }`}
+              scroll
             >
               Kontak
-            </FlowbiteNavbar.Link>
+            </Link>
           </FlowbiteNavbar.Collapse>
         </>
       ) : (
