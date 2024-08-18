@@ -8,6 +8,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    console.log(body.metadata);
+
     const { transaction_status, order_id } = body;
 
     if (
@@ -70,7 +72,7 @@ export async function POST(req: NextRequest) {
           });
         });
 
-        return NextResponse.redirect("/orders");
+        return NextResponse.json({ message: "Pembayaran berhasil" });
       }
 
       if (req.nextUrl.pathname === "/api/order-tokenizer") {
@@ -87,6 +89,20 @@ export async function POST(req: NextRequest) {
           destinationId,
           experience,
         } = body.metadata as RegularOrderMidtransNotificationMetadataType;
+
+        console.log({
+          lokasiPenjemputan,
+          masaPerjalanan,
+          nama,
+          nomorHp,
+          qty,
+          tanggalPerjalanan,
+          totalBiaya,
+          penginapanId,
+          userId,
+          destinationId,
+          experience,
+        });
 
         const createdOrder = await db.order.create({
           data: {
@@ -112,7 +128,7 @@ export async function POST(req: NextRequest) {
           });
         });
 
-        return NextResponse.redirect("/orders");
+        return NextResponse.json({ message: "Pembayaran berhasil" });
       }
     }
 

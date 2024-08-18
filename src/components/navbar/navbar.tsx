@@ -152,7 +152,7 @@ const Navbar = () => {
                               judul="Konfirmasi Logout"
                               pesan="Apakah anda yakin ingin melakukan logout?"
                               onClose={onClose}
-                              onClickIya={() => signOut()}
+                              onClickIya={() => signOut({callbackUrl: '/login'})}
                               labelIya="Iya"
                               labelTidak="Ohh, sebentar"
                             />
@@ -322,7 +322,7 @@ const Navbar = () => {
                             judul="Konfirmasi Logout"
                             pesan="Apakah anda yakin ingin melakukan logout?"
                             onClose={onClose}
-                            onClickIya={() => signOut()}
+                            onClickIya={() => signOut({callbackUrl:'/login'})}
                             labelIya="Iya"
                             labelTidak="Ohh, sebentar"
                           />
