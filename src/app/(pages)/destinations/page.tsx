@@ -56,9 +56,7 @@ const Destinations = () => {
       if (
         filters.lokasi &&
         filters.lokasi !== "" &&
-        !destination.city
-          .toLowerCase()
-          .startsWith(filters.lokasi.toLowerCase())
+        !destination.city.toLowerCase().startsWith(filters.lokasi.toLowerCase())
       )
         return false;
 
@@ -129,24 +127,27 @@ const Destinations = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="border w-full md:w-2/3 p-4 md:px-4 py-6 rounded-xl bg-blue-600 text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0"
+            className="border w-full md:w-2/3 p-4 md:px-4 py-6 rounded-xl bg-blue-600 text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4"
           >
-            <FormField
-              control={form.control}
-              name="lokasi"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Cari berdasarkan lokasi"
-                      className="text-blue-800 p-2 rounded-xl outline-none w-full"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-col items-center gap-1">
+            <h3 className="ml-1 text-[#efefef] font-semibold">Lokasi</h3>
+              <FormField
+                control={form.control}
+                name="lokasi"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Cari berdasarkan lokasi"
+                        className="text-blue-800 p-2 rounded-xl outline-none w-full"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="flex flex-col items-center gap-1">
               <h3 className="ml-1 text-[#efefef] font-semibold">Harga</h3>

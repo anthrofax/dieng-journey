@@ -64,15 +64,21 @@ const Navbar = () => {
     <FlowbiteNavbar
       fluid
       rounded
-      className={`${isScrolled ? "shadow-md backdrop-blur" : ""}`}
+      className={`${
+        pathname === "/" || pathname === "/destinations"
+          ? isScrolled
+            ? "backdrop-blur bg-white/50"
+            : "bg-white/0"
+          : "bg-white/50 shadow-md"
+      }`}
       theme={customTheme}
     >
-      <FlowbiteNavbar.Brand href="/" className="space-x-2">
+      <FlowbiteNavbar.Brand href="/" className="space-x-2 nav__logo">
         <div
-          className={`relative rounded-full w-[3.5rem] aspect-square overflow-hidden border-4 ${
-            isScrolled
-              ? `${pathname === "/" ? "border-primary" : "border-black"}`
-              : "border-white"
+          className={`relative rounded-full w-[3.5rem] aspect-square overflow-hidden ${
+            pathname === "/" || pathname === "/destinations"
+              ? `border-4 ${isScrolled ? "border-primary" : "border-white"}`
+              : "border-black/30 border-4"
           }`}
         >
           <Image
@@ -83,10 +89,10 @@ const Navbar = () => {
           />
         </div>
         <span
-          className={`self-center whitespace-nowrap text-xl font-semibold ${
-            isScrolled
-              ? `${pathname === "/" ? "text-primary" : "text-black"}`
-              : "text-white"
+          className={`self-center tracker-widest text-xl font-semibold ${
+            pathname === "/" || pathname === "/destinations"
+              ? `${isScrolled ? "text-primary" : "text-white"}`
+              : "text-black"
           }`}
         >
           Fierto Agency
@@ -180,7 +186,7 @@ const Navbar = () => {
             <FlowbiteNavbar.Link
               href={pathname === "/" ? "#" : "/"}
               active={pathname === "/"}
-              className={`navbar-link hover:border-b-2 transition-all text-base ${
+              className={`transition-all text-base ${
                 pathname === "/" || pathname === "/destinations"
                   ? `${
                       isScrolled
@@ -188,16 +194,25 @@ const Navbar = () => {
                         : "text-black lg:text-white lg:border-white"
                     }`
                   : "text-black"
-              }`}
+              } flex flex-col items-center group`}
             >
               Home
+              <div
+                className={`transition-all group-hover:w-full h-0.5 rounded-full ${
+                  pathname === "/" ? "w-full" : "w-0"
+                } ${
+                  pathname === "/" || pathname === "/destinations"
+                    ? `${isScrolled ? "bg-primary" : "bg-black lg:bg-white"}`
+                    : "bg-black"
+                }`}
+              />
             </FlowbiteNavbar.Link>
             {linkData.map((link) => (
               <FlowbiteNavbar.Link
-                href={`/${link.href}`}
                 key={link.id}
+                href={`/${link.href}`}
                 active={pathname.split("/").includes(link.href)}
-                className={`navbar-link hover:border-b-2 transition-all text-base ${
+                className={`transition-all text-base ${
                   pathname === "/" || pathname === "/destinations"
                     ? `${
                         isScrolled
@@ -205,26 +220,46 @@ const Navbar = () => {
                           : "text-black lg:text-white lg:border-white"
                       }`
                     : "text-black"
-                }`}
+                } flex flex-col items-center group`}
               >
                 {link.text}
+                <div
+                  className={`transition-all group-hover:w-full h-0.5 rounded-full ${
+                    pathname === `/${link.href}` ? "w-full" : "w-0"
+                  } ${
+                    pathname === "/" || pathname === "/destinations"
+                      ? `${isScrolled ? "bg-primary" : "bg-black lg:bg-white"}`
+                      : "bg-black"
+                  }`}
+                />
               </FlowbiteNavbar.Link>
             ))}
-            <Link
-              href={pathname === "/" ? "#contact-section" : "/#contact-section"}
-              className={`navbar-link hover:border-b-2 transition-all text-base ${
-                pathname === "/" || pathname === "/destinations"
-                  ? `${
-                      isScrolled
-                        ? "text-primary border-primary"
-                        : "text-black lg:text-white lg:border-white"
-                    }`
-                  : "text-black"
-              }`}
-              scroll
-            >
-              Kontak
-            </Link>
+            <div className="w-fit flex flex-col items-center">
+              <Link
+                href={
+                  pathname === "/" ? "#contact-section" : "/#contact-section"
+                }
+                className={`transition-all text-base ${
+                  pathname === "/" || pathname === "/destinations"
+                    ? `${
+                        isScrolled
+                          ? "text-primary border-primary"
+                          : "text-black lg:text-white lg:border-white"
+                      }`
+                    : "text-black"
+                } peer`}
+                scroll
+              >
+                Kontak
+              </Link>
+              <div
+                className={`transition-all w-0 peer-hover:w-full h-0.5 rounded-full ${
+                  pathname === "/" || pathname === "/destinations"
+                    ? `${isScrolled ? "bg-primary" : "bg-black lg:bg-white"}`
+                    : "bg-black"
+                }`}
+              />
+            </div>
           </FlowbiteNavbar.Collapse>
         </>
       ) : (

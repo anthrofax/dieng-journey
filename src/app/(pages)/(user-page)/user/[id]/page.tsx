@@ -123,7 +123,7 @@ function User({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="p-4 col-span-8 lg:col-span-7 w-full pl-5 h-fit">
+    <div className="pl-5 pr-4 pb-4 col-span-8 lg:col-span-7 w-full h-fit">
       <h1 className="font-semibold text-2xl mb-5 text-center lg:text-left">
         Pengaturan Pengguna
       </h1>

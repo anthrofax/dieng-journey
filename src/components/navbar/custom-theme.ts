@@ -2,7 +2,7 @@ import { CustomFlowbiteTheme } from "flowbite-react";
 
 export const customTheme: CustomFlowbiteTheme["navbar"] = {
   root: {
-    base: "bg-transparent px-2 py-2.5 sm:px-10 fixed z-50 h-24 w-full top-0 left-0 flex items-center",
+    base: "px-2 py-2.5 sm:px-10 fixed z-50 h-24 w-full top-0 left-0 flex items-center",
     rounded: {
       on: "rounded",
       off: "",
@@ -33,7 +33,7 @@ export const customTheme: CustomFlowbiteTheme["navbar"] = {
   link: {
     base: "block py-2 pl-3 pr-4 lg:p-0",
     active: {
-      on: "border-b-2",
+      on: "",
       off: "",
     },
     disabled: {
