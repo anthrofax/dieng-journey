@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
         transaction_status === "capture") &&
       transaction_status !== "pending"
     ) {
-      console.log(req.nextUrl.pathname);
       if (body.metadata.tokenizerType === "package-order") {
         const {
           lokasiPenjemputan,
@@ -72,7 +71,7 @@ export async function POST(req: NextRequest) {
           });
         });
 
-        return NextResponse.redirect("/orders");
+        return NextResponse.redirect(new URL("/orders", req.url));
       }
 
       if (body.metadata.tokenizerType === "regular-order") {
@@ -120,15 +119,17 @@ export async function POST(req: NextRequest) {
         });
 
         experience.forEach(async (experienceId: string) => {
-          await db.orderExperience.create({
+          const addedExperience = await db.orderExperience.create({
             data: {
               experienceId: experienceId,
               orderId: createdOrder.id,
             },
           });
+
+          console.log(addedExperience);
         });
 
-        return NextResponse.redirect("/orders");
+        return NextResponse.redirect(new URL("/orders", req.url));
       }
     }
 

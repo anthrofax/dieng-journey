@@ -34,7 +34,15 @@ export default async function OrdersPage() {
     include: {
       destination: true,
       penginapan: true,
-      experiences: true,
+      experiences: {
+        select: {
+          experiences: {
+            select: {
+              namaExperience: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -61,7 +69,7 @@ export default async function OrdersPage() {
           Anda belum melakukan transaksi apapun.
         </p>
       ) : (
-        <div className="space-y-6 flex gap-5 relative flex-wrap justify-center lg:justify-start">
+        <div className="flex gap-5 relative flex-wrap justify-center lg:justify-start items-start">
           {orders.map((order) => (
             <div
               key={order.id}
@@ -79,7 +87,7 @@ export default async function OrdersPage() {
                 height={200}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 h-[500px] overflow-y-auto">
                 <h3 className="text-md font-semibold">Destinasi</h3>
                 <p className="capitalize">
                   {order.destination.destinationName}
@@ -110,7 +118,7 @@ export default async function OrdersPage() {
                 <h3 className="text-md font-semibold">Total Biaya</h3>
                 <p>{Rupiah.format(order.totalBiaya)}</p>
                 <h3 className="text-md font-semibold">Experience Tambahan</h3>
-                <p>{order.experience.join(", ") || "Tidak ada"}</p>
+                {/* <p>{order. || "Tidak ada"}</p> */}
               </div>
             </div>
           ))}
