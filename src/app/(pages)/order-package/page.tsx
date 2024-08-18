@@ -314,6 +314,8 @@ function OrderPackage() {
           <p className="text-sm lg:text-lg mt-1">
             Lengkapi data perjalananmu disini, sebelum melakukan pemesanan
           </p>
+
+          
         </div>
 
         <div className="grid grid-cols-4 gap-3">

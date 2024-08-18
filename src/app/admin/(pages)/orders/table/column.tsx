@@ -83,10 +83,10 @@ export const columns = [
     },
   },
   {
-    accessorKey: "orderExperiences",
+    accessorKey: "experiences",
     header: "Experience Tambahan",
     cell: ({ row }: { row: any }) => {
-      const experienceOrderItems = row.original.orderExperiences;
+      const experienceOrderItems = row.original.experiences;
 
       return <span>{experienceOrderItems.length} Tempat</span>;
     },

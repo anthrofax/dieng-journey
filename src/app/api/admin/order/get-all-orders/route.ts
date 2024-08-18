@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       include: {
         destination: true,
         user: true,
-        orderExperiences: true,
+        experiences: true,
       },
     });
 

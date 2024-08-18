@@ -34,6 +34,7 @@ export default async function OrdersPage() {
     include: {
       destination: true,
       penginapan: true,
+      experiences: true,
     },
   });
 
