@@ -18,11 +18,7 @@ import { customTheme } from "./custom-theme";
 
 const Navbar = () => {
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(
-    pathname === "/" || pathname === "/destinations"
-      ? window.scrollY >= screen.height
-      : true
-  );
+  const [isScrolled, setIsScrolled] = useState(false);
   const { data: session } = useSession();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const toggleSheet = () => setIsSheetOpen(!isSheetOpen);

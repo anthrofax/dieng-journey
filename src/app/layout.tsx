@@ -8,13 +8,13 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Fierto Travel Agency | Dieng Journey",
   description: "Dieng Journey",
-  
 };
 
 export default function RootLayout({
@@ -29,6 +29,7 @@ export default function RootLayout({
           <Toast />
           <LayoutProvider>{children}</LayoutProvider>
         </Provider>
+        <Analytics />
       </body>
     </html>
   );

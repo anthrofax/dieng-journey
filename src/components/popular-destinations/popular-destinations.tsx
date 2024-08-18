@@ -7,7 +7,6 @@ import { Destination } from "@prisma/client";
 import { MdExplore } from "react-icons/md";
 import { Button } from "flowbite-react";
 import Link from "next/link";
-import { getAllDestinations } from "@/services/destination-services";
 import { useDestinationHook } from "@/hooks/destination-hooks";
 import Card from "../destination-card/card";
 import Skeleton from "react-loading-skeleton";
