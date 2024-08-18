@@ -86,6 +86,15 @@ model Order {
   penginapan  Penginapan?       @relation(fields: [penginapanId], references: [id], onDelete: Cascade)
 }
 
+model OrderExperience {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId      String @db.ObjectId
+  experienceId String @db.ObjectId
+
+  experiences Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  orders      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
 model PackageOrder {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
   nama              String[]
@@ -114,15 +123,6 @@ model PackageOrderDestination {
 
   destinations Destination  @relation(fields: [destinationId], references: [destinationId], onDelete: Cascade)
   orders       PackageOrder @relation(fields: [packageOrderId], references: [id], onDelete: Cascade)
-}
-
-model OrderExperience {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  orderId      String @db.ObjectId
-  experienceId String @db.ObjectId
-
-  experiences Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
-  orders      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model PackageOrderExperience {

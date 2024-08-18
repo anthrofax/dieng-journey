@@ -55,4 +55,5 @@ export type RegularOrderMidtransNotificationMetadataType = {
   totalBiaya: number;
   destinationId: string;
   penginapanId: string;
+  tokenizerType: string
 };

@@ -40,4 +40,5 @@ export type PackageOrderMidtransNotificationMetadataType = {
   totalBiaya: number;
   penginapanId: string;
   daftarDestinasi: string[];
+  tokenizerType: string;
 };

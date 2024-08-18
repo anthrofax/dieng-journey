@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
         totalBiaya,
         penginapanId,
         daftarDestinasi,
+        tokenizerType: "package-order"
       },
     };
 

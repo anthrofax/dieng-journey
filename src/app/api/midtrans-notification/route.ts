@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       transaction_status !== "pending"
     ) {
       console.log(req.nextUrl.pathname);
-      if (req.nextUrl.pathname === "/api/package-order-tokenizer") {
+      if (body.metadata.tokenizerType === "package-order") {
         const {
           lokasiPenjemputan,
           masaPerjalanan,
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Pembayaran berhasil" });
       }
 
-      if (req.nextUrl.pathname === "/api/order-tokenizer") {
+      if (body.metadata.tokenizerType === "regular-order") {
         const {
           lokasiPenjemputan,
           masaPerjalanan,

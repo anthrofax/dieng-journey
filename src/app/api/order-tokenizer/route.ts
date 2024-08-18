@@ -98,6 +98,7 @@ export async function POST(req: NextRequest) {
         totalBiaya,
         destinationId,
         penginapanId,
+        tokenizerType: "regular-order"
       },
     };
 
