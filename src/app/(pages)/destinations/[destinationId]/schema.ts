@@ -46,12 +46,13 @@ export const schema = z
     experience: z.array(z.string()).optional(),
   })
   .superRefine(({ masaPerjalanan, penginapanId }, ctx) => {
+    console.log(penginapanId);
     if (masaPerjalanan === 3 && penginapanId === "") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message:
-          "Kamu harus memilih opsi penginapan jikaId masa perjalanan mu 3 hari",
-        path: ["penginapan"],
+          "Kamu harus memilih opsi penginapan jika masa perjalanan mu 3 hari",
+        path: ["penginapanId"],
       });
     }
   });

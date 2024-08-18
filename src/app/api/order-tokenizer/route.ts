@@ -4,6 +4,7 @@ import { MidtransClient } from "midtrans-node-client";
 import { v4 as uuidv4 } from "uuid";
 import { Experience, Penginapan } from "@prisma/client";
 import db from "@/lib/db";
+import { TokenizerRequestBodyType } from "@/app/(pages)/destinations/[destinationId]/type";
 
 const snap = new MidtransClient.Snap({
   isProduction: false,
@@ -14,8 +15,9 @@ const snap = new MidtransClient.Snap({
 export async function POST(req: NextRequest) {
   try {
     const currentUser = await getCurrentUser();
-
     if (!currentUser) throw new Error("Kamu belum login.");
+
+    const body = await req.json();
 
     const {
       namaDestinasi,
@@ -30,71 +32,50 @@ export async function POST(req: NextRequest) {
       tanggalPerjalanan,
       destinationId,
       allExperiences,
-    } = (await req.json()) as {
-      namaDestinasi: string;
-      hargaDestinasi: number;
-      destinationId: string;
-      experience: string[];
-      lokasiPenjemputan: string;
-      masaPerjalanan: number;
-      nama: string[];
-      nomorHp: string;
-      penginapanId: string;
-      qty: number;
-      tanggalPerjalanan: Date;
-      allExperiences: Experience[];
-    };
+      allLodgings,
+      totalBiaya
+    } = body as TokenizerRequestBodyType;
 
-    const penginapanYangDipilih = await db.penginapan.findUnique({
-      where: {
-        id: penginapanId,
-      },
-      select: {
-        namaPenginapan: true,
-        biaya: true,
-      },
+    const itemDetails: {
+      price: number;
+      quantity: number;
+      name: string;
+    }[] = [];
+
+    itemDetails.push({
+      price: hargaDestinasi,
+      quantity: qty,
+      name: `Tiket Destinasi ${namaDestinasi}`,
     });
 
-    const biayaExperience = experience.reduce(
-      (acc: number, selectedExperienceId: string) => {
-        const experienceItem = allExperiences.find(
-          (exp: Experience) => exp.id === selectedExperienceId
-        );
-        if (experienceItem) {
-          return acc + experienceItem.biaya;
-        }
-        return acc;
-      },
-      0
+    const penginapanYangDipilih = allLodgings.find(
+      (penginapan) => penginapan.id === penginapanId
     );
 
-    const totalBiaya =
-      hargaDestinasi * qty +
-      biayaExperience +
-      (penginapanYangDipilih?.biaya || 0) * masaPerjalanan;
+    if (penginapanYangDipilih) {
+      itemDetails.push({
+        price: penginapanYangDipilih.biaya,
+        quantity: masaPerjalanan,
+        name: `${`Malam | ${penginapanYangDipilih.namaPenginapan}`}`,
+      });
+    }
+
+    experience.forEach((idExperienceYgDipilih) => {
+      const experienceYgDipilih = allExperiences.find(
+        (experienceItem) => experienceItem.id === idExperienceYgDipilih
+      );
+
+      if (experienceYgDipilih) {
+        itemDetails.push({
+          name: experienceYgDipilih.namaExperience,
+          price: experienceYgDipilih.biaya,
+          quantity: 1,
+        });
+      }
+    });
 
     const parameter = {
-      item_details: [
-        {
-          price: hargaDestinasi,
-          quantity: qty,
-          name: `Tiket Destinasi ${namaDestinasi}`,
-        },
-        {
-          price: penginapanYangDipilih?.biaya || 0,
-          quantity: masaPerjalanan,
-          name: `${
-            penginapanYangDipilih?.namaPenginapan
-              ? `Malam | ${penginapanYangDipilih.namaPenginapan}`
-              : "Tidak memesan penginapan"
-          }`,
-        },
-        {
-          price: biayaExperience,
-          quantity: 1,
-          name: "Experience yang dipilih",
-        },
-      ],
+      item_details: itemDetails,
       customer_details: {
         first_name: nama,
         last_name: "",
@@ -126,7 +107,6 @@ export async function POST(req: NextRequest) {
     );
 
     const token = await snap.createTransactionToken(parameter);
-    console.log(token);
 
     return NextResponse.json({ token });
   } catch (error) {

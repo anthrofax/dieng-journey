@@ -305,7 +305,7 @@ function OrderPackage() {
         travellingFormRef,
       }}
     >
-      <div className="py-16 px-3 relative">
+      <div className="pt-28 pb-16 px-3 relative">
         <div className="py-2 w-full text-center">
           <h1 className="text-xl lg:text-3xl font-semibold">
             Pemesanan Paket{" "}

@@ -112,6 +112,10 @@
   display: none;
 }
 
+.rounded-scrollbar::-webkit-scrollbar {
+  border-bottom-right-radius: 50%;
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .hide-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */

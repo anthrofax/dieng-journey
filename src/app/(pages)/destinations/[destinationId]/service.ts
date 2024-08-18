@@ -1,22 +1,9 @@
 import AXIOS_API from "@/utils/axios-api";
 import { Experience, Penginapan } from "@prisma/client";
 import toast from "react-hot-toast";
+import { TokenizerRequestBodyType } from "./type";
 
-export const redirectToCheckout = async (checkoutData: {
-  namaDestinasi: string;
-  hargaDestinasi: number;
-  destinationId: string;
-  experience: string[];
-  lokasiPenjemputan: string;
-  masaPerjalanan: number;
-  nama: string[];
-  nomorHp: string;
-  penginapanId: string;
-  qty: number;
-  tanggalPerjalanan: Date;
-  allExperiences: Experience[];
-}) => {
-  console.log(checkoutData);
+export const redirectToCheckout = async (checkoutData: TokenizerRequestBodyType) => {
   try {
     const response = await AXIOS_API.post("/order-tokenizer", checkoutData);
 

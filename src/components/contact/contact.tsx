@@ -1,3 +1,8 @@
+import { Link2Icon } from "lucide-react";
+import Link from "next/link";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { TbCirclesRelation } from "react-icons/tb";
+
 function Contact() {
   return (
     <section className="bg-white" id="contact-section">
@@ -14,8 +19,8 @@ function Contact() {
 
           <div className="mt-12 grid items-center lg:grid-cols-2 border border-palewhite rounded-lg justify-items-center px-5">
             <div className="flex flex-col rounded-xl p-4 sm:p-6 lg:p-8 h-full w-full">
-              <h2 className="mb-5 text-xl font-semibold text-black1 dark:text-palewhite">
-                Sampaikan pesan anda disini
+              <h2 className="mb-5 text-xl font-medium text-black1 dark:text-palewhite">
+                Sampaikan pesan melalui email disini.
               </h2>
 
               <form method="post" action="https://formspree.io/f/mqkvlywd">
@@ -58,7 +63,7 @@ function Contact() {
                       id="email"
                       autoComplete="email"
                       className="py-3 lg:py-5 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-palewhite dark:border-gray-700 dark:text-black lg:placeholder:text-base"
-                      placeholder="fiertoagency@info.com"
+                      placeholder="johndoe@gmail.com"
                     />
                   </div>
 
@@ -174,45 +179,42 @@ function Contact() {
                   </h3>
                   <ul>
                     <li className="mt-1 text-sm text-gray-500">
-                      +62 823-8397-8105
-                    </li>
-                    <li className="mt-1 text-sm text-gray-500">
-                      +62 88-8888-8888
+                      +62 121-5248-160
                     </li>
                   </ul>
                 </div>
               </div>
 
               <div className="flex gap-x-7 py-6">
-                <svg
-                  className="flex-shrink-0 w-9 h-9 mt-1.5 text-gray-800 dark:text-palewhite ml-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
-                </svg>
+                <TbCirclesRelation
+                  className="w-[45px] h-[45px]"
+                  fontWeight={500}
+                />
+
                 <div>
                   <h3 className="font-semibold text-gray-800 dark:text-palewhite">
-                    E-Mail
+                    Media Sosial
                   </h3>
                   <ul>
                     <li>
-                      <a
+                      <Link
                         className="mt-2 inline-flex items-center gap-x-2 text-sm font-medium text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
-                        href="mailto:afridhoikhsan@gmail.com"
+                        href="https://www.instagram.com/fierto.expedition"
                       >
                         {" "}
-                        fiertoagency@gmail.com{" "}
-                      </a>
+                        <FaInstagram className="w-[30px] h-[30px] font-medium" />{" "}
+                        <span>@fierto.expedition</span>
+                      </Link>
                     </li>
                     <li>
-                      <a
+                      <Link
                         className="mt-2 inline-flex items-center gap-x-2 text-sm font-medium text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
-                        href="mailto:arszalzdarker@gmail.com"
+                        href="https://wa.link/gftgqv"
                       >
-                        fiertoadmin@gmail.com
-                      </a>
+                        {" "}
+                        <FaWhatsapp className="w-[30px] h-[30px] font-medium" />
+                        <span>Klik untuk hubungi ke Whatsapp</span>
+                      </Link>
                     </li>
                   </ul>
                 </div>

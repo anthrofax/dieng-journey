@@ -350,7 +350,7 @@ function TravellingForm() {
                       />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="w-[300px] overflow-x-scroll">
+                  <SelectContent className="w-[300px] overflow-x-auto">
                     {allLodgings &&
                       allLodgings.length > 0 &&
                       allLodgings.map((penginapan, i) => (
@@ -359,7 +359,7 @@ function TravellingForm() {
                             penginapan.deskripsi !== ""
                               ? `| ${penginapan.deskripsi}`
                               : ""
-                          } ${`| ${Rupiah.format(penginapan.biaya)}`}`}
+                          } ${`| ${Rupiah.format(penginapan.biaya)}/malam`}`}
                         </SelectItem>
                       ))}
                   </SelectContent>

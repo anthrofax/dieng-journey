@@ -65,7 +65,7 @@ model Penginapan {
 
 model Order {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
-  nama              String[]
+  nama              String
   nomorHp           String
   lokasiPenjemputan String
   masaPerjalanan    Int

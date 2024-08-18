@@ -1,3 +1,4 @@
+import { RegularOrderMidtransNotificationMetadataType } from "@/app/(pages)/destinations/[destinationId]/type";
 import { PackageOrderMidtransNotificationMetadataType } from "@/app/(pages)/order-package/type";
 import db from "@/lib/db";
 import { Experience } from "@prisma/client";
@@ -23,6 +24,7 @@ export async function POST(req: NextRequest) {
         transaction_status === "capture") &&
       transaction_status !== "pending"
     ) {
+      console.log(req.nextUrl.pathname);
       if (req.nextUrl.pathname === "/api/package-order-tokenizer") {
         const {
           lokasiPenjemputan,
@@ -84,19 +86,7 @@ export async function POST(req: NextRequest) {
           userId,
           destinationId,
           experience,
-        } = body.metadata as {
-          experience: Experience[];
-          lokasiPenjemputan: string;
-          masaPerjalanan: number;
-          nama: string[];
-          nomorHp: string;
-          tanggalPerjalanan: Date;
-          userId: string;
-          qty: number;
-          totalBiaya: number;
-          destinationId: string;
-          penginapanId: string;
-        };
+        } = body.metadata as RegularOrderMidtransNotificationMetadataType;
 
         const createdOrder = await db.order.create({
           data: {
