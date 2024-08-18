@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
           });
         });
 
-        return NextResponse.json({ message: "Pembayaran berhasil" });
+        return NextResponse.redirect("/orders");
       }
 
       if (body.metadata.tokenizerType === "regular-order") {
@@ -119,16 +119,16 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        experience.forEach(async (experienceItem: Experience) => {
+        experience.forEach(async (experienceId: string) => {
           await db.orderExperience.create({
             data: {
-              experienceId: experienceItem.id,
+              experienceId: experienceId,
               orderId: createdOrder.id,
             },
           });
         });
 
-        return NextResponse.json({ message: "Pembayaran berhasil" });
+        return NextResponse.redirect("/orders");
       }
     }
 

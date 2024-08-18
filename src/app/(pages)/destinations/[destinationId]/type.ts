@@ -44,7 +44,7 @@ export type TokenizerRequestBodyType = {
 };
 
 export type RegularOrderMidtransNotificationMetadataType = {
-  experience: Experience[];
+  experience: string[];
   lokasiPenjemputan: string;
   masaPerjalanan: number;
   nama: string;
