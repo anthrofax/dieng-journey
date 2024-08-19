@@ -41,7 +41,7 @@ export default function ImageGallery({ photos, className = "" }: ImageGalleryPro
             <FaTimes />
           </button>
           <button
-            className="absolute left-5 text-white text-3xl"
+            className="absolute left-5 text-white text-3xl z-50"
             onClick={handlePrev}
           >
             <FaArrowLeft />

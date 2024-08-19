@@ -219,7 +219,7 @@ function DestinationDetails() {
           <Spinner />
         ) : (
           <>
-            <div className="col-span-12 lg:col-span-8 px-3 grid gap-3 relative">
+            <div className="col-span-12 lg:col-span-8 px-3 grid gap-3 relative min-w-full">
               <ImageGallery photos={dataDestinasi.imageUrls} />
               <div className="mt-3 flex justify-between">
                 <div>

@@ -53,25 +53,30 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        experience.forEach(async (idExperience: string) => {
-          await db.packageOrderExperience.create({
-            data: {
-              experienceId: idExperience,
-              packageOrderId: createdOrder.id,
-            },
-          });
-        });
+        const createdExperience = experience.forEach(
+          async (idExperience: string) => {
+            await db.packageOrderExperience.create({
+              data: {
+                experienceId: idExperience,
+                packageOrderId: createdOrder.id,
+              },
+            });
+          }
+        );
 
-        daftarDestinasi.forEach(async (idDestinasi: string) => {
-          await db.packageOrderDestination.create({
-            data: {
-              destinationId: idDestinasi,
-              packageOrderId: createdOrder.id,
-            },
-          });
-        });
+        const createdDestinations = daftarDestinasi.forEach(
+          async (idDestinasi: string) => {
+            await db.packageOrderDestination.create({
+              data: {
+                destinationId: idDestinasi,
+                packageOrderId: createdOrder.id,
+              },
+            });
+          }
+        );
 
-        return NextResponse.redirect(new URL("/orders", req.url));
+        if (createdOrder || createdExperience || createdDestinations)
+          return NextResponse.json({ message: "Pembayaran Berhasil" });
       }
 
       if (body.metadata.tokenizerType === "regular-order") {
@@ -89,20 +94,6 @@ export async function POST(req: NextRequest) {
           experience,
         } = body.metadata as RegularOrderMidtransNotificationMetadataType;
 
-        console.log({
-          lokasiPenjemputan,
-          masaPerjalanan,
-          nama,
-          nomorHp,
-          qty,
-          tanggalPerjalanan,
-          totalBiaya,
-          penginapanId,
-          userId,
-          destinationId,
-          experience,
-        });
-
         const createdOrder = await db.order.create({
           data: {
             lokasiPenjemputan,
@@ -118,18 +109,21 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        experience.forEach(async (experienceId: string) => {
-          const addedExperience = await db.orderExperience.create({
-            data: {
-              experienceId: experienceId,
-              orderId: createdOrder.id,
-            },
-          });
+        const createdExperience = experience.forEach(
+          async (experienceId: string) => {
+            const addedExperience = await db.orderExperience.create({
+              data: {
+                experienceId: experienceId,
+                orderId: createdOrder.id,
+              },
+            });
 
-          console.log(addedExperience);
-        });
+            console.log(addedExperience);
+          }
+        );
 
-        return NextResponse.redirect(new URL("/orders", req.url));
+        if (createdOrder || createdExperience)
+          return NextResponse.json({ message: "Pembayaran Berhasil" });
       }
     }
 

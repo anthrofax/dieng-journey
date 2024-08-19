@@ -8,9 +8,14 @@ export async function GET(req: NextRequest) {
 
     const getAllOrders = await db.order.findMany({
       include: {
-        destination: true,
         user: true,
-        experiences: true,
+        destination: true,
+        penginapan: true,
+        experiences: {
+          select: {
+            experiences: true,
+          },
+        },
       },
     });
 

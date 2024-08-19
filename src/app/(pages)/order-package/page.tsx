@@ -373,7 +373,7 @@ function OrderPackage() {
           <div className="shadow col-span-1  hidden xl:block h-[46rem] p-3 sticky top-20 overflow-y-scroll">
             <div className="space-y-2 text-center">
               <h3 className="text-xl font-semibold">Rincian Pemesanan</h3>
-              <p>
+              <p className="text-sm">
                 Berikut rincian pesananmu, pastikan data yang anda masukkan
                 sudah benar.
               </p>
@@ -385,12 +385,12 @@ function OrderPackage() {
                 <ul className="list-disc">
                   {(selectedPackage === "travelling"
                     ? watchedTravellingFields?.nama?.map((namaItem, i) => (
-                        <li className="ml-3" key={i}>
+                        <li className="ml-3 text-sm" key={i}>
                           {namaItem}
                         </li>
                       ))
                     : watchedHealingFields?.nama?.map((namaItem, i) => (
-                        <li className="ml-3" key={i}>
+                        <li className="ml-3 text-sm" key={i}>
                           {namaItem}
                         </li>
                       ))) || (
@@ -403,7 +403,7 @@ function OrderPackage() {
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold">Nomor HP: </label>
+                <label className="font-semibold text-sm">Nomor HP: </label>
                 <p
                   className={`${
                     watchedTravellingFields.nomorHp ||
@@ -426,7 +426,7 @@ function OrderPackage() {
                   {(selectedPackage === "travelling"
                     ? watchedTravellingFields?.destinasi?.map(
                         (idDestinasi, i) => (
-                          <li className="ml-3" key={i}>
+                          <li className="ml-3 text-sm" key={i}>
                             {
                               allDestinations.find(
                                 (destinasiItem) =>
@@ -437,7 +437,7 @@ function OrderPackage() {
                         )
                       )
                     : watchedHealingFields?.destinasi?.map((idDestinasi, i) => (
-                        <li className="ml-3" key={i}>
+                        <li className="ml-3 text-sm" key={i}>
                           {
                             allDestinations.find(
                               (destinasiItem) =>
@@ -461,7 +461,7 @@ function OrderPackage() {
                     watchedHealingFields.lokasiPenjemputan
                       ? ""
                       : "text-slate-500"
-                  }`}
+                  } text-sm`}
                 >
                   {lokasiPenjemputan.find(
                     (lokasi) =>
@@ -482,7 +482,7 @@ function OrderPackage() {
                     watchedHealingFields.tanggalPerjalanan
                       ? ""
                       : "text-slate-500"
-                  }`}
+                  } text-sm`}
                 >
                   {selectedPackage === "travelling"
                     ? watchedTravellingFields?.tanggalPerjalanan
@@ -514,7 +514,7 @@ function OrderPackage() {
                       watchedTravellingFields.penginapanId
                         ? ""
                         : "text-slate-500"
-                    }`}
+                    } text-sm`}
                   >
                     {watchedTravellingFields?.penginapanId
                       ? allLodgings.find(
@@ -543,7 +543,7 @@ function OrderPackage() {
                         </li>
                       )
                     ) || (
-                      <li className="list-none text-slate-500">
+                      <li className="list-none text-slate-500 text-sm">
                         Rincian experience yang anda pilih akan ditampilkan
                         disini
                       </li>

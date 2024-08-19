@@ -40,7 +40,7 @@ const Chart = ({
   };
 }) => {
   const [chartData, setChartData] = useState<ChartData>({
-    labels: ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"],
+    labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"],
     datasets: [
       {
         label: "Penjualan",
@@ -95,7 +95,7 @@ const Chart = ({
         },
         title: {
           display: true,
-          text: "Statistik Penghasilan",
+          text: "Statistik Penjualan",
         },
       },
       maintainAspectRatio: false,

@@ -167,9 +167,9 @@ const Navbar = () => {
                 </Dropdown>
                 <FlowbiteNavbar.Toggle
                   className={`${
-                    isScrolled
-                      ? `${pathname === "/" ? "text-primary" : "text-black"}`
-                      : "text-white"
+                    pathname === "/" || pathname === "/destinations"
+                      ? `${isScrolled ? "text-primary" : "text-white"}`
+                      : "text-black"
                   }`}
                 />
               </>
@@ -182,7 +182,7 @@ const Navbar = () => {
               </Link>
             )}
           </div>
-          <FlowbiteNavbar.Collapse>
+          <FlowbiteNavbar.Collapse className="w-full lg:w-fit text-nowrap">
             <FlowbiteNavbar.Link
               href={pathname === "/" ? "#" : "/"}
               active={pathname === "/"}
@@ -234,7 +234,8 @@ const Navbar = () => {
                 />
               </FlowbiteNavbar.Link>
             ))}
-            <div className="w-fit flex flex-col items-center">
+            
+            <div className="w-full flex flex-col items-center">
               <Link
                 href={
                   pathname === "/" ? "#contact-section" : "/#contact-section"

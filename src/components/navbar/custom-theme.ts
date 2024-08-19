@@ -2,7 +2,7 @@ import { CustomFlowbiteTheme } from "flowbite-react";
 
 export const customTheme: CustomFlowbiteTheme["navbar"] = {
   root: {
-    base: "px-2 py-2.5 sm:px-10 fixed z-50 h-24 w-full top-0 left-0 flex items-center",
+    base: "px-2 py-2.5 sm:px-16 fixed z-50 h-24 w-full top-0 left-0 flex items-center",
     rounded: {
       on: "rounded",
       off: "",
@@ -24,7 +24,7 @@ export const customTheme: CustomFlowbiteTheme["navbar"] = {
   },
   collapse: {
     base: "w-full lg:block lg:w-auto",
-    list: " mt-4 flex flex-col lg:mt-0 lg:flex-row lg:space-x-8 lg:text-sm lg:font-medium",
+    list: " mt-4 flex flex-col lg:mt-0 lg:flex-row lg:space-x-8 lg:text-xs lg:font-medium",
     hidden: {
       on: "hidden",
       off: "absolute left-0 top-20 lg:static lg:top-0 bg-white lg:bg-transparent backdrop-blur lg:backdrop-blur-none",
