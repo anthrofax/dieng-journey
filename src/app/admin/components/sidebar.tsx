@@ -44,7 +44,7 @@ const Sidebar = () => {
       isCurrentPage: currentPage === "users",
     },
     {
-      text: "Penjualan Tiket",
+      text: "Data Penjualan",
       icon: IoTicket,
       href: "/admin/orders",
       isCurrentPage: currentPage === "orders",

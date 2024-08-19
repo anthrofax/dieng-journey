@@ -1,19 +1,18 @@
 "use client";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllOrders, getAllReservations } from "../../services/service";
-import { ClipLoader } from "react-spinners";
 import { DataTable } from "../../components/data-table";
 import { columns } from "./table/column";
 import Skeleton from "react-loading-skeleton";
+import { getAllRegularOrders } from "../../services/service";
 
 const Orders = () => {
   const { data: allOrders, isLoading } = useQuery({
-    queryFn: getAllOrders,
+    queryFn: getAllRegularOrders,
     queryKey: ["admin", "orders"],
   });
 
-  console.log(allOrders)
+  console.log(allOrders);
 
   return (
     <div className="py-10 col-span-12 lg:col-span-10 lg:w-full grid grid-rows-12">
@@ -24,7 +23,12 @@ const Orders = () => {
         {isLoading ? (
           <Skeleton className="w-full h-full" />
         ) : (
-          <DataTable columns={columns} data={allOrders} filterBy="destinationName" filterByLabel="destinasi" />
+          <DataTable
+            columns={columns}
+            data={allOrders}
+            filterBy="destinationName"
+            filterByLabel="destinasi"
+          />
         )}
       </div>
     </div>

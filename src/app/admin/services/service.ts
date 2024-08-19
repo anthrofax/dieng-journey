@@ -30,7 +30,7 @@ export async function getAllLodgings() {
   return data;
 }
 
-export async function getAllOrders() {
+export async function getAllRegularOrders() {
   const { data } = await AXIOS_API.get(
     "/admin/order/get-all-orders"
   );
@@ -38,16 +38,22 @@ export async function getAllOrders() {
   return data;
 }
 
-export async function getAllReservations() {
+export async function getAllPackageOrders() {
   const { data } = await AXIOS_API.get(
-    "/admin/reservation/get-all-reservations"
+    "/admin/package-order/get-all-package-orders"
   );
 
   return data;
 }
 
-export async function getAllRevenue() {
+export async function getAllRegularOrderRevenue() {
   const { data } = await AXIOS_API.get("/admin/order/get-all-revenue");
+
+  return data;
+}
+
+export async function getAllPackageOrderRevenue() {
+  const { data } = await AXIOS_API.get("/admin/package-order/get-all-revenue");
 
   return data;
 }
