@@ -108,18 +108,16 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        const createdExperience = experience.forEach(
-          async (experienceId: string) => {
-            const addedExperience = await db.orderExperience.create({
-              data: {
-                experienceId: experienceId,
-                orderId: createdOrder.id,
-              },
-            });
+        let createdExperience;
 
-            console.log(addedExperience);
-          }
-        );
+        experience.forEach(async (experienceId: string) => {
+          createdExperience = await db.orderExperience.create({
+            data: {
+              experienceId: experienceId,
+              orderId: createdOrder.id,
+            },
+          });
+        });
 
         if (createdOrder || createdExperience)
           return NextResponse.json({ message: "Pembayaran Berhasil" });
