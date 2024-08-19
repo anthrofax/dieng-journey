@@ -53,27 +53,26 @@ export async function POST(req: NextRequest) {
           },
         });
 
-        const createdExperience = experience.forEach(
-          async (idExperience: string) => {
-            await db.packageOrderExperience.create({
-              data: {
-                experienceId: idExperience,
-                packageOrderId: createdOrder.id,
-              },
-            });
-          }
-        );
+        let createdExperience;
+        let createdDestinations;
 
-        const createdDestinations = daftarDestinasi.forEach(
-          async (idDestinasi: string) => {
-            await db.packageOrderDestination.create({
-              data: {
-                destinationId: idDestinasi,
-                packageOrderId: createdOrder.id,
-              },
-            });
-          }
-        );
+        experience.forEach(async (idExperience: string) => {
+          createdExperience = await db.packageOrderExperience.create({
+            data: {
+              experienceId: idExperience,
+              packageOrderId: createdOrder.id,
+            },
+          });
+        });
+
+        daftarDestinasi.forEach(async (idDestinasi: string) => {
+          createdDestinations = await db.packageOrderDestination.create({
+            data: {
+              destinationId: idDestinasi,
+              packageOrderId: createdOrder.id,
+            },
+          });
+        });
 
         if (createdOrder || createdExperience || createdDestinations)
           return NextResponse.json({ message: "Pembayaran Berhasil" });
