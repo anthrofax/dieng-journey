@@ -29,7 +29,6 @@ function Lodging() {
     resolver: zodResolver(createSchema),
   });
 
-  console.log(allLodgings)
 
   return (
     <div className="py-10 col-span-12 lg:col-span-10 grid grid-rows-12">

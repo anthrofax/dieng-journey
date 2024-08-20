@@ -1,7 +1,9 @@
-import { useQueries } from "@tanstack/react-query";
+import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import { getMostOrderedDestinations } from "../(pages)/dashboard/service";
 import {
   getAllDestinations,
+  getAllExperiences,
+  getAllLodgings,
   getAllPackageOrderRevenue,
   getAllPackageOrders,
   getAllRegularOrderRevenue,
@@ -9,12 +11,17 @@ import {
   getAllUsers,
 } from "../services/service";
 
+
 export const useWidgetHook = () => {
   const [
     usersQuery,
     destinationsQuery,
-    ordersQuery,
-    revenueQuery,
+    experiencesQuery,
+    lodgingsQuery,
+    regularOrdersQuery,
+    regularOrdersRevenueQuery,
+    packageOrdersQuery,
+    packageOrdersRevenueQuery,
     mostOrderedQuery,
   ] = useQueries({
     queries: [
@@ -25,6 +32,14 @@ export const useWidgetHook = () => {
       {
         queryFn: getAllDestinations,
         queryKey: ["admin", "destinations"],
+      },
+      {
+        queryFn: getAllExperiences,
+        queryKey: ["admin", "experiences"],
+      },
+      {
+        queryFn: getAllLodgings,
+        queryKey: ["admin", "lodgings"],
       },
       {
         queryFn: getAllRegularOrders,
@@ -52,8 +67,12 @@ export const useWidgetHook = () => {
   return [
     usersQuery,
     destinationsQuery,
-    ordersQuery,
-    revenueQuery,
+    experiencesQuery,
+    lodgingsQuery,
+    regularOrdersQuery,
+    regularOrdersRevenueQuery,
+    packageOrdersQuery,
+    packageOrdersRevenueQuery,
     mostOrderedQuery,
   ];
 };

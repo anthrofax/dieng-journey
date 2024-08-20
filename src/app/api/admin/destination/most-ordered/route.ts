@@ -6,18 +6,19 @@ export async function GET(req: NextRequest) {
   try {
     await isAdminUser();
 
-    console.log("test");
     const allDestinations = await db.destination.findMany({
       include: {
-        orders: true, 
+        orders: true,
+        packageOrders: true
       },
     });
 
     const mostOrderedDestination = allDestinations.reduce((a, b) => {
-      return a?.orders?.length >= b?.orders?.length ? a : b;
+      return a?.orders?.length + a?.packageOrders?.length >=
+        b?.orders?.length + b?.packageOrders?.length
+        ? a
+        : b;
     });
-
-    console.log("hasil " + mostOrderedDestination);
 
     return NextResponse.json(mostOrderedDestination);
   } catch (error) {

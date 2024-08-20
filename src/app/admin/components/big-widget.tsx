@@ -1,4 +1,4 @@
-import { Destination, Order } from "@prisma/client";
+import { Destination, Order, PackageOrder } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
@@ -8,6 +8,7 @@ const BigWidget = ({
 }: {
   destination: Destination & {
     orders: Order[];
+    packageOrders: PackageOrder[];
   };
 }) => {
   return (
@@ -36,7 +37,8 @@ const BigWidget = ({
               <span className="flex items-center font-semibold gap-2">
                 <h3 className="text-slate-500">Total Transaksi:</h3>
                 <span className="text-slate-500">
-                  {destination.orders.length} transaksi
+                  {destination.orders.length + destination.packageOrders.length}{" "}
+                  transaksi
                 </span>
               </span>
             </div>

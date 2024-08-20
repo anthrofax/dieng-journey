@@ -8,7 +8,7 @@ export const useLodgingHook = () => {
 
   const { data: allLodgings, isLoading: isLoadingQuery } = useQuery({
     queryFn: getAllLodgings,
-    queryKey: ["admin", "lodging"],
+    queryKey: ["admin", "lodgings"],
   });
 
   const { mutate: handleDeleteLodging, isPending: isPendingDelete } =
@@ -20,7 +20,7 @@ export const useLodgingHook = () => {
   function handleDeleteSuccess() {
     toast.success("Data lodging anda berhasil dihapus!");
     queryClient.invalidateQueries({
-      queryKey: ["admin", "lodging"],
+      queryKey: ["admin", "lodgings"],
     });
   }
 

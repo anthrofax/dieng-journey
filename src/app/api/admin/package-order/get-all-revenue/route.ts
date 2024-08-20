@@ -1,13 +1,22 @@
 import db from "@/lib/db";
 import isAdminUser from "@/lib/isAdminUser";
-import { getDay } from "date-fns";
+import { getMonth, getYear } from "date-fns";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
     await isAdminUser();
 
-    const getAllPackageOrders = await db.packageOrder.findMany({});
+    const currentYear = getYear(new Date());
+
+    const getAllPackageOrders = await db.packageOrder.findMany({
+      where: {
+        createdAt: {
+          gte: new Date(currentYear, 0, 1), // Mulai dari 1 Januari tahun ini
+          lt: new Date(currentYear + 1, 0, 1), // Kurang dari 1 Januari tahun depan
+        },
+      },
+    });
 
     console.log(getAllPackageOrders);
 
@@ -16,7 +25,7 @@ export async function GET(req: NextRequest) {
     const dataPendapatan = getAllPackageOrders.map((order) => {
       return {
         pendapatan: order.totalBiaya,
-        hari: getDay(order.createdAt),
+        bulan: getMonth(order.createdAt),
       };
     });
 
