@@ -2,12 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/currentUser";
 import { MidtransClient } from "midtrans-node-client";
 import { v4 as uuidv4 } from "uuid";
-import { Experience, Penginapan } from "@prisma/client";
-import db from "@/lib/db";
 import { TokenizerRequestBodyType } from "@/app/(pages)/order-package/type";
 
 const snap = new MidtransClient.Snap({
-  isProduction: false,
+  isProduction: process.env.MIDTRANS_IS_PRODUCTION,
   clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT,
   serverKey: process.env.MIDTRANS_ID_SECRET,
 });

@@ -7,7 +7,7 @@ import db from "@/lib/db";
 import { TokenizerRequestBodyType } from "@/app/(pages)/destinations/[destinationId]/type";
 
 const snap = new MidtransClient.Snap({
-  isProduction: false,
+  isProduction: process.env.MIDTRANS_IS_PRODUCTION,
   clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT,
   serverKey: process.env.MIDTRANS_ID_SECRET,
 });
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       destinationId,
       allExperiences,
       allLodgings,
-      totalBiaya
+      totalBiaya,
     } = body as TokenizerRequestBodyType;
 
     const itemDetails: {
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
         totalBiaya,
         destinationId,
         penginapanId,
-        tokenizerType: "regular-order"
+        tokenizerType: "regular-order",
       },
     };
 
