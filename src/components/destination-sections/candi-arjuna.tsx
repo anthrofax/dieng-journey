@@ -13,6 +13,7 @@ function CandiArjunaSection() {
       ".candi-arjuna-image, .candi-arjuna-title, .candi-arjuna-description, .candi-arjuna-link",
       { autoAlpha: 0, x: -100 }
     );
+    gsap.set("#sign", { bottom: "-250px" });
 
     const elementsToAnimate = [
       ".candi-arjuna-image",
@@ -77,27 +78,33 @@ function CandiArjunaSection() {
 
   const handleMouseEnter = () => {
     gsap.to("#sign", {
-      bottom: "24px",
+      bottom: "100px",
       rotate: 20,
-      duration: 1,
-      ease: "power2.out",
+      duration: 0.3,
+      ease: "elastic",
     });
-    gsap.to("#warn", { opacity: 0, duration: 1, ease: "power2.out" });
+    gsap.to("#warn", { opacity: 0, duration: 0.3, ease: "elastic" });
   };
 
-  const handleMouseLeave = () => {
-    gsap.to("#sign", {
-      bottom: "-80px",
-      rotate: 0,
-      duration: 1,
-      ease: "power2.out",
-    });
-    gsap.to("#warn", { opacity: 1, duration: 1, ease: "power2.out" });
+  const handleMouseLeave = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const parrentElement = e.currentTarget;
+    const bush = parrentElement.closest("#bush");
+    const sign = parrentElement.closest("#sign");
+
+    if (!bush && !sign) {
+      gsap.to("#sign", {
+        bottom: "-250px",
+        rotate: 0,
+        duration: 0.3,
+        ease: "elastic",
+      });
+      gsap.to("#warn", { opacity: 1, duration: 0.3, ease: "elastic" });
+    }
   };
 
   return (
     <section
-      className="relative w-full mt-36 mb-24 pb-80 overflow-hidden translate-x-8"
+      className="relative w-full mt-36 mb-24 pb-80 overflow-hidden"
       onMouseLeave={handleMouseLeave}
     >
       <section className="flex flex-col lg:flex-row w-5/6 gap-10 mx-auto justify-center items-center relative">
@@ -141,7 +148,7 @@ function CandiArjunaSection() {
           alt="Sign Icon"
           width={210}
           height={210}
-          className="absolute -bottom-80 rotate-[0deg] left-[55%] -translate-x-1/2 duration-1000 z-20"
+          className="absolute rotate-[0deg] left-[55%] -translate-x-1/2 duration-1000 z-20"
         />
       </Link>
       <Image

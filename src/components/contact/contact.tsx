@@ -2,6 +2,7 @@ import { Link2Icon } from "lucide-react";
 import Link from "next/link";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { TbCirclesRelation } from "react-icons/tb";
+import ContactForm from "./contact-form";
 
 function Contact() {
   return (
@@ -23,93 +24,7 @@ function Contact() {
                 Sampaikan pesan melalui email disini.
               </h2>
 
-              <form method="post" action="https://formspree.io/f/mqkvlywd">
-                <div className="grid gap-4 lg:gap-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="firstname" className="sr-only">
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        name="firstname"
-                        id="firstname"
-                        className="py-3 lg:py-5 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-palewhite dark:border-gray-700 dark:text-black lg:placeholder:text-base"
-                        placeholder="Jhon"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="lastname" className="sr-only">
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        name="lastname"
-                        id="lastname"
-                        className="py-3 lg:py-5 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-palewhite dark:border-gray-700 dark:text-black lg:placeholder:text-base"
-                        placeholder="Doe"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="email" className="sr-only">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      autoComplete="email"
-                      className="py-3 lg:py-5 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-palewhite dark:border-gray-700 dark:text-black lg:placeholder:text-base"
-                      placeholder="johndoe@gmail.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="telepon" className="sr-only">
-                      Phone Number
-                    </label>
-                    <input
-                      type="text"
-                      name="telepon"
-                      id="telepon"
-                      className="py-3 lg:py-5 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-palewhite dark:border-gray-700 dark:text-black lg:placeholder:text-base"
-                      placeholder="+62"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="detail" className="sr-only">
-                      Details
-                    </label>
-                    <textarea
-                      id="detail"
-                      name="detail"
-                      rows={8}
-                      className="py-3 lg:py-5 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-palewhite dark:border-gray-700 dark:text-black lg:placeholder:text-base"
-                      placeholder="Sampaikan pesanmu disini."
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div className="mt-4 grid">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center items-center gap-x-3 text-center bg-primary hover:bg-secondary border border-transparent text-sm lg:text-base text-white hover:text-black font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:focus:ring-offset-gray-800"
-                  >
-                    Kirim pesan
-                  </button>
-                </div>
-
-                <div className="mt-3 text-center">
-                  <p className="text-sm text-gray-500">
-                    Kami akan melakukan respon terhadap pesan anda dalam 1-2
-                    hari.
-                  </p>
-                </div>
-              </form>
+              <ContactForm />
             </div>
 
             <div className="divide-y divide-gray-200 dark:divide-palewhite py-5">
