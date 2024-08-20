@@ -42,7 +42,7 @@ function Dashboard() {
       icon: <FaMapMarkedAlt color="#efefef" />,
     },
     {
-      page: "lodgings",
+      page: "lodging",
       label: "Penginapan",
       data: lodgingsQuery.data,
       icon: <MdNightsStay color="#efefef" />,

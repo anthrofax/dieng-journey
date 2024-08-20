@@ -62,14 +62,15 @@ const Navbar = () => {
         <FlowbiteNavbar.Link href="/admin/dashboard" active>
           Dashboard
         </FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link as={Link} href="/admin/users">
-          Penngguna
+        <FlowbiteNavbar.Link as={Link} href="/admin/destinations">
+          Destinasi
         </FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link href="/admin/listings">Hotel</FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link href="/admin/reservations">
-          Transaksi
+        <FlowbiteNavbar.Link href="/admin/experiences">Experience</FlowbiteNavbar.Link>
+        <FlowbiteNavbar.Link href="/admin/lodging">
+          Penginapan
         </FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link href="/admin/reviews">Ulasan</FlowbiteNavbar.Link>
+        <FlowbiteNavbar.Link href="/admin/users">Pengguna</FlowbiteNavbar.Link>
+        <FlowbiteNavbar.Link href="/admin/orders">Data Penjualan</FlowbiteNavbar.Link>
         <button
           onClick={() =>
             confirmAlert({
