@@ -342,7 +342,7 @@ function OrderPackage() {
               />
             </div>
             <Switch
-              className="w-14 h-8 lg:h-12 lg:w-[5.25rem]"
+              className="w-14 h-8 lg:h-12 lg:w-[5.25rem] data-[state=unchecked]:bg-primary"
               thumbClassName="w-6 h-6 lg:w-9 lg:h-9"
               checked={selectedPackage === "travelling"}
               onCheckedChange={(val) => {

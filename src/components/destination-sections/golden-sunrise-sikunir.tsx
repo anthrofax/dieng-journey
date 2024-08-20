@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -8,36 +8,39 @@ import { gsap } from "gsap";
 
 function GoldenSunriseSikunirSection() {
   useEffect(() => {
+    // Set initial state
+    gsap.set(
+      ".golden-sunrise-image, .golden-sunrise-title, .golden-sunrise-description, .golden-sunrise-link",
+      { autoAlpha: 0, x: -100 }
+    );
+
     const elementsToAnimate = [
-      { selector: ".golden-sunrise-image", animation: animateFromLeft },
-      { selector: ".golden-sunrise-title", animation: animateFromLeft },
-      { selector: ".golden-sunrise-description", animation: animateFromLeft },
-      { selector: ".golden-sunrise-link", animation: animateFromLeft },
+      ".golden-sunrise-image",
+      ".golden-sunrise-title",
+      ".golden-sunrise-description",
+      ".golden-sunrise-link",
     ];
 
-    elementsToAnimate.forEach(({ selector, animation }) => {
+    elementsToAnimate.forEach((selector) => {
       const element = document.querySelector(selector);
       if (element) {
         const observer = new IntersectionObserver(
           ([entry]) => {
             if (entry.isIntersecting) {
-              animation(entry.target);
-              observer.unobserve(entry.target); // Stop observing after animation is triggered
+              gsap.to(element, {
+                autoAlpha: 1,
+                x: 0,
+                duration: 1,
+                ease: "power2.out",
+              });
+              observer.unobserve(entry.target);
             }
           },
-          { threshold: 0.15 }
+          { threshold: 0.1 } // Lower threshold if needed
         );
         observer.observe(element);
       }
     });
-
-    function animateFromLeft(element: Element) {
-      gsap.fromTo(
-        element,
-        { opacity: 0, x: -100 },
-        { opacity: 1, x: 0, duration: 1, ease: "power2.out" }
-      );
-    }
   }, []);
 
   return (
@@ -67,7 +70,7 @@ function GoldenSunriseSikunirSection() {
             className="mt-3 golden-sunrise-link"
             href="/destinations/66af7a1fc4f78db57ce0132f"
           >
-            <div className="bg-primary hover:bg-secondary flex gap-2 items-center rounded-lg w-max p-3 text-white hover:text-black">
+            <div className="bg-primary flex gap-2 items-center rounded-lg w-max p-3 text-white hover:bg-black duration-500">
               <h1>Lihat Selengkapnya</h1>
               <IoIosArrowForward size={20} />
             </div>

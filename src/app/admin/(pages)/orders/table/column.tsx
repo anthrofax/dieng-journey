@@ -45,6 +45,15 @@ export const columns = [
     },
   },
   {
+    accessorKey: "user",
+    header: "Pelanggan",
+    cell: ({ row }: { row: any }) => {
+      const customerUsername = row.original.user.username;
+
+      return <span>{customerUsername}</span>;
+    },
+  },
+  {
     accessorFn: (row: any) => row.destination.destinationName,
     id: "destinationName",
     header: "Destinasi",
@@ -52,15 +61,6 @@ export const columns = [
       const destinationName = row.original.destination.destinationName;
 
       return <span>{destinationName}</span>;
-    },
-  },
-  {
-    accessorKey: "user",
-    header: "Pelanggan",
-    cell: ({ row }: { row: any }) => {
-      const customerUsername = row.original.user.username;
-
-      return <span>{customerUsername}</span>;
     },
   },
   {

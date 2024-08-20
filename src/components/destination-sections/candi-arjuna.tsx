@@ -1,28 +1,39 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import Link from "next/link";
 import { gsap } from "gsap";
 
 function CandiArjunaSection() {
   useEffect(() => {
+    // Set initial state for main content animation
+    gsap.set(
+      ".candi-arjuna-image, .candi-arjuna-title, .candi-arjuna-description, .candi-arjuna-link",
+      { autoAlpha: 0, x: -100 }
+    );
+
     const elementsToAnimate = [
-      { selector: ".candi-arjuna-image", animation: animateFromLeft },
-      { selector: ".candi-arjuna-title", animation: animateFromLeft },
-      { selector: ".candi-arjuna-description", animation: animateFromLeft },
-      { selector: ".candi-arjuna-link", animation: animateFromLeft },
+      ".candi-arjuna-image",
+      ".candi-arjuna-title",
+      ".candi-arjuna-description",
+      ".candi-arjuna-link",
     ];
 
-    elementsToAnimate.forEach(({ selector, animation }) => {
+    elementsToAnimate.forEach((selector) => {
       const element = document.querySelector(selector);
       if (element) {
         const observer = new IntersectionObserver(
           ([entry]) => {
             if (entry.isIntersecting) {
-              animation(entry.target);
-              observer.unobserve(entry.target); // Stop observing after animation is triggered
+              gsap.to(element, {
+                autoAlpha: 1,
+                x: 0,
+                duration: 1,
+                ease: "power2.out",
+              });
+              observer.unobserve(entry.target);
             }
           },
           { threshold: 0.15 }
@@ -31,88 +42,69 @@ function CandiArjunaSection() {
       }
     });
 
-    function animateFromLeft(element: Element) {
-      gsap.fromTo(
-        element,
-        { opacity: 0, x: -100 },
-        { opacity: 1, x: 0, duration: 1, ease: "power2.out" }
-      );
+    // Additional animations for #bush and #sign
+    function animateBush() {
+      gsap.to("#bush", {
+        x: () => Math.random() * 10 - 10,
+        rotation: () => Math.random() * 10 - 3,
+        duration: 0.3,
+        ease: "power1.inOut",
+        repeat: 8,
+        onComplete: () => {
+          // Memberikan jeda 3 detik sebelum mengulangi animasi
+          setTimeout(animateBush, 3000);
+        },
+      });
     }
-  }, []);
-  
-  function animateBush() {
-    gsap.to("#bush", {
-      x: () => Math.random() * 10 - 10,
-      rotation: () => Math.random() * 10 - 3,
-      duration: 0.3,
-      ease: "power1.inOut",
-      repeat: 8,
-      onComplete: () => {
-        // Memberikan jeda 3 detik sebelum mengulangi animasi
-        setTimeout(animateBush, 3000);
-      },
-    });
-  }
 
-  function animateSign() {
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 3, yoyo: true });
+    function animateSign() {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 3, yoyo: true });
 
-    tl.to("#warn", {
-      rotate: 10, // Rotasi ke kanan
-      duration: 0.3,
-      ease: "power1.inOut",
-    }).to("#warn", {
-      rotate: -10, // Rotasi ke kiri
-      duration: 0.3,
-      ease: "power1.inOut",
-    });
-  }
-
-  useEffect(() => {
-    const tl = gsap.timeline({ repeat: -1, yoyo: true });
+      tl.to("#warn", {
+        rotate: 10, // Rotasi ke kanan
+        duration: 0.3,
+        ease: "power1.inOut",
+      }).to("#warn", {
+        rotate: -10, // Rotasi ke kiri
+        duration: 0.3,
+        ease: "power1.inOut",
+      });
+    }
 
     animateBush();
-
     animateSign();
   }, []);
 
   const handleMouseEnter = () => {
-    document
-      .querySelector("#sign")
-      ?.classList.replace("-bottom-80", "bottom-24");
-    document
-      .querySelector("#sign")
-      ?.classList.replace("rotate-[0deg]", "rotate-[20deg]");
-    document.querySelector("#warn")?.classList.add("opacity-0");
+    gsap.to("#sign", {
+      bottom: "24px",
+      rotate: 20,
+      duration: 1,
+      ease: "power2.out",
+    });
+    gsap.to("#warn", { opacity: 0, duration: 1, ease: "power2.out" });
   };
 
-  const handleMouseLeave = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const parrentElement = e.currentTarget;
-    const bush = parrentElement.closest("#bush");
-    const sign = parrentElement.closest("#sign");
-
-    // Cek apakah kursor benar-benar keluar dari #bush atau #sign
-    if (!bush && !sign) {
-      document
-        .querySelector("#sign")
-        ?.classList.replace("bottom-24", "-bottom-80");
-      document
-        .querySelector("#sign")
-        ?.classList.replace("rotate-[20deg]", "rotate-[0deg]");
-      document.querySelector("#warn")?.classList.remove("opacity-0");
-    }
+  const handleMouseLeave = () => {
+    gsap.to("#sign", {
+      bottom: "-80px",
+      rotate: 0,
+      duration: 1,
+      ease: "power2.out",
+    });
+    gsap.to("#warn", { opacity: 1, duration: 1, ease: "power2.out" });
   };
 
   return (
     <section
-      className="relative w-full mt-36 mb-24 pb-80 overflow-hidden"
+      className="relative w-full mt-36 mb-24 pb-80 overflow-hidden translate-x-8"
       onMouseLeave={handleMouseLeave}
     >
       <section className="flex flex-col lg:flex-row w-5/6 gap-10 mx-auto justify-center items-center relative">
         <section className="min-w-[18rem] min-h-[12rem] relative candi-arjuna-image">
           <Image
             src="/img/candi_arjuna.webp"
-            alt="Golden Sunrise Sikunir"
+            alt="Candi Arjuna"
             width={500}
             height={500}
             className="rounded-2xl object-cover"
@@ -130,8 +122,11 @@ function CandiArjunaSection() {
             menyelami sejarah dan arsitektur Hindu kuno, serta menikmati
             pemandangan alam yang mempesona sekitarnya.
           </p>
-          <Link className="mt-3 candi-arjuna-link" href="/destinations/66af7a20c4f78db57ce01333">
-            <div className="bg-primary hover:bg-secondary flex gap-2 items-center rounded-lg w-max p-3 text-white hover:text-black">
+          <Link
+            className="mt-3 candi-arjuna-link"
+            href="/destinations/66af7a20c4f78db57ce01333"
+          >
+            <div className="bg-primary flex gap-2 items-center rounded-lg w-max p-3 text-white hover:bg-black duration-500">
               <h1>Lihat Selengkapnya</h1>
               <IoIosArrowForward size={20} />
             </div>
@@ -139,7 +134,7 @@ function CandiArjunaSection() {
         </section>
       </section>
 
-      <Link href="/destinations" >
+      <Link href="/destinations">
         <Image
           id="sign"
           src="/asset/sign.svg"
