@@ -9,7 +9,10 @@ import Chart from "../../components/chart";
 import { FaMapMarkedAlt } from "react-icons/fa";
 
 function Dashboard() {
-  let dataTotalPendapatan;
+  let dataTotalPendapatan = {
+    dataPendapatan: [],
+    totalPendapatan: 0,
+  };
   const [
     usersQuery,
     destinationsQuery,
@@ -49,8 +52,14 @@ function Dashboard() {
     },
     {
       page: "orders",
-      label: "Transaksi",
+      label: "Pemesanan Reguler",
       data: regularOrdersQuery.data,
+      icon: <AiOutlineHome color="#efefef" />,
+    },
+    {
+      page: "orders",
+      label: "Pemesanan Paket",
+      data: packageOrdersQuery.data,
       icon: <AiOutlineHome color="#efefef" />,
     },
     {
@@ -61,17 +70,24 @@ function Dashboard() {
     },
   ];
 
-  if (regularOrdersRevenueQuery.data && packageOrdersRevenueQuery.data) {
-    dataTotalPendapatan = {
-      dataPendapatan: [
-        ...regularOrdersRevenueQuery.data.dataPendapatan,
-        ...packageOrdersRevenueQuery.data.dataPendapatan,
-      ],
-      totalPendapatan:
-        regularOrdersRevenueQuery.data.totalPendapatan +
-        packageOrdersRevenueQuery.data.totalPendapatan,
-    };
+  if (regularOrdersRevenueQuery.data && regularOrdersRevenueQuery.data !== 0) {
+    dataTotalPendapatan.dataPendapatan =
+      regularOrdersRevenueQuery.data.dataPendapatan;
+
+    dataTotalPendapatan.totalPendapatan +=
+      regularOrdersRevenueQuery.data.totalPendapatan;
   }
+
+  if (packageOrdersRevenueQuery.data && packageOrdersRevenueQuery.data !== 0) {
+    dataTotalPendapatan.dataPendapatan =
+      packageOrdersRevenueQuery.data.dataPendapatan;
+
+    dataTotalPendapatan.totalPendapatan +=
+      packageOrdersRevenueQuery.data.totalPendapatan;
+  }
+
+  console.log(regularOrdersRevenueQuery.data);
+  console.log(packageOrdersRevenueQuery.data);
 
   return (
     <div className="lg-:w-full h-full flex flex-col col-span-10">
@@ -88,7 +104,7 @@ function Dashboard() {
       </div>
       <div className="flex flex-col gap-6 lg:grid lg:grid-cols-7 lg:gap-16 w-screen lg:w-full items-center py-10">
         <BigWidget destination={mostOrderedQuery.data} />
-        
+
         <Chart propsDataPendapatan={dataTotalPendapatan} />
       </div>
     </div>
