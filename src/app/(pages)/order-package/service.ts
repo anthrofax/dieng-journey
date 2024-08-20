@@ -27,6 +27,7 @@ export const redirectToCheckout = async (checkoutData: TokenizerRequestBodyType)
         // Pengguna menutup popup pembayaran
         toast.error("Pembayaran dibatalkan");
       },
+      
     });
   } catch (error) {
     toast.error("Pembayaran tidak valid");

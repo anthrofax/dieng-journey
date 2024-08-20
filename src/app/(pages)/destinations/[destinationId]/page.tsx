@@ -177,7 +177,7 @@ function DestinationDetails() {
   );
 
   useEffect(() => {
-    const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
+    const snapScript = process.env.MIDTRANS_SNAP_URL as string;
     const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT as string;
 
     const script = document.createElement("script");
