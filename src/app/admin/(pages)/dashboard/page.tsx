@@ -86,9 +86,6 @@ function Dashboard() {
       packageOrdersRevenueQuery.data.totalPendapatan;
   }
 
-  console.log(regularOrdersRevenueQuery.data);
-  console.log(packageOrdersRevenueQuery.data);
-
   return (
     <div className="lg-:w-full h-full flex flex-col col-span-10">
       <div className="grid grid-row-4 lg:grid-rows-1 grid-col-1 lg:grid-cols-4 gap-8 justify-items-center w-screen lg:w-full">

@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       },
       transaction_details: {
         order_id: uuidv4(),
-        gross_amount: totalBiaya,
+        gross_amount: totalBiaya * nama.length,
       },
       metadata: {
         experience,
