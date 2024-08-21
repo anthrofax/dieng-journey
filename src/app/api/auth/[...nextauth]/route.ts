@@ -50,18 +50,12 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.isAdmin = user.isAdmin;
         token.id = user.id;
-        token.email = user.email;
-        token.username = user.username;
-        token.profileImage = user.profileImage;
       }
       return token;
     },
     session({ session, token }) {
       session.user.isAdmin = token.isAdmin;
       session.user.id = token.id;
-      session.user.email = token.email;
-      session.user.username = token.username;
-      session.user.profileImage = token.profileImage;
 
       return session;
     },

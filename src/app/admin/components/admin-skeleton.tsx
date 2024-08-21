@@ -8,7 +8,7 @@ function AdminSkeleton() {
         <Skeleton className="w-28 h-10 bg-white" />
       </div>
 
-      <div className="border-4 border-slate-500/50 rounded-xl mt-5 space-y-5 p-3">
+      <div className="border border-slate-500/50 rounded-xl mt-5 space-y-5 p-3">
         <div className="w-full flex justify-evenly">
           {Array.from({ length: 5 }).map((_, i) => (
             <Skeleton className="w-56 h-10 bg-white" key={i} />

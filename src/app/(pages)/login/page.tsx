@@ -84,7 +84,10 @@ const Login = () => {
   };
 
   return (
-    <section className=" bg-[url('/img/brand_image_1.jpg')] bg-no-repeat bg-cover bg-blend-darken relative">
+    <section
+      className=" bg-no-repeat bg-cover bg-blend-darken relative"
+      style={{ backgroundImage: "url('/img/brand_image_1.jpg')" }}
+    >
       <div className="absolute w-full h-full bg-black/50 mix-blend-multiply" />
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0 relative">
         <a
@@ -162,16 +165,16 @@ const Login = () => {
                       htmlFor="remember"
                       className="text-gray-500 dark:text-gray-300"
                     >
-                      Remember me
+                      Ingat saya
                     </label>
                   </div>
                 </div>
-                <a
+                {/* <a
                   href="reset-password"
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Forgot password?
-                </a>
+                  Lupa kata sandi?
+                </a> */}
               </div>
               <button
                 disabled={isLoading}
@@ -181,13 +184,14 @@ const Login = () => {
                 Sign in
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{" "}
+                Anda belum memiliki akun?{" "}
                 <a
                   href="/signup"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500 underline"
                 >
-                  Sign up
-                </a>
+                  daftar
+                </a>{" "}
+                 Disini
               </p>
             </form>
           </div>
