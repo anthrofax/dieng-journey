@@ -12,8 +12,8 @@ export async function GET(req: NextRequest) {
         penginapan: true,
         destinations: {
           select: {
-            destinations: true,
-          },
+            destinations: true
+          }
         },
         experiences: {
           select: {
@@ -22,6 +22,8 @@ export async function GET(req: NextRequest) {
         },
       },
     });
+
+    console.log(getAllPackageOrders);
 
     return NextResponse.json(getAllPackageOrders);
   } catch (error) {

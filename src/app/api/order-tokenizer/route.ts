@@ -7,7 +7,7 @@ import db from "@/lib/db";
 import { TokenizerRequestBodyType } from "@/app/(pages)/destinations/[destinationId]/type";
 
 const snap = new MidtransClient.Snap({
-  isProduction: process.env.MIDTRANS_IS_PRODUCTION,
+  isProduction: process.env.MIDTRANS_IS_PRODUCTION === 'true',
   clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT,
   serverKey: process.env.MIDTRANS_ID_SECRET,
 });

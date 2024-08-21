@@ -31,8 +31,8 @@ const Widget = ({
               </h2>
               <div className="grow w-10 text-end ">
                 {label !== "Pendapatan"
-                  ? data?.length
-                  : `${Rupiah.format(data?.totalPendapatan?.toFixed(2))}`}
+                  ? data?.length || 0
+                  : `${Rupiah.format(data?.totalPendapatan?.toFixed(2) || 0)}`}
               </div>
             </div>
             <div className="flex justify-between">

@@ -8,17 +8,17 @@ import { useWindowDimensions } from "@/hooks/use-window-dimention";
 
 const sliderImages: SliderImageType[] = [
   {
-    imageUrl: "/img/brand_image_3.jpg",
+    imageUrl: "/img/hero_image_1.png",
     title: "Apakah kamu siap dengan petualangan baru?",
     caption: "Eksplor Berbagai Destinasi Menarik!",
   },
   {
-    imageUrl: "/img/brand_image_6.jpg",
+    imageUrl: "/img/hero_image_2.png",
     title: "Nikmati Keindahan Pegunungan",
     caption: "Temukan ketenangan di puncak gunung yang megah.",
   },
   {
-    imageUrl: "/img/brand_image_7.jpg",
+    imageUrl: "/img/hero_image_3.png",
     title: "Keindahan Danau yang Tenang",
     caption: "Nikmati keindahan danau yang damai dan menenangkan.",
   },
