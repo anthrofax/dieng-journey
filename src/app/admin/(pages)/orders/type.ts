@@ -6,6 +6,7 @@ import {
   Penginapan,
   User,
 } from "@prisma/client";
+import React from "react";
 
 export type AdminRegularOrderType = Order & {
   user: User;
@@ -25,4 +26,26 @@ export type AdminPackageOrderType = PackageOrder & {
   experiences: {
     experiences: Experience;
   }[];
+};
+
+export type CombinedOrdersType = {
+  userProfile: string;
+  nama: string | string[];
+  nomorHp: string;
+  lokasiPenjemputan: string;
+  masaPerjalanan: number;
+  opsiPenginapan: Penginapan | undefined;
+  tanggalPerjalanan: Date;
+  destinasi:
+    | Destination
+    | {
+        destinations: Destination;
+      }[];
+  jumlahPembelianTiket: number;
+  totalPendapatan: number;
+  experience: {
+    experiences: Experience;
+  }[];
+  jenisPesanan: "Reguler";
+  action: React.ReactNode;
 };

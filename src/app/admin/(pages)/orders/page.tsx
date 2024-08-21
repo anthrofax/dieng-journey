@@ -8,11 +8,16 @@ import {
 } from "../../services/service";
 import { Destination, Experience, Order, PackageOrder } from "@prisma/client";
 import { columns } from "./table/column";
-import { AdminPackageOrderType, AdminRegularOrderType } from "./type";
+import {
+  AdminPackageOrderType,
+  AdminRegularOrderType,
+  CombinedOrdersType,
+} from "./type";
 import { Skeleton } from "@/components/ui/skeleton";
 import AdminSkeleton from "../../components/admin-skeleton";
 
 const Orders = () => {
+  let combinedOrders = [] as CombinedOrdersType[];
   const { data: allRegularOrders, isLoading: isRegularOrdersLoading } =
     useQuery({
       queryFn: getAllRegularOrders,
@@ -25,41 +30,38 @@ const Orders = () => {
       queryKey: ["admin", "package-orders"],
     });
 
-  if (isRegularOrdersLoading || isPackageOrdersLoading) {
-    return <Skeleton className="w-full h-full" />;
-  }
-
-  const combinedOrders = [
-    ...allRegularOrders.map((order: AdminRegularOrderType) => ({
-      userProfile: order.user.profileImage,
-      nama: order.nama,
-      nomorHp: order.nomorHp,
-      lokasiPenjemputan: order.lokasiPenjemputan,
-      masaPerjalanan: order.masaPerjalanan,
-      opsiPenginapan: order?.penginapan,
-      tanggalPerjalanan: order.tanggalPerjalanan,
-      destinasi: order.destination,
-      jumlahPembelianTiket: order.qty,
-      totalPendapatan: order.totalBiaya,
-      experience: order.experiences,
-      jenisPesanan: "Reguler",
-      action: <button>Lihat Detail</button>,
-    })),
-    ...allPackageOrders.map((order: AdminPackageOrderType) => ({
-      nama: order.nama,
-      nomorHp: order.nomorHp,
-      lokasiPenjemputan: order.lokasiPenjemputan,
-      masaPerjalanan: order.masaPerjalanan,
-      opsiPenginapan: order?.penginapan || "Tidak memesan penginapan",
-      tanggalPerjalanan: order.tanggalPerjalanan,
-      destinasi: order.destinations,
-      jumlahPembelianTiket: order.nama.length,
-      totalPendapatan: order.totalBiaya,
-      experience: order.experiences,
-      jenisPesanan: "Paket",
-      action: <button>Lihat Detail</button>,
-    })),
-  ];
+  if (allRegularOrders && allPackageOrders)
+    combinedOrders = [
+      ...allRegularOrders.map((order: AdminRegularOrderType) => ({
+        userProfile: order.user.profileImage,
+        nama: order.nama,
+        nomorHp: order.nomorHp,
+        lokasiPenjemputan: order.lokasiPenjemputan,
+        masaPerjalanan: order.masaPerjalanan,
+        opsiPenginapan: order?.penginapan,
+        tanggalPerjalanan: order.tanggalPerjalanan,
+        destinasi: order.destination,
+        jumlahPembelianTiket: order.qty,
+        totalPendapatan: order.totalBiaya,
+        experience: order.experiences,
+        jenisPesanan: "Reguler",
+        action: <button>Lihat Detail</button>,
+      })),
+      ...allPackageOrders.map((order: AdminPackageOrderType) => ({
+        nama: order.nama,
+        nomorHp: order.nomorHp,
+        lokasiPenjemputan: order.lokasiPenjemputan,
+        masaPerjalanan: order.masaPerjalanan,
+        opsiPenginapan: order?.penginapan || "Tidak memesan penginapan",
+        tanggalPerjalanan: order.tanggalPerjalanan,
+        destinasi: order.destinations,
+        jumlahPembelianTiket: order.nama.length,
+        totalPendapatan: order.totalBiaya,
+        experience: order.experiences,
+        jenisPesanan: "Paket",
+        action: <button>Lihat Detail</button>,
+      })),
+    ];
 
   return (
     <div className="py-10 col-span-12 lg:col-span-10 lg:w-full grid grid-rows-12">

@@ -21,7 +21,7 @@ function Error() {
                     Dimohon untuk kembali ke halaman utama
                   </p>
                 </div>
-                <div className="flex mt-10 space-x-3 sm:pl-6">
+                <div className="flex mt-10 space-x-3 sm:pl-6 bg-primary rounded-xl">
                   <a
                     href="/"
                     className="inline-flex items-center px-6 py-4 text-sm lg:text-4xl font-medium text-white bg-blue600 border border-transparent rounded-md shadow-sm hover:bg-blue700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue500"
