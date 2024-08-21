@@ -7,9 +7,16 @@ import Widget from "../../components/widget";
 import BigWidget from "../../components/big-widget";
 import Chart from "../../components/chart";
 import { FaMapMarkedAlt } from "react-icons/fa";
+import { getYear } from "date-fns";
 
 function Dashboard() {
-  let dataTotalPendapatan = {
+  let dataTotalPendapatan: {
+    dataPendapatan: {
+      pendapatan: number;
+      bulan: number;
+    }[];
+    totalPendapatan: number;
+  } = {
     dataPendapatan: [],
     totalPendapatan: 0,
   };
@@ -64,27 +71,33 @@ function Dashboard() {
     },
     {
       page: "orders",
-      label: "Pendapatan",
+      label: `Pendapatan (${getYear(new Date())})`,
       data: regularOrdersRevenueQuery.data,
       icon: <AiFillBank color="#efefef" />,
     },
   ];
 
   if (regularOrdersRevenueQuery.data && regularOrdersRevenueQuery.data !== 0) {
-    dataTotalPendapatan.dataPendapatan =
-      regularOrdersRevenueQuery.data.dataPendapatan;
+    dataTotalPendapatan.dataPendapatan = [
+      ...dataTotalPendapatan.dataPendapatan,
+      ...regularOrdersRevenueQuery.data.dataPendapatan,
+    ];
 
     dataTotalPendapatan.totalPendapatan +=
       regularOrdersRevenueQuery.data.totalPendapatan;
   }
 
   if (packageOrdersRevenueQuery.data && packageOrdersRevenueQuery.data !== 0) {
-    dataTotalPendapatan.dataPendapatan =
-      packageOrdersRevenueQuery.data.dataPendapatan;
+    dataTotalPendapatan.dataPendapatan = [
+      ...dataTotalPendapatan.dataPendapatan,
+      ...packageOrdersRevenueQuery.data.dataPendapatan,
+    ];
 
     dataTotalPendapatan.totalPendapatan +=
       packageOrdersRevenueQuery.data.totalPendapatan;
   }
+
+  console.log(dataTotalPendapatan);
 
   return (
     <div className="lg-:w-full h-full flex flex-col col-span-10">

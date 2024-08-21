@@ -14,6 +14,7 @@ const Widget = ({
   label: string;
   icon: JSX.Element;
 }) => {
+  console.log(label);
   return (
     <div className="w-[80%] h-48 p-4 transition-all shadow-md hover:shadow-lg rounded-xl cursor-pointer">
       {!data ? (
@@ -23,14 +24,14 @@ const Widget = ({
           <div className="w-full h-full flex flex-col justify-between">
             <div
               className={`flex justify-between gap-3 w-full ${
-                label === "Pendapatan" ? "flex-col" : "flex-row"
+                label.includes("Pendapatan") ? "flex-col" : "flex-row"
               }`}
             >
               <h2 className="font-bold text-[18px] uppercase text-[#b6b0b0]">
                 {label}
               </h2>
               <div className="grow w-10 text-end ">
-                {label !== "Pendapatan"
+                {!label.includes("Pendapatan")
                   ? data?.length || 0
                   : `${Rupiah.format(data?.totalPendapatan?.toFixed(2) || 0)}`}
               </div>
