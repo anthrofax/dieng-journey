@@ -19,68 +19,66 @@ import { Label } from "@/components/ui/label";
 import React from "react";
 import { Rupiah } from "@/utils/format-currency";
 import { id } from "date-fns/locale";
-import { Order } from "@prisma/client";
+import { Destination, Experience, Order } from "@prisma/client";
 import { AdminRegularOrderType } from "../type";
 import Link from "next/link";
+import { lokasiPenjemputan } from "@/app/(pages)/order-package/page";
 
 export const columns = [
   {
-    accessorKey: "destination.imageUrls[0]",
-    id: "image",
-    header: "Gambar Destinasi",
+    accessorKey: "nama",
+    header: "Pelanggan",
     cell: ({ row }: { row: any }) => {
-      const image = row.original.destination.imageUrls[0];
+      const customerName = row.original.nama;
+      const customerProfileImage = row.original.userProfile;
 
       return (
-        <div>
+        <div className="flex gap-x-3 items-center">
           <Image
             alt="Gambar Destinasi yang Diorder"
-            src={image}
-            width="35"
-            height="35"
-            className="rounded-full object-cover"
+            src={customerProfileImage}
+            width={35}
+            height={35}
+            className="rounded-full object-cover aspect-square"
           />
+          <span>
+            {Array.isArray(customerName)
+              ? customerName.join(",")
+              : customerName}
+          </span>
         </div>
       );
     },
   },
   {
-    accessorKey: "user",
-    header: "Pelanggan",
-    cell: ({ row }: { row: any }) => {
-      const customerUsername = row.original.user.username;
-
-      return <span>{customerUsername}</span>;
-    },
-  },
-  {
-    accessorFn: (row: any) => row.destination.destinationName,
-    id: "destinationName",
+    accessorKey: "destinasi",
     header: "Destinasi",
     cell: ({ row }: { row: any }) => {
-      const destinationName = row.original.destination.destinationName;
+      const jumlahTempatDestinasi = Array.isArray(row.original.destinasi)
+        ? row.original.destinasi.length
+        : 1;
 
-      return <span>{destinationName}</span>;
+      return <span>{jumlahTempatDestinasi} Tempat</span>;
     },
   },
   {
-    accessorKey: "qty",
+    accessorKey: "jumlahPembelianTiket",
     header: "Jumlah Pembelian Ticket",
     cell: ({ row }: { row: any }) => {
-      const qty = row.original.qty;
+      const jumlahPembelianTiket = row.original.jumlahPembelianTiket;
 
-      return <span>{qty}</span>;
+      return <span>Untuk {jumlahPembelianTiket} Orang</span>;
     },
   },
   {
-    accessorKey: "totalBiaya",
+    accessorKey: "totalPendapatan",
     header: ({ column }: { column: any }) => {
       return (
         <button
           className="flex justify-center items-center gap-1"
           onClick={() => column.toggleSorting(column.getIsSorted === "asc")}
         >
-          Total Biaya
+          Pendapatan
           <span className="flex items-center">
             <AiOutlineArrowUp />
             <AiOutlineArrowDown />
@@ -89,20 +87,31 @@ export const columns = [
       );
     },
     cell: ({ row }: { row: any }) => {
-      const totalBiaya = row.original.totalBiaya;
+      const totalPendapatan = row.original.totalPendapatan;
 
       return (
-        <span className="block text-left">{Rupiah.format(totalBiaya)}</span>
+        <span className="block text-left">
+          {Rupiah.format(totalPendapatan)}
+        </span>
       );
     },
   },
   {
-    accessorKey: "experiences",
+    accessorKey: "jumlahTempatExperienceTambahan",
     header: "Experience Tambahan",
     cell: ({ row }: { row: any }) => {
-      const experienceOrderItems = row.original.experiences;
+      const jumlahTempatExperienceTambahan = row.original.experience.length;
 
-      return <span>{experienceOrderItems.length} Tempat</span>;
+      return <span>{jumlahTempatExperienceTambahan} Tempat</span>;
+    },
+  },
+  {
+    accessorKey: "jenisPesanan",
+    header: "Jenis Pesanan",
+    cell: ({ row }: { row: any }) => {
+      const jenisPesanan = row.original.jenisPesanan;
+
+      return <span>{jenisPesanan}</span>;
     },
   },
   {
@@ -113,7 +122,7 @@ export const columns = [
 ];
 
 function ActionsColumn({ row }: { row: any }) {
-  const regularOrder = row.original as AdminRegularOrderType; // Assuming the row contains regularOrder data
+  const orders = row.original;
 
   return (
     <Dialog>
@@ -136,7 +145,15 @@ function ActionsColumn({ row }: { row: any }) {
               <label className="w-[98%]">Nama</label>
               <span>:</span>
             </div>
-            <p className="col-span-3">{regularOrder.nama}</p>
+            {Array.isArray(orders.nama) ? (
+              <ul className="col-span-3 list-disc pl-5">
+                {orders.nama.map((nama: string, i: number) => (
+                  <li key={i}>{nama}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="col-span-3">{orders.nama}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-5 gap-x-2 items-start">
@@ -144,7 +161,7 @@ function ActionsColumn({ row }: { row: any }) {
               <label className="w-[98%]">Nomor HP</label>
               <span>:</span>
             </div>
-            <p className="col-span-3">{regularOrder.nomorHp}</p>
+            <p className="col-span-3">{orders.nomorHp}</p>
           </div>
 
           <div className="grid grid-cols-5 gap-x-2 items-start">
@@ -152,7 +169,13 @@ function ActionsColumn({ row }: { row: any }) {
               <label className="w-[98%]">Lokasi Penjemputan</label>
               <span>:</span>
             </div>
-            <p className="col-span-3">{regularOrder.lokasiPenjemputan}</p>
+            <p className="col-span-3">
+              {
+                lokasiPenjemputan.find(
+                  (lokasi) => lokasi.value === orders.lokasiPenjemputan
+                )?.label || "Tidak memesan penginapan"
+              }
+            </p>
           </div>
 
           <div className="grid grid-cols-5 gap-x-2 items-start">
@@ -160,18 +183,18 @@ function ActionsColumn({ row }: { row: any }) {
               <label className="w-[98%]">Masa Perjalanan</label>
               <span>:</span>
             </div>
-            <p className="col-span-3">{regularOrder.masaPerjalanan} Hari</p>
+            <p className="col-span-3">{orders.masaPerjalanan} Hari</p>
           </div>
 
-          {regularOrder.masaPerjalanan === 3 && (
+          {orders.masaPerjalanan === 3 && (
             <div className="grid grid-cols-5 gap-x-2 items-start">
               <div className="col-span-2 font-semibold flex items-start gap-2">
                 <label className="w-[98%]">Opsi Penginapan</label>
                 <span>:</span>
               </div>
               <p className="col-span-3">
-                {regularOrder.penginapan?.namaPenginapan ||
-                  "Tidak Memesan Penginapan"}
+                {orders.penginapan?.namaPenginapan ||
+                  "Tidak memesan penginapan"}
               </p>
             </div>
           )}
@@ -182,8 +205,8 @@ function ActionsColumn({ row }: { row: any }) {
               <span>:</span>
             </div>
             <p className="col-span-3">
-              {regularOrder.tanggalPerjalanan
-                ? format(regularOrder.tanggalPerjalanan, "d MMMM yyyy", {
+              {orders.tanggalPerjalanan
+                ? format(orders.tanggalPerjalanan, "d MMMM yyyy", {
                     locale: id,
                   })
                 : "Tanggal tidak tersedia"}
@@ -195,22 +218,48 @@ function ActionsColumn({ row }: { row: any }) {
               <label className="w-[98%]">Jumlah Pembelian Tiket</label>
               <span>:</span>
             </div>
-            <p className="col-span-3">Untuk {regularOrder.qty} Orang</p>
+            <p className="col-span-3">
+              Untuk {orders.jumlahPembelianTiket} Orang
+            </p>
           </div>
 
-          {regularOrder.experiences.length > 0 && (
+          {
+            <div className="grid grid-cols-5 gap-x-2 items-start">
+              <div className="col-span-2 font-semibold flex items-start gap-2">
+                <label className="w-[98%]">Destinasi</label>
+                <span>:</span>
+              </div>
+              {Array.isArray(orders.destinasi) ? (
+                <ul className="col-span-3 list-disc pl-5">
+                  {orders.destinasi.map(
+                    ({ destinations }: { destinations: Destination }) => (
+                      <li key={destinations.destinationId}>
+                        {destinations.destinationName}
+                      </li>
+                    )
+                  )}
+                </ul>
+              ) : (
+                <p className="col-span-3">{orders.destinasi.destinationName}</p>
+              )}
+            </div>
+          }
+
+          {orders.experience && orders.experience.length > 0 ? (
             <div className="grid grid-cols-5 gap-x-2 items-start">
               <div className="col-span-2 font-semibold flex items-start gap-2">
                 <label className="w-[98%]">Experience</label>
                 <span>:</span>
               </div>
               <ul className="col-span-3 list-disc pl-5">
-                {regularOrder.experiences.map(({ experiences }) => (
-                  <li key={experiences.id}>{experiences.namaExperience}</li>
-                ))}
+                {orders.experience.map(
+                  ({ experiences }: { experiences: Experience }) => (
+                    <li key={experiences.id}>{experiences.namaExperience}</li>
+                  )
+                )}
               </ul>
             </div>
-          )}
+          ) : null}
         </div>
       </DialogContent>
     </Dialog>

@@ -13,6 +13,7 @@ import { createSchema } from "../../modals/destination-modal/create-schema";
 import { handleHideModal } from "@/utils/helper-functions";
 import { useDestinationHook } from "../../hooks/destination-hook";
 import CreateDestinationModal from "../../modals/destination-modal/create-destination-modal";
+import AdminSkeleton from "../../components/admin-skeleton";
 
 function Destinations() {
   const { isLoadingQuery, allDestinations } = useDestinationHook();
@@ -64,9 +65,14 @@ function Destinations() {
         </div>
         <div className="mt-2 h-2/3 w-[80vw] max-lg:mx-auto">
           {isLoadingQuery ? (
-            <Skeleton className="w-full h-full" />
+            <AdminSkeleton />
           ) : (
-            <DataTable columns={columns} data={allDestinations} filterByLabel="nama destinasi" filterBy="destinationName" />
+            <DataTable
+              columns={columns}
+              data={allDestinations}
+              filterByLabel="nama destinasi"
+              filterBy="destinationName"
+            />
           )}
         </div>
       </div>

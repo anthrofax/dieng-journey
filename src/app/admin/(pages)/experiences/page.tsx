@@ -14,6 +14,7 @@ import { useExperienceHook } from "../../hooks/experience-hook";
 import CreateExperienceModal from "../../modals/experience-modal/create-experience-modal";
 import { createSchema } from "../../modals/experience-modal/create-schema";
 import { MutateExperienceFormType } from "../../modals/experience-modal/type";
+import AdminSkeleton from "../../components/admin-skeleton";
 
 function Experiences() {
   const { isLoadingQuery, allExperiences } = useExperienceHook();
@@ -63,7 +64,7 @@ function Experiences() {
         </div>
         <div className="mt-2 h-2/3 w-[80vw] max-lg:mx-auto">
           {isLoadingQuery ? (
-            <Skeleton className="w-full h-full" />
+           <AdminSkeleton/>
           ) : (
             <DataTable
               columns={columns}

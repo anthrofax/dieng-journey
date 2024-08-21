@@ -16,6 +16,7 @@ import { useLodgingHook } from "../../hooks/lodging-hook";
 import { createSchema } from "../../modals/lodging-modal/create-schema";
 import { MutateLodgingFormType } from "../../modals/lodging-modal/type";
 import CreateLodgingModal from "../../modals/lodging-modal/create-lodging-modal";
+import AdminSkeleton from "../../components/admin-skeleton";
 
 function Lodging() {
   const { isLoadingQuery, allLodgings } = useLodgingHook();
@@ -64,7 +65,7 @@ function Lodging() {
         </div>
         <div className="mt-2 h-2/3 w-[80vw] max-lg:mx-auto">
           {isLoadingQuery ? (
-            <Skeleton className="w-full h-full" />
+            <AdminSkeleton/>
           ) : (
             <DataTable
               columns={columns}
