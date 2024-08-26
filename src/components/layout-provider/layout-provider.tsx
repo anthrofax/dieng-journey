@@ -10,7 +10,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   return (
-    <>
+    <div className="w-full">
       <QueryClientProvider client={queryClient}>
         {pathname !== "/login" &&
           pathname !== "/signup" &&
@@ -20,7 +20,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
           pathname !== "/signup" &&
           !pathname.includes("/admin") && <Footer />}
       </QueryClientProvider>
-    </>
+    </div>
   );
 };
 

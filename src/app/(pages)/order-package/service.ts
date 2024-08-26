@@ -17,7 +17,7 @@ export const redirectToCheckout = async (checkoutData: TokenizerRequestBodyType)
       },
       onPending: function (result: any) {
         // Pembayaran dalam status pending
-        window.location.href = "/orders";
+        toast.error("Pembayaran dibatalkan");
       },
       onError: function (result: any) {
         // Tangani kesalahan pembayaran

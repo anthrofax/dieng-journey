@@ -155,13 +155,6 @@ function OrderPackage() {
     control: travellingForm.control,
   });
 
-  useEffect(
-    function () {
-      console.log(watchedTravellingFields);
-    },
-    [watchedTravellingFields]
-  );
-
   const addNameField = () => {
     setNames([...names, ""]);
   };
@@ -347,6 +340,8 @@ function OrderPackage() {
               checked={selectedPackage === "travelling"}
               onCheckedChange={(val) => {
                 setSelectedPackage(val ? "travelling" : "healing");
+                travellingForm.reset();
+                healingForm.reset();
               }}
             />
             <div className="flex flex-col items-center w-fit">

@@ -94,7 +94,7 @@ const Navbar = () => {
       >
         <FlowbiteNavbar.Brand href="/" className="space-x-2 nav__logo">
           <div
-            className={`relative rounded-full w-[3.5rem] aspect-square overflow-hidden ${
+            className={`relative rounded-full w-[3rem] aspect-square overflow-hidden ${
               pathname === "/" || pathname === "/destinations"
                 ? `border-4 ${isScrolled ? "border-primary" : "border-white"}`
                 : "border-black/30 border-4"
@@ -131,7 +131,7 @@ const Navbar = () => {
                   />
                 </Link>
               ) : (
-                <div>
+                <div className="flex gap-2">
                   <Dropdown
                     arrowIcon={false}
                     inline

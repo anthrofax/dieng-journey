@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
 
     const parameter = {
       item_details: {
-        price: totalBiaya,
-        quantity: nama.length,
+        price: /*totalBiaya*/ 20000,
+        quantity: /*nama.length*/1,
         name: `Tiket Paket ${
           selectedPackage === "travelling" ? "Travelling" : "Healing"
         }`,
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       },
       transaction_details: {
         order_id: uuidv4(),
-        gross_amount: totalBiaya * nama.length,
+        gross_amount: /*totalBiaya * nama.length*/ 20000,
       },
       metadata: {
         experience,

@@ -6,7 +6,7 @@ import { PackageOrderType, RegularOrderType } from "../type";
 import { Rupiah } from "@/utils/format-currency";
 import { IoEye } from "react-icons/io5";
 import Modal from "./modal";
-import { format } from "date-fns";
+import { format, getDate, isAfter, subDays, subMonths } from "date-fns";
 import { id } from "date-fns/locale";
 import Link from "next/link";
 import { lokasiPenjemputan } from "@/app/(pages)/order-package/page";
@@ -29,6 +29,8 @@ export default function OrdersTable({
   const [regularSortOrder, setRegularSortOrder] = useState("asc");
   const [regularCurrentPage, setRegularCurrentPage] = useState(1);
   const regularItemsPerPage = 5;
+  const [regularTimeFilter, setRegularTimeFilter] = useState("7days");
+  const [packageTimeFilter, setPackageTimeFilter] = useState("7days");
 
   // State for package orders
   const [selectedPackageOrder, setSelectedPackageOrder] =
@@ -52,13 +54,35 @@ export default function OrdersTable({
     setPackageModalOpen(true);
   };
 
+  // Function to get the start date based on selected filter
+  const getStartDate = (timeFilter: string) => {
+    switch (timeFilter) {
+      case "7days":
+        return subDays(new Date(), 7);
+      case "1month":
+        return subMonths(new Date(), 1);
+      case "3months":
+        return subMonths(new Date(), 3);
+      case "6months":
+        return subMonths(new Date(), 6);
+      case "1year":
+        return subMonths(new Date(), 12);
+      default:
+        return null;
+    }
+  };
+
+  // Filtering and sorting for regular orders with time filter
+  const startDate = getStartDate(regularTimeFilter);
+
   // Filtering and sorting for regular orders
   const filteredRegularOrders = regularOrders.filter(
     (order) =>
-      order.destination.destinationName
+      (startDate ? isAfter(new Date(order.createdAt), startDate) : true) &&
+      (order.destination.destinationName
         .toLowerCase()
         .includes(regularFilter.toLowerCase()) ||
-      order.nama.toLowerCase().includes(regularFilter.toLowerCase())
+        order.nama.toLowerCase().includes(regularFilter.toLowerCase()))
   );
 
   const sortedRegularOrders = [...filteredRegularOrders].sort((a, b) => {
@@ -89,15 +113,23 @@ export default function OrdersTable({
     sortedRegularOrders.length / regularItemsPerPage
   );
 
+  // Filtering and sorting for package orders with time filter
+  const packageStartDate = getStartDate(packageTimeFilter);
   // Filtering and sorting for package orders
   const filteredPackageOrders = packageOrders.filter(
     (order) =>
-      order.destinations
+      (packageStartDate
+        ? isAfter(new Date(order.createdAt), packageStartDate)
+        : true) &&
+      (order.destinations
         .map((d) => d.destinations.destinationName)
         .join(", ")
         .toLowerCase()
         .includes(packageFilter.toLowerCase()) ||
-      order.nama.join(", ").toLowerCase().includes(packageFilter.toLowerCase())
+        order.nama
+          .join(", ")
+          .toLowerCase()
+          .includes(packageFilter.toLowerCase()))
   );
 
   const sortedPackageOrders = [...filteredPackageOrders].sort((a, b) => {
@@ -144,7 +176,7 @@ export default function OrdersTable({
         <h2 className="text-xl font-medium text-center lg:text-left mb-4">
           Transaksi Pemesanan Reguler
         </h2>
-        <div className="mb-4">
+        <div className="mb-4 flex gap-3 items-center">
           <input
             type="text"
             placeholder="Cari berdasarkan destinasi ataupun customer"
@@ -161,6 +193,19 @@ export default function OrdersTable({
             <option value="qty">Jumlah Pembelian Tiket</option>
             {/* Add more sorting options as needed */}
           </select>
+
+          <select
+            onChange={(e) => setRegularTimeFilter(e.target.value)}
+            className="border p-2 rounded"
+          >
+            <option value="all">Semua Waktu</option>
+            <option value="7days">7 Hari Terakhir</option>
+            <option value="1month">1 Bulan Terakhir</option>
+            <option value="3months">3 Bulan Terakhir</option>
+            <option value="6months">6 Bulan Terakhir</option>
+            <option value="1year">1 Tahun Terakhir</option>
+          </select>
+
           <button
             onClick={() =>
               setRegularSortOrder(regularSortOrder === "asc" ? "desc" : "asc")
@@ -190,6 +235,9 @@ export default function OrdersTable({
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
                 Experience Tambahan
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                Dipesan pada
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
                 Actions
@@ -222,6 +270,11 @@ export default function OrdersTable({
                     : "Tidak ada"}
                 </td>
                 <td className="text-center">
+                  {format(new Date(order.createdAt), "d MMMM yyyy", {
+                    locale: id,
+                  })}
+                </td>
+                <td className="text-center">
                   <button onClick={() => handleViewRegularOrderDetails(order)}>
                     <IoEye color="rgb(37 99 235)" />
                   </button>
@@ -250,7 +303,7 @@ export default function OrdersTable({
         <h2 className="text-xl font-medium text-center lg:text-left mb-4">
           Transaksi Pemesanan Paket
         </h2>
-        <div className="mb-4">
+        <div className="mb-4 flex gap-3 items-center">
           <input
             type="text"
             placeholder="Cari berdasarkan destinasi atau nama customer"
@@ -268,6 +321,17 @@ export default function OrdersTable({
             <option value="totalBiaya">Total Biaya</option>
             <option value="namaLength">Jumlah Nama</option>
             {/* Add more sorting options as needed */}
+          </select>
+          <select
+            onChange={(e) => setPackageTimeFilter(e.target.value)}
+            className="border p-2 rounded"
+          >
+            <option value="all">Semua Waktu</option>
+            <option value="7days">7 Hari Terakhir</option>
+            <option value="1month">1 Bulan Terakhir</option>
+            <option value="3months">3 Bulan Terakhir</option>
+            <option value="6months">6 Bulan Terakhir</option>
+            <option value="1year">1 Tahun Terakhir</option>
           </select>
           <button
             onClick={() =>
@@ -300,12 +364,15 @@ export default function OrdersTable({
                 Experience Tambahan
               </th>
               <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Actions
+                Dipesan pada
+              </th>
+              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                Detail
               </th>
             </tr>
           </thead>
           <tbody>
-            {sortedPackageOrders.map((order) => (
+            {paginatedPackageOrders.map((order) => (
               <tr key={order.id}>
                 <td className="px-6 py-4 flex justify-center">
                   <Image
@@ -330,6 +397,11 @@ export default function OrdersTable({
                   {order.experiences.length > 0
                     ? order.experiences.length + " Tempat"
                     : "Tidak ada"}
+                </td>
+                <td className="text-center">
+                  {format(new Date(order.createdAt), "d MMMM yyyy", {
+                    locale: id,
+                  })}
                 </td>
                 <td className="text-center">
                   <button onClick={() => handleViewPackageOrderDetails(order)}>
