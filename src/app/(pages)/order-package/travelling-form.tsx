@@ -41,7 +41,7 @@ import { useOrderPackageContext } from "./page";
 function TravellingForm() {
   const {
     travellingForm,
-    names,
+    travellingMemberNames,
     handleTravellingFormNameInputChange,
     removeTravellingFormNameInputField,
     addNameField,
@@ -86,7 +86,7 @@ function TravellingForm() {
               <FormLabel>Nama</FormLabel>
 
               <div className="space-y-2">
-                {names.map((name, index) => (
+                {travellingMemberNames.map((name, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <FormControl>
                       <Input
@@ -100,7 +100,7 @@ function TravellingForm() {
                         }
                       />
                     </FormControl>
-                    {names.length > 1 && (
+                    {travellingMemberNames.length > 1 && (
                       <Button
                         variant="outline"
                         type="button"
@@ -116,7 +116,7 @@ function TravellingForm() {
                   </div>
                 ))}
                 <Button
-                  onClick={addNameField}
+                  onClick={() => addNameField("travelling")}
                   className="bg-primary text-white w-full space-x-2 text-xs mt-3"
                   type="button"
                   disabled={isAddButtonDisabled}
@@ -165,11 +165,9 @@ function TravellingForm() {
               <div className="h-fit max-h-56 overflow-y-scroll">
                 {isLoadingDestinationQuery ? (
                   <div className="w-full h-full flex flex-col gap-1">
-                    {Array.from({ length: 3 }).map(
-                      (_, idx) => (
-                        <Skeleton key={idx} className="w-full h-8 shadow-md" />
-                      )
-                    )}
+                    {Array.from({ length: 3 }).map((_, idx) => (
+                      <Skeleton key={idx} className="w-full h-8 shadow-md" />
+                    ))}
                   </div>
                 ) : (
                   allDestinations?.map(

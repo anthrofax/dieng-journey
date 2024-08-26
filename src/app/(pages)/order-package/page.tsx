@@ -56,8 +56,10 @@ type PackageOrderContextType = {
   isLoadingDestinationQuery: boolean;
   isLoadingExperienceQuery: boolean;
   isLoadingLodgingQuery: boolean;
-  names: string[];
-  setNames: Dispatch<SetStateAction<string[]>>;
+  healingMemberNames: string[];
+  setHealingMemberNames: Dispatch<SetStateAction<string[]>>;
+  travellingMemberNames: string[];
+  setTravellingMemberNames: Dispatch<SetStateAction<string[]>>;
   isDialogOpen: boolean;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
   healingForm: UseFormReturn<HealingFormFieldType, any, undefined>;
@@ -69,7 +71,7 @@ type PackageOrderContextType = {
     label: string;
     value: string;
   }[];
-  addNameField: () => void;
+  addNameField: (packageType: "healing" | "travelling") => void;
   handleHealingFormNameInputChange: ({
     index,
     value,
@@ -101,8 +103,10 @@ const PackageOrderContext = createContext<PackageOrderContextType>({
   isLoadingDestinationQuery: false,
   isLoadingExperienceQuery: false,
   isLoadingLodgingQuery: false,
-  names: [],
-  setNames: () => {},
+  healingMemberNames: [],
+  setHealingMemberNames: () => {},
+  travellingMemberNames: [],
+  setTravellingMemberNames: () => {},
   isDialogOpen: false,
   setIsDialogOpen: () => {},
   healingForm: {} as UseFormReturn<HealingFormFieldType, any, undefined>,
@@ -121,7 +125,10 @@ const PackageOrderContext = createContext<PackageOrderContextType>({
 });
 
 function OrderPackage() {
-  const [names, setNames] = useState<string[]>([""]);
+  const [healingMemberNames, setHealingMemberNames] = useState<string[]>([""]);
+  const [travellingMemberNames, setTravellingMemberNames] = useState<string[]>([
+    "",
+  ]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { allLodgings, isLoadingQuery: isLoadingLodgingQuery } =
     useLodgingHooks();
@@ -155,8 +162,10 @@ function OrderPackage() {
     control: travellingForm.control,
   });
 
-  const addNameField = () => {
-    setNames([...names, ""]);
+  const addNameField = (packageType: "healing" | "travelling") => {
+    if (packageType === "travelling")
+      setTravellingMemberNames([...travellingMemberNames, ""]);
+    else setHealingMemberNames([...healingMemberNames, ""]);
   };
 
   const handleHealingFormNameInputChange = ({
@@ -166,8 +175,10 @@ function OrderPackage() {
     index: number;
     value: string;
   }) => {
-    const updatedNames = names.map((name, i) => (i === index ? value : name));
-    setNames(updatedNames);
+    const updatedNames = healingMemberNames.map((name, i) =>
+      i === index ? value : name
+    );
+    setHealingMemberNames(updatedNames);
     healingForm.setValue(
       "nama",
       updatedNames.filter((name) => name.trim() !== "")
@@ -181,8 +192,10 @@ function OrderPackage() {
     index: number;
     value: string;
   }) => {
-    const updatedNames = names.map((name, i) => (i === index ? value : name));
-    setNames(updatedNames);
+    const updatedNames = travellingMemberNames.map((name, i) =>
+      i === index ? value : name
+    );
+    setTravellingMemberNames(updatedNames);
     travellingForm.setValue(
       "nama",
       updatedNames.filter((name) => name.trim() !== "")
@@ -190,23 +203,25 @@ function OrderPackage() {
   };
 
   const removeHealingFormNameInputField = ({ index }: { index: number }) => {
-    const updatedNames = names.filter((_, i) => i !== index);
-    setNames(updatedNames);
+    const updatedNames = healingMemberNames.filter((_, i) => i !== index);
+    setHealingMemberNames(updatedNames);
     healingForm.setValue(
       "nama",
       updatedNames.filter((name) => name.trim() !== "")
     );
   };
   const removeTravellingFormNameInputField = ({ index }: { index: number }) => {
-    const updatedNames = names.filter((_, i) => i !== index);
-    setNames(updatedNames);
+    const updatedNames = travellingMemberNames.filter((_, i) => i !== index);
+    setTravellingMemberNames(updatedNames);
     travellingForm.setValue(
       "nama",
       updatedNames.filter((name) => name.trim() !== "")
     );
   };
 
-  const isAddButtonDisabled = names[names.length - 1].length < 3;
+  const isAddButtonDisabled =
+    healingMemberNames[healingMemberNames.length - 1].length < 3 &&
+    travellingMemberNames[travellingMemberNames.length - 1].length < 3;
 
   const handleHealingFormSubmit = healingForm.handleSubmit(
     async (data) => {
@@ -294,8 +309,10 @@ function OrderPackage() {
         isLoadingDestinationQuery,
         isLoadingExperienceQuery,
         isLoadingLodgingQuery,
-        names,
-        setNames,
+        healingMemberNames,
+        setHealingMemberNames,
+        travellingMemberNames,
+        setTravellingMemberNames,
         isDialogOpen,
         setIsDialogOpen,
         healingForm,
@@ -342,6 +359,8 @@ function OrderPackage() {
                 setSelectedPackage(val ? "travelling" : "healing");
                 travellingForm.reset();
                 healingForm.reset();
+                setHealingMemberNames(['']);
+                setTravellingMemberNames(['']);
               }}
             />
             <div className="flex flex-col items-center w-fit">

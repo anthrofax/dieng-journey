@@ -40,7 +40,7 @@ import { useOrderPackageContext } from "./page";
 function HealingForm() {
   const {
     healingForm,
-    names,
+    healingMemberNames,
     handleHealingFormNameInputChange,
     removeHealingFormNameInputField,
     addNameField,
@@ -77,7 +77,7 @@ function HealingForm() {
               <FormLabel>Nama</FormLabel>
 
               <div className="space-y-2">
-                {names.map((name, index) => (
+                {healingMemberNames.map((name, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <FormControl>
                       <Input
@@ -91,7 +91,7 @@ function HealingForm() {
                         }
                       />
                     </FormControl>
-                    {names.length > 1 && (
+                    {healingMemberNames.length > 1 && (
                       <Button
                         variant="outline"
                         type="button"
@@ -105,7 +105,7 @@ function HealingForm() {
                   </div>
                 ))}
                 <Button
-                  onClick={addNameField}
+                  onClick={() => addNameField("healing")}
                   className="bg-primary text-white w-full space-x-2 text-xs mt-3"
                   type="button"
                   disabled={isAddButtonDisabled}
