@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import UserModal from "@/app/admin/modals/user-modal/user-modal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const columns = [
   {
@@ -23,6 +24,7 @@ export const columns = [
           width="50"
           src={value}
           alt="Person's image"
+          onLoad={() => <Skeleton className="w-[50px] h-[40px] rounded-full"/>}
         />
       );
     },
@@ -65,9 +67,13 @@ export const columns = [
       );
     },
     cell: ({ row }: { row: any }) => {
-      const value = row.getValue("orders")?.length || 0;
+      const orders = row.getValue("orders")?.length || 0;
+      const packageOrders = row.original.packageOrders?.length || 0;
 
-      return <div>{value} transaksi</div>;
+      console.log(orders);
+      console.log(packageOrders);
+
+      return <div>{orders + packageOrders} transaksi</div>;
     },
   },
   {

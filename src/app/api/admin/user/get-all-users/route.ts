@@ -6,7 +6,12 @@ export async function GET(req: NextRequest) {
   try {
     await isAdminUser();
 
-    const allUsers = await db.user.findMany({});
+    const allUsers = await db.user.findMany({
+      include: {
+        orders: true,
+        packageOrders: true,
+      },
+    });
 
     return NextResponse.json(allUsers);
   } catch (error) {

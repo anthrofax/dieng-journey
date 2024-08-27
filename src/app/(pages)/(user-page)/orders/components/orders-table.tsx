@@ -197,6 +197,7 @@ export default function OrdersTable({
           <select
             onChange={(e) => setRegularTimeFilter(e.target.value)}
             className="border p-2 rounded"
+            defaultValue="7days"
           >
             <option value="all">Semua Waktu</option>
             <option value="7days">7 Hari Terakhir</option>
@@ -325,6 +326,7 @@ export default function OrdersTable({
           <select
             onChange={(e) => setPackageTimeFilter(e.target.value)}
             className="border p-2 rounded"
+            defaultValue="7days"
           >
             <option value="all">Semua Waktu</option>
             <option value="7days">7 Hari Terakhir</option>

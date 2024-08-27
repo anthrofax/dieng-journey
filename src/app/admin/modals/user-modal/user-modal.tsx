@@ -102,7 +102,7 @@ const UserModal = ({
               </Label>
 
               <Image
-                className="col-span-3 rounded-full"
+                className="col-span-3 rounded-full aspect-square"
                 width={60}
                 height={60}
                 alt={`Gambar Profil ${user?.username}`}

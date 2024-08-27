@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { columns } from "./table/column";
 import { getAllUsers } from "../../services/service";
 import { DataTable } from "../../components/data-table";
-import Skeleton from "react-loading-skeleton";
 import AdminSkeleton from "../../components/admin-skeleton";
 
 function Users() {
