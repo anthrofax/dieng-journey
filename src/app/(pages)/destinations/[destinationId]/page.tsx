@@ -78,6 +78,7 @@ function DestinationDetails() {
   const [totalBiaya, setTotalBiaya] = useState(0);
   const [biayaExperience, setBiayaExperience] = useState(0);
   const [biayaPenginapan, setBiayaPenginapan] = useState(0);
+  const [isLoadingPayment, setIsLoadingPayment] = useState(false);
   let { destinationId } = useParams();
   if (Array.isArray(destinationId)) destinationId = destinationId[0];
 
@@ -136,25 +137,29 @@ function DestinationDetails() {
     console.log(data);
     try {
       if (!dataDestinasi) return toast.error("Data destinasi tidak ditemukan");
+      setIsLoadingPayment(true);
 
       toast.success("Mohon tunggu sebentar...");
 
-      await redirectToCheckout({
-        destinationId: dataDestinasi.destinationId,
-        experience: data.experience,
-        hargaDestinasi: dataDestinasi.price,
-        lokasiPenjemputan: data.lokasiPenjemputan,
-        masaPerjalanan: watchedOrderFields.masaPerjalanan as number,
-        nama: data.nama,
-        namaDestinasi: dataDestinasi.destinationName,
-        nomorHp: data.nomorHp,
-        penginapanId: data.penginapanId,
-        qty: data.qty,
-        tanggalPerjalanan: data.tanggalPerjalanan,
-        allExperiences,
-        allLodgings,
-        totalBiaya,
-      });
+      await redirectToCheckout(
+        {
+          destinationId: dataDestinasi.destinationId,
+          experience: data.experience,
+          hargaDestinasi: dataDestinasi.price,
+          lokasiPenjemputan: data.lokasiPenjemputan,
+          masaPerjalanan: watchedOrderFields.masaPerjalanan as number,
+          nama: data.nama,
+          namaDestinasi: dataDestinasi.destinationName,
+          nomorHp: data.nomorHp,
+          penginapanId: data.penginapanId,
+          qty: data.qty,
+          tanggalPerjalanan: data.tanggalPerjalanan,
+          allExperiences,
+          allLodgings,
+          totalBiaya,
+        },
+        setIsLoadingPayment
+      );
     } catch (err) {
       toast.error("Pembayaran gagal");
     }
@@ -576,6 +581,7 @@ function DestinationDetails() {
                       </p>
                       <Button
                         className="w-full bg-black hover:bg-primary text-white"
+                        disabled={isLoadingPayment}
                         onClick={() =>
                           handlePayment(
                             watchedOrderFields as OrderFormFieldType

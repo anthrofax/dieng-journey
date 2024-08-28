@@ -25,7 +25,7 @@ export type TokenizerRequestBodyType = {
   daftarDestinasi: string[];
   totalBiaya: number;
   experience: string[];
-  penginapanId?: string | undefined;
+  penginapanId: string;
   selectedPackage: string;
 };
 
@@ -35,7 +35,7 @@ export type PackageOrderMidtransNotificationMetadataType = {
   masaPerjalanan: number;
   nama: string[];
   nomorHp: string;
-  tanggalPerjalanan: Date;
+  tanggalPerjalanan: string;
   userId: string;
   totalBiaya: number;
   penginapanId: string;

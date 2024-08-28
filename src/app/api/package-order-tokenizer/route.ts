@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { TokenizerRequestBodyType } from "@/app/(pages)/order-package/type";
 
 const snap = new MidtransClient.Snap({
-  isProduction: process.env.MIDTRANS_IS_PRODUCTION === 'true',
+  isProduction: process.env.MIDTRANS_IS_PRODUCTION === "true",
   clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT,
   serverKey: process.env.MIDTRANS_ID_SECRET,
 });
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const parameter = {
       item_details: {
         price: /*totalBiaya*/ 20000,
-        quantity: /*nama.length*/1,
+        quantity: /*nama.length*/ 1,
         name: `Tiket Paket ${
           selectedPackage === "travelling" ? "Travelling" : "Healing"
         }`,
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
         masaPerjalanan,
         nama,
         nomorHp,
-        tanggalPerjalanan: tanggalPerjalanan,
+        tanggalPerjalanan,
         userId: currentUser.id,
         totalBiaya,
         penginapanId,

@@ -1,4 +1,5 @@
 import { Experience, Penginapan } from "@prisma/client";
+import { Dispatch, SetStateAction } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
 export type OrderFormFieldType = {
@@ -55,5 +56,5 @@ export type RegularOrderMidtransNotificationMetadataType = {
   totalBiaya: number;
   destinationId: string;
   penginapanId: string;
-  tokenizerType: string
+  tokenizerType: string;
 };

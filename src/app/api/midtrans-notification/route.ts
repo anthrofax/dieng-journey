@@ -34,13 +34,15 @@ export async function POST(req: NextRequest) {
           nomorHp,
           tanggalPerjalanan,
           totalBiaya,
-          penginapanId,
           userId,
           experience,
+          penginapanId,
           daftarDestinasi,
         } = body.metadata as PackageOrderMidtransNotificationMetadataType;
 
-        const createdOrder = await db.packageOrder.create({
+        let createdOrder;
+
+        createdOrder = await db.packageOrder.create({
           data: {
             lokasiPenjemputan,
             masaPerjalanan,
@@ -48,10 +50,12 @@ export async function POST(req: NextRequest) {
             nomorHp,
             tanggalPerjalanan,
             totalBiaya,
-            penginapanId: penginapanId || "",
+            penginapanId,
             userId,
           },
         });
+
+        console.log(createdOrder);
 
         let createdExperience;
         let createdDestinations;
@@ -65,6 +69,8 @@ export async function POST(req: NextRequest) {
           });
         });
 
+        console.log(createdExperience);
+
         daftarDestinasi.forEach(async (idDestinasi: string) => {
           createdDestinations = await db.packageOrderDestination.create({
             data: {
@@ -73,6 +79,8 @@ export async function POST(req: NextRequest) {
             },
           });
         });
+
+        console.log(createdDestinations);
 
         if (createdOrder || createdExperience || createdDestinations)
           return NextResponse.json({ message: "Pembayaran Berhasil" });
@@ -92,7 +100,7 @@ export async function POST(req: NextRequest) {
           destinationId,
           experience,
         } = body.metadata as RegularOrderMidtransNotificationMetadataType;
-
+        console.log("Regular Order Ordered");
         const createdOrder = await db.order.create({
           data: {
             lokasiPenjemputan,
@@ -107,6 +115,8 @@ export async function POST(req: NextRequest) {
             destinationId,
           },
         });
+
+        console.log(createdOrder);
 
         let createdExperience;
 

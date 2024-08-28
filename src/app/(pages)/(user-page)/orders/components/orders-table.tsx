@@ -176,127 +176,138 @@ export default function OrdersTable({
         <h2 className="text-xl font-medium text-center lg:text-left mb-4">
           Transaksi Pemesanan Reguler
         </h2>
-        <div className="mb-4 flex gap-3 items-center">
-          <input
-            type="text"
-            placeholder="Cari berdasarkan destinasi ataupun customer"
-            value={regularFilter}
-            onChange={(e) => setRegularFilter(e.target.value)}
-            className="border p-2 rounded"
-          />
-          <select
-            onChange={(e) => setRegularSortField(e.target.value)}
-            className="border p-2 rounded ml-2"
-          >
-            <option value="">Urutkan berdasarkan</option>
-            <option value="totalBiaya">Total Biaya</option>
-            <option value="qty">Jumlah Pembelian Tiket</option>
-            {/* Add more sorting options as needed */}
-          </select>
 
-          <select
-            onChange={(e) => setRegularTimeFilter(e.target.value)}
-            className="border p-2 rounded"
-            defaultValue="7days"
-          >
-            <option value="all">Semua Waktu</option>
-            <option value="7days">7 Hari Terakhir</option>
-            <option value="1month">1 Bulan Terakhir</option>
-            <option value="3months">3 Bulan Terakhir</option>
-            <option value="6months">6 Bulan Terakhir</option>
-            <option value="1year">1 Tahun Terakhir</option>
-          </select>
+        {!regularOrders ? (
+          <p>Pemesanan reguler belum ada.</p>
+        ) : (
+          <>
+            <div className="mb-4 flex gap-3 items-center">
+              <input
+                type="text"
+                placeholder="Cari berdasarkan destinasi ataupun customer"
+                value={regularFilter}
+                onChange={(e) => setRegularFilter(e.target.value)}
+                className="border p-2 rounded"
+              />
+              <select
+                onChange={(e) => setRegularSortField(e.target.value)}
+                className="border p-2 rounded ml-2"
+              >
+                <option value="">Urutkan berdasarkan</option>
+                <option value="totalBiaya">Total Biaya</option>
+                <option value="qty">Jumlah Pembelian Tiket</option>
+                {/* Add more sorting options as needed */}
+              </select>
 
-          <button
-            onClick={() =>
-              setRegularSortOrder(regularSortOrder === "asc" ? "desc" : "asc")
-            }
-            className="border p-2 rounded ml-2"
-          >
-            {regularSortOrder === "asc" ? "Ascending" : "Descending"}
-          </button>
-        </div>
-        <table className="min-w-full bg-white border border-gray-200 mb-8">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Gambar Destinasi
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Destinasi
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Pelanggan
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Jumlah Pembelian Tiket
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Total Biaya
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Experience Tambahan
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Dipesan pada
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedRegularOrders.map((order: RegularOrderType) => (
-              <tr key={order.id}>
-                <td className="px-6 py-4 flex justify-center">
-                  <Image
-                    src={order.destination.imageUrls[0]}
-                    alt={order.destination.destinationName}
-                    className="object-cover rounded"
-                    width={60}
-                    height={60}
-                  />
-                </td>
-                <td className="text-center">
-                  {order.destination.destinationName}
-                </td>
-                <td className="text-center">{order.nama}</td>
-                <td className="text-center">{order.qty}</td>
-                <td className="text-center">
-                  {Rupiah.format(order.totalBiaya)}
-                </td>
-                <td className="text-center">
-                  {order.experiences.length > 0
-                    ? order.experiences.length + " Tempat"
-                    : "Tidak ada"}
-                </td>
-                <td className="text-center">
-                  {format(new Date(order.createdAt), "d MMMM yyyy", {
-                    locale: id,
-                  })}
-                </td>
-                <td className="text-center">
-                  <button onClick={() => handleViewRegularOrderDetails(order)}>
-                    <IoEye color="rgb(37 99 235)" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex justify-center space-x-2">
-          {Array.from({ length: regularPageCount }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => setRegularCurrentPage(i + 1)}
-              className={`border px-3 py-1 rounded ${
-                i + 1 === regularCurrentPage ? "bg-blue-500 text-white" : ""
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+              <select
+                onChange={(e) => setRegularTimeFilter(e.target.value)}
+                className="border p-2 rounded"
+                defaultValue="7days"
+              >
+                <option value="all">Semua Waktu</option>
+                <option value="7days">7 Hari Terakhir</option>
+                <option value="1month">1 Bulan Terakhir</option>
+                <option value="3months">3 Bulan Terakhir</option>
+                <option value="6months">6 Bulan Terakhir</option>
+                <option value="1year">1 Tahun Terakhir</option>
+              </select>
+
+              <button
+                onClick={() =>
+                  setRegularSortOrder(
+                    regularSortOrder === "asc" ? "desc" : "asc"
+                  )
+                }
+                className="border p-2 rounded ml-2"
+              >
+                {regularSortOrder === "asc" ? "Ascending" : "Descending"}
+              </button>
+            </div>
+            <table className="min-w-full bg-white border border-gray-200 mb-8">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Gambar Destinasi
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Destinasi
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Pelanggan
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Jumlah Pembelian Tiket
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Total Biaya
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Experience Tambahan
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Dipesan pada
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedRegularOrders.map((order: RegularOrderType) => (
+                  <tr key={order.id}>
+                    <td className="px-6 py-4 flex justify-center">
+                      <Image
+                        src={order.destination.imageUrls[0]}
+                        alt={order.destination.destinationName}
+                        className="object-cover rounded"
+                        width={60}
+                        height={60}
+                      />
+                    </td>
+                    <td className="text-center">
+                      {order.destination.destinationName}
+                    </td>
+                    <td className="text-center">{order.nama}</td>
+                    <td className="text-center">{order.qty}</td>
+                    <td className="text-center">
+                      {Rupiah.format(order.totalBiaya)}
+                    </td>
+                    <td className="text-center">
+                      {order.experiences.length > 0
+                        ? order.experiences.length + " Tempat"
+                        : "Tidak ada"}
+                    </td>
+                    <td className="text-center">
+                      {format(new Date(order.createdAt), "d MMMM yyyy", {
+                        locale: id,
+                      })}
+                    </td>
+                    <td className="text-center">
+                      <button
+                        onClick={() => handleViewRegularOrderDetails(order)}
+                      >
+                        <IoEye color="rgb(37 99 235)" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex justify-center space-x-2">
+              {Array.from({ length: regularPageCount }, (_, i) => (
+                <button
+                  key={i + 1}
+                  onClick={() => setRegularCurrentPage(i + 1)}
+                  className={`border px-3 py-1 rounded ${
+                    i + 1 === regularCurrentPage ? "bg-blue-500 text-white" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Tabel untuk Package Orders */}
@@ -304,129 +315,142 @@ export default function OrdersTable({
         <h2 className="text-xl font-medium text-center lg:text-left mb-4">
           Transaksi Pemesanan Paket
         </h2>
-        <div className="mb-4 flex gap-3 items-center">
-          <input
-            type="text"
-            placeholder="Cari berdasarkan destinasi atau nama customer"
-            value={packageFilter}
-            onChange={(e) => setPackageFilter(e.target.value)}
-            className="border p-2 rounded"
-          />
-          <select
-            onChange={(e) =>
-              setPackageSortField(e.target.value as PackageSortableFields)
-            }
-            className="border p-2 rounded ml-2"
-          >
-            <option value="">Urutkan berdasarkan</option>
-            <option value="totalBiaya">Total Biaya</option>
-            <option value="namaLength">Jumlah Nama</option>
-            {/* Add more sorting options as needed */}
-          </select>
-          <select
-            onChange={(e) => setPackageTimeFilter(e.target.value)}
-            className="border p-2 rounded"
-            defaultValue="7days"
-          >
-            <option value="all">Semua Waktu</option>
-            <option value="7days">7 Hari Terakhir</option>
-            <option value="1month">1 Bulan Terakhir</option>
-            <option value="3months">3 Bulan Terakhir</option>
-            <option value="6months">6 Bulan Terakhir</option>
-            <option value="1year">1 Tahun Terakhir</option>
-          </select>
-          <button
-            onClick={() =>
-              setPackageSortOrder(packageSortOrder === "asc" ? "desc" : "asc")
-            }
-            className="border p-2 rounded ml-2"
-          >
-            {packageSortOrder === "asc" ? "Ascending" : "Descending"}
-          </button>
-        </div>
-        <table className="min-w-full bg-white border border-gray-200 mb-8">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Gambar Destinasi
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Destinasi
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Pelanggan
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Jumlah Pembelian Tiket
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Total Biaya
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Experience Tambahan
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Dipesan pada
-              </th>
-              <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
-                Detail
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedPackageOrders.map((order) => (
-              <tr key={order.id}>
-                <td className="px-6 py-4 flex justify-center">
-                  <Image
-                    src={order.destinations[0].destinations.imageUrls[0]}
-                    alt={order.destinations[0].destinations.destinationName}
-                    className="object-cover rounded"
-                    width={60}
-                    height={60}
-                  />
-                </td>
-                <td className="text-center">
-                  {order.destinations
-                    .map((d) => d.destinations.destinationName)
-                    .join(", ")}
-                </td>
-                <td className="text-center">{order.nama.join(", ")}</td>
-                <td className="text-center">{order.nama.length}</td>
-                <td className="text-center">
-                  {Rupiah.format(order.totalBiaya)}
-                </td>
-                <td className="text-center">
-                  {order.experiences.length > 0
-                    ? order.experiences.length + " Tempat"
-                    : "Tidak ada"}
-                </td>
-                <td className="text-center">
-                  {format(new Date(order.createdAt), "d MMMM yyyy", {
-                    locale: id,
-                  })}
-                </td>
-                <td className="text-center">
-                  <button onClick={() => handleViewPackageOrderDetails(order)}>
-                    <IoEye color="rgb(37 99 235)" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex justify-center space-x-2">
-          {Array.from({ length: packagePageCount }, (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => setPackageCurrentPage(i + 1)}
-              className={`border px-3 py-1 rounded ${
-                i + 1 === packageCurrentPage ? "bg-blue-500 text-white" : ""
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+
+        {!packageOrders ? (
+          <p>Pemesanan reguler belum ada.</p>
+        ) : (
+          <>
+            <div className="mb-4 flex gap-3 items-center">
+              <input
+                type="text"
+                placeholder="Cari berdasarkan destinasi atau nama customer"
+                value={packageFilter}
+                onChange={(e) => setPackageFilter(e.target.value)}
+                className="border p-2 rounded"
+              />
+              <select
+                onChange={(e) =>
+                  setPackageSortField(e.target.value as PackageSortableFields)
+                }
+                className="border p-2 rounded ml-2"
+              >
+                <option value="">Urutkan berdasarkan</option>
+                <option value="totalBiaya">Total Biaya</option>
+                <option value="namaLength">Jumlah Nama</option>
+                {/* Add more sorting options as needed */}
+              </select>
+              <select
+                onChange={(e) => setPackageTimeFilter(e.target.value)}
+                className="border p-2 rounded"
+                defaultValue="7days"
+              >
+                <option value="all">Semua Waktu</option>
+                <option value="7days">7 Hari Terakhir</option>
+                <option value="1month">1 Bulan Terakhir</option>
+                <option value="3months">3 Bulan Terakhir</option>
+                <option value="6months">6 Bulan Terakhir</option>
+                <option value="1year">1 Tahun Terakhir</option>
+              </select>
+              <button
+                onClick={() =>
+                  setPackageSortOrder(
+                    packageSortOrder === "asc" ? "desc" : "asc"
+                  )
+                }
+                className="border p-2 rounded ml-2"
+              >
+                {packageSortOrder === "asc" ? "Ascending" : "Descending"}
+              </button>
+            </div>
+            <table className="min-w-full bg-white border border-gray-200 mb-8">
+              <thead>
+                <tr>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Gambar Destinasi
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Destinasi
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Pelanggan
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Jumlah Pembelian Tiket
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Total Biaya
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Experience Tambahan
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Dipesan pada
+                  </th>
+                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 tracking-wider">
+                    Detail
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedPackageOrders.map((order) => (
+                  <tr key={order.id}>
+                    <td className="px-6 py-4 flex justify-center">
+                      <Image
+                        src={order?.destinations[0]?.destinations?.imageUrls[0]}
+                        alt={
+                          order?.destinations[0]?.destinations?.destinationName
+                        }
+                        className="object-cover rounded"
+                        width={60}
+                        height={60}
+                      />
+                    </td>
+                    <td className="text-center">
+                      {order.destinations
+                        .map((d) => d.destinations.destinationName)
+                        .join(", ")}
+                    </td>
+                    <td className="text-center">{order.nama.join(", ")}</td>
+                    <td className="text-center">{order.nama.length}</td>
+                    <td className="text-center">
+                      {Rupiah.format(order.totalBiaya)}
+                    </td>
+                    <td className="text-center">
+                      {order.experiences.length > 0
+                        ? order.experiences.length + " Tempat"
+                        : "Tidak ada"}
+                    </td>
+                    <td className="text-center">
+                      {format(new Date(order.createdAt), "d MMMM yyyy", {
+                        locale: id,
+                      })}
+                    </td>
+                    <td className="text-center">
+                      <button
+                        onClick={() => handleViewPackageOrderDetails(order)}
+                      >
+                        <IoEye color="rgb(37 99 235)" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="flex justify-center space-x-2">
+              {Array.from({ length: packagePageCount }, (_, i) => (
+                <button
+                  key={i + 1}
+                  onClick={() => setPackageCurrentPage(i + 1)}
+                  className={`border px-3 py-1 rounded ${
+                    i + 1 === packageCurrentPage ? "bg-blue-500 text-white" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {isRegularModalOpen && selectedRegularOrder && (

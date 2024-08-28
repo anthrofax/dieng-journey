@@ -233,6 +233,7 @@ function OrderPackage() {
         masaPerjalanan: 1,
         nama: data.nama,
         nomorHp: data.nomorHp,
+        penginapanId: "",
         tanggalPerjalanan: data.tanggalPerjalanan,
         experience: [],
         totalBiaya: 499000,
@@ -359,8 +360,8 @@ function OrderPackage() {
                 setSelectedPackage(val ? "travelling" : "healing");
                 travellingForm.reset();
                 healingForm.reset();
-                setHealingMemberNames(['']);
-                setTravellingMemberNames(['']);
+                setHealingMemberNames([""]);
+                setTravellingMemberNames([""]);
               }}
             />
             <div className="flex flex-col items-center w-fit">
