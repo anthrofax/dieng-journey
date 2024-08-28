@@ -233,7 +233,7 @@ function OrderPackage() {
         masaPerjalanan: 1,
         nama: data.nama,
         nomorHp: data.nomorHp,
-        penginapanId: "",
+        penginapanId: null,
         tanggalPerjalanan: data.tanggalPerjalanan,
         experience: [],
         totalBiaya: 499000,

@@ -76,7 +76,7 @@ model Order {
   updatedAt         DateTime @updatedAt
 
   destinationId String @db.ObjectId
-  penginapanId  String @default("") @db.ObjectId
+  penginapanId  String? @db.ObjectId
   userId        String @db.ObjectId
 
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -105,7 +105,7 @@ model PackageOrder {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
-  penginapanId String @default("") @db.ObjectId
+  penginapanId String? @db.ObjectId
   userId       String @db.ObjectId
 
   user         User                      @relation(fields: [userId], references: [id], onDelete: Cascade)

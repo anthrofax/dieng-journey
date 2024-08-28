@@ -44,18 +44,16 @@ export async function POST(req: NextRequest) {
 
         createdOrder = await db.packageOrder.create({
           data: {
+            userId,
             lokasiPenjemputan,
             masaPerjalanan,
             nama,
             nomorHp,
             tanggalPerjalanan,
             totalBiaya,
-            penginapanId,
-            userId,
+            penginapanId
           },
         });
-
-        console.log(createdOrder);
 
         let createdExperience;
         let createdDestinations;
@@ -100,9 +98,10 @@ export async function POST(req: NextRequest) {
           destinationId,
           experience,
         } = body.metadata as RegularOrderMidtransNotificationMetadataType;
-        console.log("Regular Order Ordered");
+
         const createdOrder = await db.order.create({
           data: {
+            userId,
             lokasiPenjemputan,
             masaPerjalanan,
             nama,
@@ -111,12 +110,9 @@ export async function POST(req: NextRequest) {
             tanggalPerjalanan,
             totalBiaya,
             penginapanId,
-            userId,
             destinationId,
           },
         });
-
-        console.log(createdOrder);
 
         let createdExperience;
 
@@ -136,6 +132,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "Pembayaran Berhasil" });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error });
   }
 }

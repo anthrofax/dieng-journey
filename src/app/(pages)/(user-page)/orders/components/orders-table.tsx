@@ -492,6 +492,14 @@ export default function OrdersTable({
 
               <div className="grid grid-cols-5 gap-x-2 items-start">
                 <div className="col-span-2 font-semibold flex items-start gap-2">
+                  <label className="w-[98%]">Destinasi</label>
+                  <span>:</span>
+                </div>
+                <p className="col-span-3">{selectedRegularOrder.destination.destinationName}</p>
+              </div>
+
+              <div className="grid grid-cols-5 gap-x-2 items-start">
+                <div className="col-span-2 font-semibold flex items-start gap-2">
                   <label className="w-[98%]">Lokasi Penjemputan</label>
                   <span>:</span>
                 </div>

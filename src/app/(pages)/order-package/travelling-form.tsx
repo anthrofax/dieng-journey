@@ -310,7 +310,7 @@ function TravellingForm() {
                         const minDate = new Date();
                         const maxDate = new Date();
 
-                        minDate.setDate(today.getDate() + 3);
+                        minDate.setDate(today.getDate() + 2);
                         maxDate.setDate(today.getDate() + 30);
                         return date > maxDate || date < minDate;
                       }}

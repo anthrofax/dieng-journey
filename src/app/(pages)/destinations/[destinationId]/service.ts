@@ -18,7 +18,6 @@ export const redirectToCheckout = async (
     await window!.snap.pay(requestData.token, {
       onSuccess: function (result: any) {
         // Pembayaran berhasil, arahkan ke halaman /orders
-        setIsLoadingPayment(false);
         window.location.href = "/orders";
       },
       onPending: function (result: any) {

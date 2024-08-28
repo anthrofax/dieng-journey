@@ -151,7 +151,7 @@ function DestinationDetails() {
           nama: data.nama,
           namaDestinasi: dataDestinasi.destinationName,
           nomorHp: data.nomorHp,
-          penginapanId: data.penginapanId,
+          penginapanId: data.penginapanId === "" ? null : data.penginapanId,
           qty: data.qty,
           tanggalPerjalanan: data.tanggalPerjalanan,
           allExperiences,
