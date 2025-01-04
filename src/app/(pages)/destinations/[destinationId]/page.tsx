@@ -26,16 +26,11 @@ import { GiPirateCoat } from "react-icons/gi";
 import { redirectToCheckout } from "./service";
 import { Button } from "@/components/ui/button";
 import { IoIosArrowBack, IoIosClose } from "react-icons/io";
-import { confirmAlert } from "react-confirm-alert";
-import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
-import { GoInfo } from "react-icons/go";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import Link from "next/link";
-import Image from "next/image";
 import PackageBox from "./components/package-box-";
 
-export const fasilitas = [
+const fasilitas = [
   {
     icon: MdEmojiTransportation,
     label: "Transportasi",
@@ -224,7 +219,7 @@ function DestinationDetails() {
           <Spinner />
         ) : (
           <>
-            <div className="col-span-12 lg:col-span-8 px-3 grid gap-3 relative min-w-full">
+            <div className="col-span-12 lg:col-span-8 px-3 relative">
               <ImageGallery photos={dataDestinasi.imageUrls} />
               <div className="mt-3 flex justify-between">
                 <div>

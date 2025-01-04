@@ -89,7 +89,7 @@ const Navbar = () => {
               ? "backdrop-blur bg-white/50"
               : "bg-white/0"
             : "bg-white/50 shadow-md"
-        }`}
+        } w-full`}
         theme={customTheme}
       >
         <FlowbiteNavbar.Brand href="/" className="space-x-2 nav__logo">
