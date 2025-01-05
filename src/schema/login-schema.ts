@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const schema = z.object({
+export default z.object({
   email: z
     .string()
     .min(1, { message: "Anda belum mengisi email" })
@@ -12,5 +12,3 @@ const schema = z.object({
     }),
   rememberMe: z.boolean(),
 });
-
-export { schema };

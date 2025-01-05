@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-const schema = z
+export default z
   .object({
     username: z.string().min(1, { message: "Anda harus menentukan username" }),
     email: z.string().min(1, { message: "Kolom email harus diisi!" }),
     password: z
       .string()
-      .min(6, { message: "Kata sandi minimal memerlukan 6 karakter" }),
+      .min(8, { message: "Kata sandi minimal memerlukan 8 karakter" }),
     confirmPassword: z.string(),
     termCondition: z.boolean().refine((val) => val === true, {
       message: "Anda belum menyetujui 'Terms & Condition'",
@@ -22,5 +22,3 @@ const schema = z
       });
     }
   });
-
-export { schema };
