@@ -21,8 +21,12 @@ const config = {
     },
     extend: {
       colors: {
-        primary: "rgb(37 99 235)",
+        primary: "#2563EB",
         secondary: "#a4cafe",
+        primaryWhite: "#FFFFFF",
+        secondaryWhite: "#F9FBFA",
+        primaryBlack: "#3A4F5A",
+        secondaryBlack: "#869398",
       },
       gridRowEnd: {
         "span-1": "span 1",

@@ -67,7 +67,7 @@ function LoginForm() {
       });
 
       if (res?.error == null) {
-        router.push("/");
+        router.replace("/");
       } else {
         toast.error("Email or password is invalid");
       }

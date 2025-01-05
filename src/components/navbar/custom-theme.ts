@@ -24,7 +24,7 @@ export const customTheme: CustomFlowbiteTheme["navbar"] = {
   },
   collapse: {
     base: "w-full lg:block lg:w-auto",
-    list: " mt-4 flex flex-col lg:mt-0 lg:flex-row lg:space-x-8 lg:text-xs lg:font-medium",
+    list: " mt-4 flex flex-col lg:mt-0 lg:flex-row lg:space-x-8 lg:text-base lg:font-medium",
     hidden: {
       on: "hidden",
       off: "absolute left-0 top-20 lg:static lg:top-0 bg-white lg:bg-transparent backdrop-blur lg:backdrop-blur-none",

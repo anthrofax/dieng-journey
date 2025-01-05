@@ -1,12 +1,13 @@
 import db from "./db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { currentUserDataType } from "@/data/types";
 
 async function getSession() {
   return await getServerSession(authOptions);
 }
 
-export async function getCurrentUser(){
+export async function getCurrentUser(): Promise<currentUserDataType | null> {
   try {
     const session = await getSession();
 
@@ -26,8 +27,9 @@ export async function getCurrentUser(){
 
     const { password, ...currentUser } = user;
 
-    return currentUser;
+    return currentUser as currentUserDataType;
   } catch (error) {
     console.log(error);
+    return null;
   }
 }

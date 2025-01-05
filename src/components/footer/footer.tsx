@@ -6,7 +6,6 @@ import {
   FooterLinkGroup,
 } from "flowbite-react";
 import Link from "next/link";
-import { FaMountain } from "react-icons/fa";
 import { MdOutlineTravelExplore } from "react-icons/md";
 
 function Footer() {

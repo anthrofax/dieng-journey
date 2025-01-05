@@ -36,7 +36,6 @@ async function page({
       },
     });
 
-    console.log("Test 2");
     if (!!isExist)
       throw new Error(
         "Anda sudah melakukan pendaftaran sebelumnya. Silahkan login menggunakan akun tersebut."
@@ -49,7 +48,7 @@ async function page({
     console.log(error);
     path = "/login";
   } finally {
-    if (path !== "") redirect(path);
+    // if (path !== "") redirect(path);
   }
 
   return (
