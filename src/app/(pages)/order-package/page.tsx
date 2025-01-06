@@ -24,7 +24,6 @@ import id from "date-fns/locale/id";
 import { healingSchema, travellingSchema } from "./schema";
 import { Button } from "flowbite-react";
 import { format } from "date-fns";
-import { getSelectedLodging } from "@/services/lodging-services";
 import { confirmAlert } from "react-confirm-alert";
 import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { GoInfo } from "react-icons/go";
@@ -34,7 +33,7 @@ import { Rupiah } from "@/utils/format-currency";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
-export const lokasiPenjemputan = [
+const lokasiPenjemputan = [
   {
     label: "Yogyakarta",
     value: "yogyakarta",

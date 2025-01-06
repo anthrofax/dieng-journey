@@ -9,7 +9,21 @@ import Modal from "./modal";
 import { format, getDate, isAfter, subDays, subMonths } from "date-fns";
 import { id } from "date-fns/locale";
 import Link from "next/link";
-import { lokasiPenjemputan } from "@/app/(pages)/order-package/page";
+
+const lokasiPenjemputan = [
+  {
+    label: "Yogyakarta",
+    value: "yogyakarta",
+  },
+  {
+    label: "Wonosobo",
+    value: "wonosobo",
+  },
+  {
+    label: "Magelang",
+    value: "magelang",
+  },
+];
 
 type PackageSortableFields = "totalBiaya" | "namaLength"; // Add more fields as needed
 
@@ -495,7 +509,9 @@ export default function OrdersTable({
                   <label className="w-[98%]">Destinasi</label>
                   <span>:</span>
                 </div>
-                <p className="col-span-3">{selectedRegularOrder.destination.destinationName}</p>
+                <p className="col-span-3">
+                  {selectedRegularOrder.destination.destinationName}
+                </p>
               </div>
 
               <div className="grid grid-cols-5 gap-x-2 items-start">

@@ -22,7 +22,21 @@ import { id } from "date-fns/locale";
 import { Destination, Experience, Order } from "@prisma/client";
 import { AdminRegularOrderType } from "../type";
 import Link from "next/link";
-import { lokasiPenjemputan } from "@/app/(pages)/order-package/page";
+
+const lokasiPenjemputan = [
+  {
+    label: "Yogyakarta",
+    value: "yogyakarta",
+  },
+  {
+    label: "Wonosobo",
+    value: "wonosobo",
+  },
+  {
+    label: "Magelang",
+    value: "magelang",
+  },
+];
 
 export const columns = [
   {
@@ -170,11 +184,9 @@ function ActionsColumn({ row }: { row: any }) {
               <span>:</span>
             </div>
             <p className="col-span-3">
-              {
-                lokasiPenjemputan.find(
-                  (lokasi) => lokasi.value === orders.lokasiPenjemputan
-                )?.label || "Tidak memesan penginapan"
-              }
+              {lokasiPenjemputan.find(
+                (lokasi) => lokasi.value === orders.lokasiPenjemputan
+              )?.label || "Tidak memesan penginapan"}
             </p>
           </div>
 

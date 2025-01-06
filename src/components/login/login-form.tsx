@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -66,16 +66,15 @@ function LoginForm() {
         redirect: false,
       });
 
-      if (res?.error == null) {
-        router.replace("/");
-      } else {
-        toast.error("Email or password is invalid");
-      }
+      if (res?.error) throw new Error("Email or password is invalid");
+      else window.location.href = "/";
     } catch (error) {
-      console.log(error);
-    }
+      if (error instanceof Error) return toast.error(`${error.message}`);
 
-    setIsLoading(false);
+      toast.error(`${error}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

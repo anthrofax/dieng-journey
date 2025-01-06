@@ -163,7 +163,9 @@ function TravellingForm() {
               <FormLabel>Pilih Destinasi</FormLabel>
 
               <div className="h-fit max-h-56 overflow-y-scroll">
-                {isLoadingDestinationQuery ? (
+                {isLoadingDestinationQuery ||
+                (!Array.isArray(allDestinations) &&
+                  !isLoadingDestinationQuery) ? (
                   <div className="w-full h-full flex flex-col gap-1">
                     {Array.from({ length: 3 }).map((_, idx) => (
                       <Skeleton key={idx} className="w-full h-8 shadow-md" />
