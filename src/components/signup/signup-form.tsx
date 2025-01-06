@@ -12,11 +12,13 @@ import { confirmAlert } from "react-confirm-alert";
 import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { GoInfo } from "react-icons/go";
 import { verifyEmail } from "@/actions/auth-actions";
+import { useAuthContext } from "@/contexts/auth-context";
 
 export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+  const { setNormalMessages, setErrors } = useAuthContext();
 
   const {
     register,
@@ -37,54 +39,43 @@ export default function SignupForm() {
 
   const router = useRouter();
   const onSubmit = async (data: any) => {
-    setIsLoading(true);
+    confirmAlert({
+      customUI: ({ onClose }: { onClose: () => void }) => {
+        return (
+          <ConfirmationBox
+            icon={<GoInfo />}
+            judul="Konfirmasi Data"
+            pesan="Apakah anda sudah yakin data yang anda masukkan sudah benar?"
+            onClose={onClose}
+            onClickIya={async () => {
+              const res = await verifyEmail(data);
 
-    const { username, email, password } = data;
-    try {
-      await AXIOS_API.post("/register", {
-        username,
-        email,
-        password,
-      });
+              if ("error" in res) {
+                setErrors((messages) => [...messages, res.error as string]);
+                toast.error(res.error as string);
+              }
 
-      toast.success(
-        "Akun anda berhasil dibuat! Mengarahkan anda ke halaman login"
-      );
-
-      setTimeout(() => {
-        router.push("/login");
-      }, 2500);
-    } catch (error) {
-      console.log(error);
-      toast.error("Terdapat kesalahan saat mendaftarkan akun anda.");
-    } finally {
-      setIsLoading(false);
-    }
+              if ("normalMessage" in res) {
+                setNormalMessages((messages) => [
+                  ...messages,
+                  res.normalMessage as string,
+                ]);
+                router.replace("/login");
+              }
+            }}
+            labelIya="Sudah"
+            labelTidak="Sebentar, saya cek lagi"
+          />
+        );
+      },
+    });
   };
 
   return (
     <form
       className="space-y-4 md:space-y-6"
       method="POST"
-      onSubmit={handleSubmit((data) => {
-        confirmAlert({
-          customUI: ({ onClose }: { onClose: () => void }) => {
-            return (
-              <ConfirmationBox
-                icon={<GoInfo />}
-                judul="Konfirmasi Data"
-                pesan="Apakah anda sudah yakin data yang anda masukkan sudah benar?"
-                onClose={onClose}
-                onClickIya={async () => {
-                  await verifyEmail(data);
-                }}
-                labelIya="Sudah"
-                labelTidak="Sebentar, saya cek lagi"
-              />
-            );
-          },
-        });
-      })}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div>
         <label

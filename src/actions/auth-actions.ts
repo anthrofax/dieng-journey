@@ -15,7 +15,14 @@ interface SignupData {
   termCondition: boolean;
 }
 
-export async function verifyEmail(data: FieldValues | SignupData) {
+interface ResultType {
+  error?: string;
+  normalMessage?: string;
+}
+
+export async function verifyEmail(
+  data: FieldValues | SignupData
+): Promise<ResultType> {
   try {
     const { username, email, password } = data;
     console.log(data);
@@ -28,20 +35,21 @@ export async function verifyEmail(data: FieldValues | SignupData) {
 
     if (password.length < 8)
       return {
-        message: "Password harus berjumlah 8 karakter.",
+        error: "Password harus berjumlah 8 karakter.",
       };
 
     // Periksa apakah email sudah terdaftar
     const existingUser = await db.user.findUnique({
       where: {
         email,
-        username,
       },
     });
 
+    console.log(existingUser);
+
     if (existingUser) {
       return {
-        message: "Email sudah terdaftar!",
+        error: "Email sudah terdaftar!",
       };
     }
 
@@ -77,17 +85,18 @@ export async function verifyEmail(data: FieldValues | SignupData) {
     emailTransporter.sendMail(mailOptions, (error) => {
       if (error) {
         return {
-          message: `Gagal mengirim OTP. Coba lagi. ${error}`,
+          error: `Gagal mengirim OTP. Coba lagi. ${error}`,
         };
       }
     });
+    return {
+      normalMessage: "Link verifikasi pendaftaran sudah dikirim ke email anda.",
+    };
   } catch (error) {
     if (error instanceof Error) {
-      return { message: `${error.message}` };
+      return { error: `${error.message}` };
     }
 
-    return { message: `${error}` };
+    return { error: `${error}` };
   }
-
-  redirect("login");
 }

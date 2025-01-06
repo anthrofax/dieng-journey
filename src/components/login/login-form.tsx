@@ -8,14 +8,42 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import loginSchema from "@/schema/login-schema";
+import { useAuthContext } from "@/contexts/auth-context";
 
 function LoginForm() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [rememberedAccount, setRememberedAccount] = useState<{
     email?: string | undefined;
     password?: string | undefined;
   }>({});
+  const {
+    errors: authErrorMessages,
+    normalMessages,
+    setErrors,
+    setNormalMessages,
+  } = useAuthContext();
+
+  useEffect(() => {
+    if (authErrorMessages.length > 0)
+      authErrorMessages.forEach((message) => {
+        toast.error(message);
+        setNormalMessages((messages) =>
+          messages.filter((msg) => msg !== message)
+        );
+      });
+
+    if (normalMessages.length > 0) {
+      console.log("--------");
+      console.log(normalMessages);
+      toast.success(normalMessages[0]);
+    }
+    // normalMessages.forEach((message) => {
+    //   toast.success(message);
+    //   setErrors((messages) => messages.filter((msg) => msg !== message));
+    // });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setErrors, setNormalMessages]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

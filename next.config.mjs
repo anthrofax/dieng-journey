@@ -1,8 +1,8 @@
 import withPlaiceholder from "@plaiceholder/next";
 
 const nextConfig = {
+  reactStrictMode: false, // Nonaktifkan Strict Mode
   swcMinify: true,
-
   transpilePackages: ["@plaiceholder/next"],
   images: {
     remotePatterns: [{ hostname: "**", protocol: "https", port: "" }],
