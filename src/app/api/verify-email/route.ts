@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
     console.log(htmlTemplate);
 
     const mailOptions = {
-      from: "afridhoikhsan@gmail.com",
+      from: process.env.EMAIL_USER,
       to: email,
       subject: "Fierto Travel Agency | Partner for Your Incredible Journey",
       html: htmlTemplate,

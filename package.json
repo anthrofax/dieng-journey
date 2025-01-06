@@ -51,6 +51,7 @@
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "nodemailer": "^6.9.16",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "plaiceholder": "^3.0.0",
     "prisma": "^5.16.2",
     "react": "^18",

@@ -18,3 +18,5 @@ declare namespace JSX {
 interface Window {
   snap: any;
 }
+
+declare module 'nodemailer-sendgrid-transport'
