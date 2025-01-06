@@ -53,22 +53,13 @@ export default function SignupForm() {
                 const res = await AXIOS_API.post("/verify-email", {
                   ...data,
                 });
-                console.log(res);
-
-                // if (res.status >= 400) {
-                //   setErrors((messages) => [
-                //     ...messages,
-                //     res.data.message as string,
-                //   ]);
-                //   toast.error(res.data.message as string);
-                // }
 
                 if (res.status === 200) {
                   setNormalMessages((messages) => [
                     ...messages,
                     res.data.message as string,
                   ]);
-                  router.replace("/login");
+                  window.location.href = '/login'
                 }
               } catch (err: any) {
                 if (axios.isAxiosError(err)) {
