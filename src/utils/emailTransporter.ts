@@ -9,7 +9,7 @@ export const emailTransporter = nodemailer.createTransport({
   secure: true,
   host: "smtp.gmail.com",
   tls: {
-    ciphers: "SSLv3",
+    rejectUnauthorized: false,
   },
   port: 465,
 });

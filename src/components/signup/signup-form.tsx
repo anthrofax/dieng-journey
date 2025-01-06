@@ -59,7 +59,7 @@ export default function SignupForm() {
                     ...messages,
                     res.data.message as string,
                   ]);
-                  window.location.href = '/login'
+                  router.replace("/login");
                 }
               } catch (err: any) {
                 if (axios.isAxiosError(err)) {
