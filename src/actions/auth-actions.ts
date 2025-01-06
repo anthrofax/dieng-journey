@@ -82,16 +82,23 @@ export async function verifyEmail(
       html: htmlTemplate,
     };
 
-    emailTransporter.sendMail(mailOptions, (error) => {
-      if (error) {
-        return {
-          error: `Gagal mengirim OTP. Coba lagi. ${error}`,
-        };
-      }
+    const res = await new Promise((resolve, reject) => {
+      emailTransporter.sendMail(mailOptions, (error) => {
+        if (error) {
+          reject({
+            error: `Gagal mengirim OTP. Coba lagi. ${error}`,
+          });
+        }
+      });
+      resolve({
+        normalMessage:
+          "Link verifikasi pendaftaran sudah dikirim ke email anda.",
+      });
     });
-    return {
-      normalMessage: "Link verifikasi pendaftaran sudah dikirim ke email anda.",
-    };
+
+    console.log(res)
+
+    return res as ResultType;
   } catch (error) {
     if (error instanceof Error) {
       return { error: `${error.message}` };

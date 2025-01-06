@@ -6,4 +6,10 @@ export const emailTransporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.PASSWORD_USER,
   },
+  secure: true,
+  host: "smtp.gmail.com",
+  tls: {
+    ciphers: "SSLv3",
+  },
+  port: 465,
 });

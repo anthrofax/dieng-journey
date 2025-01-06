@@ -50,6 +50,8 @@ export default function SignupForm() {
             onClickIya={async () => {
               const res = await verifyEmail(data);
 
+              console.log(res);
+
               if ("error" in res) {
                 setErrors((messages) => [...messages, res.error as string]);
                 toast.error(res.error as string);
