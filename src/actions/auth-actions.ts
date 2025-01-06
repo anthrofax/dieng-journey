@@ -76,7 +76,7 @@ export async function verifyEmail(
     console.log(htmlTemplate);
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: "afridhoikhsan@gmail.com",
       to: email,
       subject: "Fierto Travel Agency | Partner for Your Incredible Journey",
       html: htmlTemplate,
