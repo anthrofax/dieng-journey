@@ -1,11 +1,9 @@
-"use server";
 import db from "@/lib/db";
-import { FieldValues } from "react-hook-form";
 import jwt from "jsonwebtoken";
 import { emailTransporter } from "@/utils/emailTransporter";
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import bcrypt from "bcryptjs";
+import { NextRequest, NextResponse } from "next/server";
 
 interface SignupData {
   username: string;
@@ -20,23 +18,30 @@ interface ResultType {
   normalMessage?: string;
 }
 
-export async function verifyEmail(
-  data: FieldValues | SignupData
-): Promise<ResultType> {
+export async function POST(req: NextRequest) {
   try {
-    const { username, email, password } = data;
-    console.log(data);
+    console.log("testt");
+    const body = await req.json();
+    console.log(body);
+
+    const { username, email, password } = body;
+
+    console.log({ username, email, password });
 
     //   // Pastikan semua kolom diisi
     if (!username || !email || !password) {
       console.log("Test");
-      throw new Error("Kolom tidak lengkap");
+      return NextResponse.json(
+        { error: "Kolom tidak lengkap" },
+        { status: 400 }
+      );
     }
 
     if (password.length < 8)
-      return {
-        error: "Password harus berjumlah 8 karakter.",
-      };
+      return NextResponse.json(
+        { error: "Password harus berjumlah 8 karakter." },
+        { status: 400 }
+      );
 
     // Periksa apakah email sudah terdaftar
     const existingUser = await db.user.findUnique({
@@ -48,9 +53,10 @@ export async function verifyEmail(
     console.log(existingUser);
 
     if (existingUser) {
-      return {
-        error: "Email sudah terdaftar!",
-      };
+      return NextResponse.json(
+        { error: "Email sudah terdaftar!" },
+        { status: 400 }
+      );
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -69,9 +75,9 @@ export async function verifyEmail(
     const verificationLink = `http://${hostname}/verify-email?token=${verificationToken}`;
 
     const htmlTemplate = `<p>Halo ${username},</p>
-             <p>Terima kasih telah mendaftar. Silakan klik link berikut untuk memverifikasi email Anda:</p>
-             <a href="${verificationLink}">Verifikasi Email</a>
-             <p>Link ini akan berlaku selama 30 menit.</p>`;
+                 <p>Terima kasih telah mendaftar. Silakan klik link berikut untuk memverifikasi email Anda:</p>
+                 <a href="${verificationLink}">Verifikasi Email</a>
+                 <p>Link ini akan berlaku selama 30 menit.</p>`;
 
     console.log(htmlTemplate);
 
@@ -86,24 +92,19 @@ export async function verifyEmail(
       emailTransporter.sendMail(mailOptions, (error) => {
         if (error) {
           reject({
-            error: `Gagal mengirim OTP. Coba lagi. ${error}`,
+            message: `Gagal mengirim OTP. Coba lagi. ${error}`,
           });
         }
       });
       resolve({
-        normalMessage:
-          "Link verifikasi pendaftaran sudah dikirim ke email anda.",
+        message: "Link verifikasi pendaftaran sudah dikirim ke email anda.",
       });
     });
 
-    console.log(res)
+    console.log(res);
 
-    return res as ResultType;
+    return NextResponse.json(res as ResultType, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      return { error: `${error.message}` };
-    }
-
-    return { error: `${error}` };
+    return NextResponse.json({ error }, { status: 500 });
   }
 }

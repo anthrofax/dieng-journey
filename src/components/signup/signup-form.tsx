@@ -6,13 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import signupSchema from "@/schema/signup-schema";
 import { useRouter } from "next/navigation";
 import AXIOS_API from "@/utils/axios-api";
+AXIOS_API;
 import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { confirmAlert } from "react-confirm-alert";
 import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { GoInfo } from "react-icons/go";
-import { verifyEmail } from "@/actions/auth-actions";
 import { useAuthContext } from "@/contexts/auth-context";
+import axios from "axios";
 
 export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,21 +49,41 @@ export default function SignupForm() {
             pesan="Apakah anda sudah yakin data yang anda masukkan sudah benar?"
             onClose={onClose}
             onClickIya={async () => {
-              const res = await verifyEmail(data);
+              try {
+                const res = await AXIOS_API.post("/verify-email", {
+                  ...data,
+                });
+                console.log(res);
 
-              console.log(res);
+                // if (res.status >= 400) {
+                //   setErrors((messages) => [
+                //     ...messages,
+                //     res.data.message as string,
+                //   ]);
+                //   toast.error(res.data.message as string);
+                // }
 
-              if ("error" in res) {
-                setErrors((messages) => [...messages, res.error as string]);
-                toast.error(res.error as string);
-              }
-
-              if ("normalMessage" in res) {
-                setNormalMessages((messages) => [
-                  ...messages,
-                  res.normalMessage as string,
-                ]);
-                router.replace("/login");
+                if (res.status === 200) {
+                  setNormalMessages((messages) => [
+                    ...messages,
+                    res.data.message as string,
+                  ]);
+                  router.replace("/login");
+                }
+              } catch (err: any) {
+                if (axios.isAxiosError(err)) {
+                  // Jika `err` adalah error dari Axios
+                  console.log(err);
+                  if (err.response?.data?.error) {
+                    toast.error(`${err.response.data.error}`);
+                  } else {
+                    toast.error("Terjadi kesalahan internal.");
+                  }
+                } else {
+                  // Jika error bukan dari Axios
+                  console.error(err);
+                  toast.error("A non-Axios error occurred.");
+                }
               }
             }}
             labelIya="Sudah"
