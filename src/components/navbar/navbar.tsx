@@ -2,7 +2,6 @@ import fiertoLogo from "@/app/favicon.ico";
 import {
   Navbar as FlowbiteNavbar,
   NavbarBrand,
-  NavbarCollapse,
 } from "flowbite-react";
 import Image from "next/image";
 import { customTheme } from "./custom-theme";
@@ -16,7 +15,6 @@ const Navbar = async () => {
     <FlowbiteNavbar
       fluid
       rounded
-      className={`backdrop-blur bg-primaryBlack/50 w-full text-secondaryWhite`}
       theme={customTheme}
     >
       <NavbarBrand href="/">

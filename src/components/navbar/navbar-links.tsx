@@ -13,7 +13,7 @@ const linkData: LinkData[] = [
   { id: "home", text: "Beranda", href: "/" },
   { id: "order", text: "Pilihan Paket", href: "/order-package" },
   { id: "destinasi", text: "Destinasi", href: "/destinations" },
-  { id: "kontak", text: "Kontak", href: "/kontak" },
+  { id: "kontak", text: "Kontak", href: "/#contact-section" },
 ];
 
 const NavbarLinks = () => {
@@ -22,10 +22,7 @@ const NavbarLinks = () => {
   return (
     <Navbar.Collapse>
       {linkData.map((link) => {
-        console.log(pathname);
-        console.log(link.href);
         const isActive = pathname === link.href;
-        console.log(isActive);
         return (
           <Navbar.Link
             href={link.href}
