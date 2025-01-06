@@ -14,10 +14,9 @@ const Widget = ({
   label: string;
   icon: JSX.Element;
 }) => {
-  console.log(label);
   return (
     <div className="w-[80%] h-48 p-4 transition-all shadow-md hover:shadow-lg rounded-xl cursor-pointer">
-      {!data ? (
+      {!data && typeof data !== "number" ? (
         <Skeleton className="h-full" />
       ) : (
         <>

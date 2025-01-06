@@ -10,22 +10,24 @@ interface LinkData {
 }
 
 const linkData: LinkData[] = [
-  { id: "home", text: "Beranda", href: "/" },
-  { id: "order", text: "Pilihan Paket", href: "/order-package" },
-  { id: "destinasi", text: "Destinasi", href: "/destinations" },
-  { id: "kontak", text: "Kontak", href: "/#contact-section" },
+  { id: "home", text: "Beranda", href: "" },
+  { id: "order", text: "Pilihan Paket", href: "order-package" },
+  { id: "destinasi", text: "Destinasi", href: "destinations" },
+  { id: "kontak", text: "Kontak", href: "#contact-section" },
 ];
 
 const NavbarLinks = () => {
-  const pathname = usePathname(); // Mendapatkan pathname saat ini
+  const pathname = usePathname(); 
 
   return (
     <Navbar.Collapse>
       {linkData.map((link) => {
-        const isActive = pathname === link.href;
+        const isActive =
+          pathname === link.href ||
+          pathname.split("/").slice(1).some((path) => path === link.href);
         return (
           <Navbar.Link
-            href={link.href}
+            href={`/${link.href}`}
             key={link.id}
             active={isActive}
             className="group flex flex-col items-center"
