@@ -6,11 +6,7 @@ export const emailTransporter = nodemailer.createTransport({
     user: "afridhoikhsan@gmail.com",
     pass: "hruo yplz ammz vpyk",
   },
-  secure: true,
-  host: "smtp.gmail.com",
-  port: 465,
-  tls: {
-    // do not fail on invalid certs
-    rejectUnauthorized: false,
-  },
+  secure: false,
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
 });
