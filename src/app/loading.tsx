@@ -1,7 +1,7 @@
-import { Spinner as FlowbiteSpinner } from "flowbite-react";
+import Spinner from "@/components/spinner/spinner";
 
 function loading() {
-  return <FlowbiteSpinner className="absolute top-1/2 left-1/2" size="xl" />;
+  return <Spinner />;
 }
 
 export default loading;

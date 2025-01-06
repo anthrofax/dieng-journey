@@ -51,6 +51,8 @@ const Destinations = () => {
     destinations: Destination[],
     filters: DestinationFilterType
   ) {
+    console.log(destinations);
+    if (!Array.isArray(destinations)) destinations = [destinations];
     return destinations?.filter((destination) => {
       // 1. Filter berdasarkan lokasi
       if (
@@ -130,7 +132,7 @@ const Destinations = () => {
             className="border w-full md:w-2/3 p-4 md:px-4 py-6 rounded-xl bg-blue-600 text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4"
           >
             <div className="flex flex-col items-center gap-1">
-            <h3 className="ml-1 text-[#efefef] font-semibold">Lokasi</h3>
+              <h3 className="ml-1 text-[#efefef] font-semibold">Lokasi</h3>
               <FormField
                 control={form.control}
                 name="lokasi"

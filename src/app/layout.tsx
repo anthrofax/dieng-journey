@@ -29,7 +29,7 @@ export default function RootLayout({
         name="viewport"
         content="width=device-width, initial-scale=1.0"
       ></meta>
-      <body className={`${inter.className} margin-0 overflow-x-hidden`}>
+      <body className={`${inter.className} margin-0 w-[100vw] overflow-x-hidden relative min-h-screen`}>
         <Provider>
           <Toast />
           <LayoutProvider>{children}</LayoutProvider>

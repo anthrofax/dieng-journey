@@ -15,7 +15,7 @@ export const customTheme: CustomFlowbiteTheme["navbar"] = {
       base: "flex flex-wrap items-center justify-between w-full",
       fluid: {
         on: "",
-        off: "container",
+        off: "",
       },
     },
   },

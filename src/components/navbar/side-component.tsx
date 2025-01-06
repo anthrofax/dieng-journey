@@ -17,7 +17,7 @@ async function SideComponent() {
   if (!user)
     return (
       <Link href="/login">
-        <MdLogin size={30} color="#3A4F5A" />
+        <MdLogin size={30} color="#FFFFFF" />
       </Link>
     );
 

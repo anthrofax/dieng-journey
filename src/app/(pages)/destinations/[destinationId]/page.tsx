@@ -215,7 +215,7 @@ function DestinationDetails() {
       }}
     >
       <div className="grid grid-cols-12 relative pt-28 pb-16">
-        {isLoading ? (
+        {isLoading || !dataDestinasi.imageUrls ? (
           <Spinner />
         ) : (
           <>
