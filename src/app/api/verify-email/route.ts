@@ -22,7 +22,10 @@ export async function POST(req: NextRequest) {
 
     if (!token || !token.value || token.value === "") {
       return NextResponse.json(
-        { error: "Permintaan anda tidak valid." },
+        {
+          error:
+            "Permintaan anda tidak valid.",
+        },
         { status: 400 }
       );
     }

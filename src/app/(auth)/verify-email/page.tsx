@@ -24,6 +24,7 @@ function Page() {
           res.data.message as string,
         ]);
 
+        deleteCookie("token", "/verify-token");
       } catch (err) {
         console.log(err);
         if (axios.isAxiosError(err)) {

@@ -26,7 +26,9 @@ function LoginForm() {
   useEffect(() => {
     if (authErrorMessages.length > 0)
       authErrorMessages.forEach((message) => {
-        toast.error(message);
+        toast.error(message, {
+          duration: 5000,
+        });
         setNormalMessages((messages) =>
           messages.filter((msg) => msg !== message)
         );
@@ -34,7 +36,9 @@ function LoginForm() {
 
     if (normalMessages.length > 0) {
       normalMessages.forEach((message) => {
-        toast.success(message);
+        toast.success(message, {
+          duration: 3000,
+        });
         setErrors((messages) => messages.filter((msg) => msg !== message));
       });
     }
@@ -98,7 +102,9 @@ function LoginForm() {
         )
           throw new Error(res.error);
 
-        throw new Error("Email atau kata sandi yang anda masukkan tidak valid.");
+        throw new Error(
+          "Email atau kata sandi yang anda masukkan tidak valid."
+        );
       } else window.location.href = "/";
     } catch (error) {
       if (error instanceof Error) return toast.error(`${error.message}`);

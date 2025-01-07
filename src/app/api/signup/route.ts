@@ -4,6 +4,7 @@ import { emailTransporter } from "@/utils/emailTransporter";
 import { headers } from "next/headers";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
+import { User } from "@prisma/client";
 
 interface SignupData {
   username: string;
@@ -48,16 +49,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
 
-    // Periksa apakah email sudah terdaftar
-    const existingUser = await db.user.findUnique({
+    let existingUser = await db.user.findUnique({
       where: {
         email,
       },
     });
 
-    console.log(existingUser);
-
-    if (existingUser) {
+    if (existingUser && existingUser.isVerified) {
       return NextResponse.json(
         { error: "Email sudah terdaftar!" },
         { status: 400 }
@@ -67,12 +65,21 @@ export async function POST(req: NextRequest) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await db.user.create({
-      data: { username, email, password: hashedPassword, isVerified: false },
-    });
+    if (!existingUser)
+      existingUser = await db.user.create({
+        data: { username, email, password: hashedPassword, isVerified: false },
+      });
+    else {
+      existingUser = await db.user.update({
+        where: {
+          id: existingUser.id,
+        },
+        data: { username, password: hashedPassword },
+      });
+    }
 
     const verificationToken = jwt.sign(
-      { userId: user.id },
+      { userId: existingUser.id },
       process.env.JWT_SECRET as string,
       {
         expiresIn: Math.floor(Date.now() / 1000) + 60 * 30,
@@ -83,12 +90,43 @@ export async function POST(req: NextRequest) {
     const hostname = headers().get("x-forwarded-host");
     const verificationLink = `http://${hostname}/verify-email`;
 
-    const htmlTemplate = `<p>Halo ${username},</p>
-                 <p>Terima kasih telah mendaftar. Silakan klik link berikut untuk memverifikasi email Anda:</p>
-                 <a href="${verificationLink}">Verifikasi Email</a>
-                 <p>Link ini akan berlaku selama 30 menit.</p>`;
-
-    console.log(htmlTemplate);
+    const htmlTemplate = `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifikasi Email</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; color: #333;">
+  <table align="center" width="100%" style="max-width: 600px; margin: 20px auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <tr>
+      <td style="background-color: #007bff; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+        <h1 style="color: #fff; font-size: 24px; margin: 0;">Fierto Travel Agency</h1>
+        <p style="color: #fff; margin: 0; font-size: 16px;">Partner for Your Incredible Journey</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 20px;">
+        <p style="font-size: 16px; margin: 0;">Halo <strong>${username}</strong>,</p>
+        <p style="font-size: 14px; line-height: 1.6; margin-top: 10px;">Terima kasih telah mendaftar di <strong>Fierto Travel Agency</strong>. Kami senang Anda bergabung dengan kami. Untuk menyelesaikan proses pendaftaran, silakan verifikasi alamat email Anda dengan mengklik tombol di bawah ini:</p>
+        <p style="text-align: center; margin-top: 20px;">
+          <a href="${verificationLink}" style="display: inline-block; padding: 12px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 4px;">Verifikasi Email</a>
+        </p>
+        <p style="font-size: 14px; line-height: 1.6; margin-top: 20px;">Jika tombol di atas tidak berfungsi, Anda juga dapat menyalin dan menempelkan URL berikut ke browser Anda:</p>
+        <p style="font-size: 14px; color: #007bff; word-break: break-all; margin: 10px 0;">${verificationLink}</p>
+        <p style="font-size: 14px; line-height: 1.6; margin-top: 20px; color: #e74c3c;"><strong>Catatan:</strong> Link ini hanya berlaku selama <strong>30 menit</strong>. Pastikan Anda membuka link ini di browser yang sama saat Anda melakukan pendaftaran.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #666; border-radius: 0 0 8px 8px;">
+        <p style="margin: 0;">© 2025 Fierto Travel Agency. All Rights Reserved.</p>
+        <p style="margin: 0;">Jika Anda tidak merasa melakukan pendaftaran, abaikan email ini.</p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
