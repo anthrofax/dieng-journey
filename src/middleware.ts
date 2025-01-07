@@ -1,5 +1,7 @@
 import { getToken } from "next-auth/jwt";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import * as jose from "jose";
 
 export default async function middleware(req: NextRequest) {
   const token = await getToken({ req });

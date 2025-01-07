@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { Message, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import signupSchema from "@/schema/signup-schema";
@@ -14,12 +14,13 @@ import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { GoInfo } from "react-icons/go";
 import { useAuthContext } from "@/contexts/auth-context";
 import axios from "axios";
+import { getCookie, setCookie } from "@/utils/cookie";
 
 export default function SignupForm() {
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
-  const { setNormalMessages, setErrors } = useAuthContext();
+  const { setNormalMessages } = useAuthContext();
+  const [isPending, startTransition] = useTransition();
 
   const {
     register,
@@ -48,34 +49,42 @@ export default function SignupForm() {
             judul="Konfirmasi Data"
             pesan="Apakah anda sudah yakin data yang anda masukkan sudah benar?"
             onClose={onClose}
-            onClickIya={async () => {
-              try {
-                const res = await AXIOS_API.post("/verify-email", {
-                  ...data,
-                });
+            onClickIya={() => {
+              startTransition(async () => {
+                try {
+                  const res = await AXIOS_API.post("/signup", {
+                    ...data,
+                  });
 
-                if (res.status === 200) {
-                  setNormalMessages((messages) => [
-                    ...messages,
-                    res.data.message as string,
-                  ]);
-                  router.replace("/login");
-                }
-              } catch (err: any) {
-                if (axios.isAxiosError(err)) {
-                  // Jika `err` adalah error dari Axios
-                  console.log(err);
-                  if (err.response?.data?.error) {
-                    toast.error(`${err.response.data.error}`);
-                  } else {
-                    toast.error("Terjadi kesalahan internal.");
+                  if (res.status === 200) {
+                    // setCookie('token', res.data.token, '/verify-email', 30)
+                    setCookie('token', res.data.token, '/api/verify-email', 30)
+
+                    const token = getCookie('token')
+                    console.log(token);
+
+                    setNormalMessages((messages) => [
+                      ...messages,
+                      res.data.message as string, 
+                    ]);
+                    router.replace("/login");
                   }
-                } else {
-                  // Jika error bukan dari Axios
-                  console.error(err);
-                  toast.error("A non-Axios error occurred.");
+                } catch (err) {
+                  if (axios.isAxiosError(err)) {
+                    // Jika `err` adalah error dari Axios
+                    console.log(err);
+                    if (err.response?.data?.error) {
+                      toast.error(`${err.response.data.error}`);
+                    } else {
+                      toast.error("Terjadi kesalahan internal.");
+                    }
+                  } else {
+                    // Jika error bukan dari Axios
+                    console.error(err);
+                    toast.error("A non-Axios error occurred.");
+                  }
                 }
-              }
+              });
             }}
             labelIya="Sudah"
             labelTidak="Sebentar, saya cek lagi"
@@ -188,10 +197,11 @@ export default function SignupForm() {
           </label>
         </div>
       </div>
+
       <button
         type="submit"
-        disabled={isLoading}
-        className="w-full text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+        disabled={isPending}
+        className="w-full text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:bg-slate-400/70"
       >
         Daftar
       </button>

@@ -30,11 +30,16 @@ export const authOptions: AuthOptions = {
 
         if (!isCorrectPass) {
           throw new Error("Invalid input");
-        } else {
-          const { password, ...currentUser } = user;
-
-          return currentUser;
         }
+        
+        if (!user.isVerified)
+          throw new Error(
+            "Akun anda belum terverifikasi, silahkan cek email anda."
+          );
+        // eslint-disable-next-line no-unused-vars
+        const { password: fiilterPasword, ...currentUser } = user;
+
+        return currentUser;
       },
     }),
   ],

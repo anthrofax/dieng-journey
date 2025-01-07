@@ -33,14 +33,11 @@ function LoginForm() {
       });
 
     if (normalMessages.length > 0) {
-      console.log("--------");
-      console.log(normalMessages);
-      toast.success(normalMessages[0]);
+      normalMessages.forEach((message) => {
+        toast.success(message);
+        setErrors((messages) => messages.filter((msg) => msg !== message));
+      });
     }
-    // normalMessages.forEach((message) => {
-    //   toast.success(message);
-    //   setErrors((messages) => messages.filter((msg) => msg !== message));
-    // });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setErrors, setNormalMessages]);
@@ -94,8 +91,15 @@ function LoginForm() {
         redirect: false,
       });
 
-      if (res?.error) throw new Error("Email or password is invalid");
-      else window.location.href = "/";
+      if (res?.error) {
+        if (
+          res.error ===
+          "Akun anda belum terverifikasi, silahkan cek email anda."
+        )
+          throw new Error(res.error);
+
+        throw new Error("Email atau kata sandi yang anda masukkan tidak valid.");
+      } else window.location.href = "/";
     } catch (error) {
       if (error instanceof Error) return toast.error(`${error.message}`);
 

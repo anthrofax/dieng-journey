@@ -1,64 +1,57 @@
-import db from "@/lib/db";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { redirect } from "next/navigation";
+"use client";
+import Spinner from "@/components/spinner/spinner";
+import { useAuthContext } from "@/contexts/auth-context";
+import AXIOS_API from "@/utils/axios-api";
+import { deleteCookie } from "@/utils/cookie";
+import axios from "axios";
+// import { verifyEmail } from "@/app/actions";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
-interface ReceivedDecodedType {
-  username: string;
-  email: string;
-  password: string;
-  ait: number;
-  exp: number;
+function Page() {
+  const { setNormalMessages, setErrors } = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    async function test() {
+      try {
+        const res = await AXIOS_API.post("/verify-email");
+        console.log(res);
+
+        setNormalMessages((messages) => [
+          ...messages,
+          res.data.message as string,
+        ]);
+
+      } catch (err) {
+        console.log(err);
+        if (axios.isAxiosError(err)) {
+          // Jika `err` adalah error dari Axios
+          console.log(err);
+          if (err.response?.data?.error) {
+            setErrors((messages) => [
+              ...messages,
+              `${err?.response?.data.error}` as string,
+            ]);
+          } else {
+            setErrors((messages) => [
+              ...messages,
+              "Terjadi kesalahan internal.",
+            ]);
+          }
+        } else {
+          setErrors((messages) => [...messages, "A non-Axios error occurred."]);
+        }
+      } finally {
+        router.replace("/login");
+      }
+    }
+
+    test();
+  }, [router, setNormalMessages, setErrors]);
+
+  return <Spinner />;
 }
 
-async function page({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined | string[] }>;
-}) {
-  let path = "";
-
-  try {
-    let token = (await searchParams).token || "";
-
-    if (typeof token === "object") token = token[0];
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-
-    if (!decoded) throw new Error("Token tidak valid.");
-
-    const { username, email, password } = decoded as
-      | JwtPayload
-      | ReceivedDecodedType;
-
-    const isExist = await db.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (!!isExist)
-      throw new Error(
-        "Anda sudah melakukan pendaftaran sebelumnya. Silahkan login menggunakan akun tersebut."
-      );
-
-    await db.user.create({
-      data: { username, email, password },
-    });
-  } catch (error) {
-    console.log(error);
-    path = "/login";
-  } finally {
-    // if (path !== "") redirect(path);
-  }
-
-  return (
-    <div className="pt-28 pb-16">
-      <p>Email anda berhasil terdaftar</p>
-      <p>
-        Silahkan login, dengan akun mu <a href="/login">disini</a>
-      </p>
-    </div>
-  );
-}
-
-export default page;
+export default Page;

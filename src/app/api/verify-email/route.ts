@@ -1,110 +1,80 @@
-import db from "@/lib/db";
-import jwt from "jsonwebtoken";
-import { emailTransporter } from "@/utils/emailTransporter";
-import { headers } from "next/headers";
-import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import db from "@/lib/db";
+import AXIOS_API from "@/utils/axios-api";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { redirect } from "next/navigation";
 
-interface SignupData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  termCondition: boolean;
-}
-
-interface ResultType {
-  error?: string;
-  normalMessage?: string;
+interface ReceivedDecodedType {
+  userId: string;
+  ait: number;
+  exp: number;
 }
 
 export async function POST(req: NextRequest) {
   try {
-    console.log("testt");
-    const body = await req.json();
-    console.log(body);
+    const cookieStore = cookies();
+    console.log("TOKEN TEST!!!");
+    console.log(cookieStore);
+    const token = cookieStore.get("token");
 
-    const { username, email, password } = body;
+    console.log(token);
 
-    console.log({ username, email, password });
-
-    //   // Pastikan semua kolom diisi
-    if (!username || !email || !password) {
-      console.log("Test");
+    if (!token || !token.value || token.value === "") {
       return NextResponse.json(
-        { error: "Kolom tidak lengkap" },
+        { error: "Permintaan anda tidak valid." },
         { status: 400 }
       );
     }
 
-    if (password.length < 8)
+    const decoded = jwt.verify(token.value, process.env.JWT_SECRET as string);
+
+    if (!decoded)
       return NextResponse.json(
-        { error: "Password harus berjumlah 8 karakter." },
+        { error: "Token tidak valid." },
         { status: 400 }
       );
 
-    // Periksa apakah email sudah terdaftar
-    const existingUser = await db.user.findUnique({
+    const { userId } = decoded as JwtPayload | ReceivedDecodedType;
+
+    const isExisting = await db.user.findUnique({
       where: {
-        email,
+        id: userId,
+        isVerified: true,
       },
     });
 
-    console.log(existingUser);
+    console.log("TESTT LOL");
+    console.log(isExisting);
 
-    if (existingUser) {
+    if (isExisting)
       return NextResponse.json(
-        { error: "Email sudah terdaftar!" },
+        {
+          error:
+            "Akun anda telah terverifikasi. Silahkan login menggunakan akun tersebut",
+        },
         { status: 400 }
       );
-    }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const verificationToken = jwt.sign(
-      { username, email, password: hashedPassword },
-      process.env.JWT_SECRET as string,
-      {
-        expiresIn: Math.floor(Date.now() / 1000) + 60 * 30,
-      }
-    );
-
-    // Kirim email verifikasi
-    const hostname = headers().get("x-forwarded-host");
-    const verificationLink = `http://${hostname}/verify-email?token=${verificationToken}`;
-
-    const htmlTemplate = `<p>Halo ${username},</p>
-                 <p>Terima kasih telah mendaftar. Silakan klik link berikut untuk memverifikasi email Anda:</p>
-                 <a href="${verificationLink}">Verifikasi Email</a>
-                 <p>Link ini akan berlaku selama 30 menit.</p>`;
-
-    console.log(htmlTemplate);
-
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Fierto Travel Agency | Partner for Your Incredible Journey",
-      html: htmlTemplate,
-    };
-
-    const res = await new Promise((resolve, reject) => {
-      emailTransporter.sendMail(mailOptions, (error) => {
-        if (error) {
-          reject({
-            message: `Gagal mengirim OTP. Coba lagi. ${error}`,
-          });
-        }
-      });
-      resolve({
-        message: "Link verifikasi pendaftaran sudah dikirim ke email anda.",
-      });
+    await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isVerified: true,
+      },
     });
 
-    console.log(res);
+    (await cookies()).delete("token");
 
-    return NextResponse.json(res as ResultType, { status: 200 });
+    return NextResponse.json(
+      { message: "Akun anda berhasil terdaftar." },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }
