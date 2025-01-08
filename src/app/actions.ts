@@ -103,8 +103,8 @@ export async function sendResetPasswordLinkVerification(
 
     return res as { message: string };
   } catch (error) {
-    if (error instanceof Error) throw new Error(error.message);
-    throw new Error(`${error}`);
+    if (error instanceof Error) return { error: error.message };
+    return { error: `${error}` };
   }
 }
 
@@ -149,7 +149,9 @@ export async function resetPassword(data: FormData, token: string) {
       existingUser.password
     );
     if (isTheSamePassword)
-      throw new Error("Ganti dengan kata sandi yang berbeda dari yang sebelumnya");
+      throw new Error(
+        "Ganti dengan kata sandi yang berbeda dari yang sebelumnya"
+      );
 
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
@@ -168,7 +170,7 @@ export async function resetPassword(data: FormData, token: string) {
       message: "Kata sandi anda telah berhasil diubah",
     };
   } catch (error) {
-    if (error instanceof Error) throw new Error(error.message);
-    throw new Error(`${error}`);
+    if (error instanceof Error) return { error: error.message };
+    return { error: `${error}` };
   }
 }

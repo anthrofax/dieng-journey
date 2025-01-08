@@ -22,6 +22,8 @@ function ResetPasswordForm() {
         if ("message" in res) {
           setNormalMessages((messages) => [...messages, res.message as string]);
           router.replace("/login");
+        } else if ("error" in res) {
+          throw new Error(`${res.error}`);
         }
       } catch (error) {
         console.log(error);
