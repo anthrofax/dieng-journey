@@ -12,16 +12,14 @@ import { useAuthContext } from "@/contexts/auth-context";
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [rememberedAccount, setRememberedAccount] = useState<{
-    email?: string | undefined;
-    password?: string | undefined;
-  }>({});
   const {
     errors: authErrorMessages,
     normalMessages,
     setErrors,
     setNormalMessages,
   } = useAuthContext();
+  let defaultEmail = "";
+  let defaultPassword = "";
 
   useEffect(() => {
     if (authErrorMessages.length > 0)
@@ -42,20 +40,18 @@ function LoginForm() {
         setErrors((messages) => messages.filter((msg) => msg !== message));
       });
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setErrors, setNormalMessages]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const account = JSON.parse(
-        localStorage.getItem("remember-account") || "{}"
-      );
-      setRememberedAccount(account);
-    }
-  }, []);
-
   const [showPassword, setShowPassword] = useState(false);
+
+  if (typeof window !== "undefined") {
+    const account = JSON.parse(
+      localStorage.getItem("remember-account") || "{}"
+    );
+
+    defaultEmail = account.email || "";
+    defaultPassword = account.password || "";
+  }
 
   const {
     register,
@@ -63,9 +59,9 @@ function LoginForm() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: rememberedAccount?.email ? rememberedAccount.email : "",
-      password: rememberedAccount?.password ? rememberedAccount.password : "",
-      rememberMe: false,
+      email: defaultEmail,
+      password: defaultPassword,
+      rememberMe: !!defaultEmail,
     },
     resolver: zodResolver(loginSchema),
   });
@@ -86,6 +82,9 @@ function LoginForm() {
         "remember-account",
         JSON.stringify({ email, password })
       );
+    else {
+      localStorage.removeItem("remember-account");
+    }
     setIsLoading(true);
 
     try {
@@ -133,7 +132,6 @@ function LoginForm() {
           id="email"
           className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="johndoe@email.com"
-          defaultValue={rememberedAccount?.email ? rememberedAccount.email : ""}
           {...register("email")}
         />
       </div>
@@ -148,9 +146,6 @@ function LoginForm() {
           type={showPassword ? "text" : "password"}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="••••••••"
-          defaultValue={
-            rememberedAccount.password ? rememberedAccount.password : ""
-          }
           {...register("password")}
         />
         <button
