@@ -1,11 +1,12 @@
-import LoginForm from "@/components/login/login-form";
+'use client'
+import EmailInputForm from "@/components/reset-password/email-input-form";
 import { MdOutlineTravelExplore } from "react-icons/md";
 
 function ResetPassword() {
   return (
     <section
       className=" bg-no-repeat bg-cover bg-blend-darken relative"
-      style={{ backgroundImage: "url('/img/brand_image_1.jpg')" }}
+      style={{ backgroundImage: "url('/img/brand_image_7.jpg')" }}
     >
       <div className="absolute w-full h-full bg-black/50 mix-blend-multiply" />
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0 relative">
@@ -14,17 +15,20 @@ function ResetPassword() {
           className="flex items-center mb-6 text-2xl font-semibold text-white"
         >
           <MdOutlineTravelExplore size={25} />
-          Dieng Journey
+          Fierto Travel Agency
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <div className="space-y-2 text-center">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Ganti Kata Sandi
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-secondaryBlack md:text-xl dark:text-white">
+                Verifikasi Email Pulih Kata Sandi
               </h1>
-              <p>Masukkan email yang ingin anda ubah kata sandinya.</p>
+              <p className="text-primaryBlack font-bold">
+                Masukkan email yang ingin anda ubah kata sandinya.
+              </p>
             </div>
-            <LoginForm />
+
+            <EmailInputForm />
           </div>
         </div>
       </div>

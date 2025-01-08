@@ -5,18 +5,21 @@ import AXIOS_API from "@/utils/axios-api";
 import { deleteCookie } from "@/utils/cookie";
 import axios from "axios";
 // import { verifyEmail } from "@/app/actions";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 function Page() {
   const { setNormalMessages, setErrors } = useAuthContext();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     async function test() {
       try {
-        const res = await AXIOS_API.post("/verify-email");
+        const res = await AXIOS_API.post(
+          `/verify-email/${pathname.slice(1).split("/")[1]}`
+        );
         console.log(res);
 
         setNormalMessages((messages) => [
@@ -50,7 +53,7 @@ function Page() {
     }
 
     test();
-  }, [router, setNormalMessages, setErrors]);
+  }, [router, setNormalMessages, setErrors, pathname]);
 
   return <Spinner />;
 }

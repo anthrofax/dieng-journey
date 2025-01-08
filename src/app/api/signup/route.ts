@@ -1,10 +1,10 @@
 import db from "@/lib/db";
-import jwt from "jsonwebtoken";
 import { emailTransporter } from "@/utils/emailTransporter";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
-import { User } from "@prisma/client";
+import { v4 as uuid } from "uuid";
+import { createSession, encrypt } from "@/utils/session";
 
 interface SignupData {
   username: string;
@@ -78,17 +78,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const verificationToken = jwt.sign(
-      { userId: existingUser.id },
-      process.env.JWT_SECRET as string,
-      {
-        expiresIn: Math.floor(Date.now() / 1000) + 60 * 30,
-      }
-    );
+    const token = await encrypt({ userId: existingUser.id }, 30);
 
     // Kirim email verifikasi
     const hostname = headers().get("x-forwarded-host");
-    const verificationLink = `http://${hostname}/verify-email`;
+    const verificationLink = `http://${hostname}/verify-email/${token}`;
 
     const htmlTemplate = `<!DOCTYPE html>
 <html lang="id">
@@ -112,9 +106,7 @@ export async function POST(req: NextRequest) {
         <p style="text-align: center; margin-top: 20px;">
           <a href="${verificationLink}" style="display: inline-block; padding: 12px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 4px;">Verifikasi Email</a>
         </p>
-        <p style="font-size: 14px; line-height: 1.6; margin-top: 20px;">Jika tombol di atas tidak berfungsi, Anda juga dapat menyalin dan menempelkan URL berikut ke browser Anda:</p>
-        <p style="font-size: 14px; color: #007bff; word-break: break-all; margin: 10px 0;">${verificationLink}</p>
-        <p style="font-size: 14px; line-height: 1.6; margin-top: 20px; color: #e74c3c;"><strong>Catatan:</strong> Link ini hanya berlaku selama <strong>30 menit</strong>. Pastikan Anda membuka link ini di browser yang sama saat Anda melakukan pendaftaran.</p>
+        <p style="font-size: 14px; line-height: 1.6; margin-top: 20px; color: #e74c3c;"><strong>Catatan:</strong> Link ini hanya berlaku selama <strong>30 menit</strong>.</p>
       </td>
     </tr>
     <tr>
@@ -145,7 +137,6 @@ export async function POST(req: NextRequest) {
       });
       resolve({
         message: "Link verifikasi pendaftaran sudah dikirim ke email anda.",
-        token: verificationToken,
       });
     });
 

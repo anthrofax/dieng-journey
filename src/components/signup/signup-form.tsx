@@ -14,7 +14,7 @@ import ConfirmationBox from "@/components/confirmation-box/confirmation-box";
 import { GoInfo } from "react-icons/go";
 import { useAuthContext } from "@/contexts/auth-context";
 import axios from "axios";
-import { getCookie, setCookie } from "@/utils/cookie";
+import { setCookie } from "@/utils/cookie";
 
 export default function SignupForm() {
   const [showPassword1, setShowPassword1] = useState(false);
@@ -57,15 +57,9 @@ export default function SignupForm() {
                   });
 
                   if (res.status === 200) {
-                    // setCookie('token', res.data.token, '/verify-email', 30)
-                    setCookie('token', res.data.token, '/api/verify-email', 30)
-
-                    const token = getCookie('token')
-                    console.log(token);
-
                     setNormalMessages((messages) => [
                       ...messages,
-                      res.data.message as string, 
+                      res.data.message as string,
                     ]);
                     router.replace("/login");
                   }
