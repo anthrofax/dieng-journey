@@ -55,6 +55,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    let existingUsername = await db.user.findUnique({
+      where: {
+        username,
+      },
+    });
+
     if (existingUser && existingUser.isVerified) {
       return NextResponse.json(
         { error: "Email sudah terdaftar!" },
@@ -62,17 +68,32 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (existingUsername) {
+      if (existingUsername.isVerified) {
+        return NextResponse.json(
+          { error: "Username sudah terpakai, ganti dengan username lain!" },
+          { status: 400 }
+        );
+      }
+
+      await db.user.delete({
+        where: {
+          username: existingUsername.username,
+        },
+      });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    if (!existingUser)
+    if (!existingUser || existingUsername)
       existingUser = await db.user.create({
         data: { username, email, password: hashedPassword, isVerified: false },
       });
     else {
       existingUser = await db.user.update({
         where: {
-          id: existingUser.id,
+          email,
         },
         data: { username, password: hashedPassword },
       });
